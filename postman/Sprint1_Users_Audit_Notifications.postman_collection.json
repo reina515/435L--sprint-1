@@ -1,0 +1,3238 @@
+{
+  "info": {
+    "name": "Sprint 1 - Users, Audit Logging, Notifications",
+    "description": "Security Incident Detection and Response Management System.\nServices: Users (5001), Security Audit Logging (5005), Notifications (5008).\nRun folder 0 first; tokens are stored automatically. Set `student_name` and `service_key` (SERVICE_API_KEY from .env) in the collection variables.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "0. Authentication (run first)",
+      "item": [
+        {
+          "name": "Login as admin (admin)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });",
+                  "if (pm.response.code < 300) { pm.collectionVariables.set('token_admin', pm.response.json().data.token); }",
+                  "if (pm.response.code < 300) { pm.collectionVariables.set('admin_id', pm.response.json().data.user.user_id); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{users_url}}/users/login",
+            "description": "**Student:** {{student_name}}\n\nAuthenticates **admin** and stores the JWT in `token_admin`.\n\nExpected HTTP status: 200",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"Admin@12345\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Login as analyst (analyst)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });",
+                  "if (pm.response.code < 300) { pm.collectionVariables.set('token_analyst', pm.response.json().data.token); }",
+                  "if (pm.response.code < 300) { pm.collectionVariables.set('analyst_id', pm.response.json().data.user.user_id); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{users_url}}/users/login",
+            "description": "**Student:** {{student_name}}\n\nAuthenticates **analyst** and stores the JWT in `token_analyst`.\n\nExpected HTTP status: 200",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"analyst\",\n  \"password\": \"Analyst@12345\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Login as employee (employee)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });",
+                  "if (pm.response.code < 300) { pm.collectionVariables.set('token_employee', pm.response.json().data.token); }",
+                  "if (pm.response.code < 300) { pm.collectionVariables.set('employee_id', pm.response.json().data.user.user_id); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{users_url}}/users/login",
+            "description": "**Student:** {{student_name}}\n\nAuthenticates **employee** and stores the JWT in `token_employee`.\n\nExpected HTTP status: 200",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"employee\",\n  \"password\": \"Employee@12345\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Login as employee2 (employee2)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });",
+                  "if (pm.response.code < 300) { pm.collectionVariables.set('token_employee2', pm.response.json().data.token); }",
+                  "if (pm.response.code < 300) { pm.collectionVariables.set('employee2_id', pm.response.json().data.user.user_id); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{users_url}}/users/login",
+            "description": "**Student:** {{student_name}}\n\nAuthenticates **employee2** and stores the JWT in `token_employee2`.\n\nExpected HTTP status: 200",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"employee2\",\n  \"password\": \"Employee2@12345\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Login as auditor (auditor)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });",
+                  "if (pm.response.code < 300) { pm.collectionVariables.set('token_auditor', pm.response.json().data.token); }",
+                  "if (pm.response.code < 300) { pm.collectionVariables.set('auditor_id', pm.response.json().data.user.user_id); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{users_url}}/users/login",
+            "description": "**Student:** {{student_name}}\n\nAuthenticates **auditor** and stores the JWT in `token_auditor`.\n\nExpected HTTP status: 200",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"auditor\",\n  \"password\": \"Auditor@12345\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Login with email instead of username",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{users_url}}/users/login",
+            "description": "**Student:** {{student_name}}\n\nThe API accepts a username OR an email.\n\nExpected HTTP status: 200",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"employee@security.local\",\n  \"password\": \"Employee@12345\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Failed login - wrong password",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 401', function () { pm.response.to.have.status(401); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{users_url}}/users/login",
+            "description": "**Student:** {{student_name}}\n\nWrong password -> 401 and a LOGIN_FAILED audit log (Warning).\n\nExpected HTTP status: 401",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"employee\",\n  \"password\": \"WrongPassword1!\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Failed login - unknown user",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 401', function () { pm.response.to.have.status(401); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{users_url}}/users/login",
+            "description": "**Student:** {{student_name}}\n\nSame generic message as a wrong password, so attackers cannot discover usernames.\n\nExpected HTTP status: 401",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"ghost_user\",\n  \"password\": \"Whatever1!\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Login blocked - suspended account",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 403', function () { pm.response.to.have.status(403); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{users_url}}/users/login",
+            "description": "**Student:** {{student_name}}\n\nInactive / Suspended users cannot authenticate (LOGIN_BLOCKED log).\n\nExpected HTTP status: 403",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"suspended\",\n  \"password\": \"Suspended@12345\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Login - missing fields (validation)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 400', function () { pm.response.to.have.status(400); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{users_url}}/users/login",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 400",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"admin\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "1. Users and Identity Management (5001)",
+      "item": [
+        {
+          "name": "Register user (public, Regular Employee)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 201', function () { pm.response.to.have.status(201); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });",
+                  "if (pm.response.code < 300) { pm.collectionVariables.set('new_user_id', pm.response.json().data.user_id); }",
+                  "if (pm.response.code < 300) { pm.collectionVariables.set('new_username', pm.response.json().data.username); }"
+                ]
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.set('rand', Date.now().toString().slice(-7));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{users_url}}/users/register",
+            "description": "**Student:** {{student_name}}\n\nAnyone can self-register as a Regular Employee. Password is bcrypt-hashed; email is Fernet-encrypted in the database.\n\nExpected HTTP status: 201",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"full_name\": \"Maya Haddad\",\n  \"username\": \"maya{{rand}}\",\n  \"email\": \"maya{{rand}}@company.com\",\n  \"password\": \"Secure#Pass2026\",\n  \"department\": \"Finance\",\n  \"role\": \"Regular Employee\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Register - duplicate username (409)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 409', function () { pm.response.to.have.status(409); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{users_url}}/users/register",
+            "description": "**Student:** {{student_name}}\n\nUsername uniqueness is checked before insert and enforced by a UNIQUE constraint.\n\nExpected HTTP status: 409",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"full_name\": \"Maya Copy\",\n  \"username\": \"{{new_username}}\",\n  \"email\": \"copy{{rand}}@company.com\",\n  \"password\": \"Secure#Pass2026\",\n  \"department\": \"Finance\",\n  \"role\": \"Regular Employee\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Register - invalid email (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 400', function () { pm.response.to.have.status(400); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{users_url}}/users/register",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 400",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"full_name\": \"Bad Email\",\n  \"username\": \"bademail{{rand}}\",\n  \"email\": \"not-an-email\",\n  \"password\": \"Secure#Pass2026\",\n  \"department\": \"IT\",\n  \"role\": \"Regular Employee\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Register - weak password (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 400', function () { pm.response.to.have.status(400); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{users_url}}/users/register",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 400",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"full_name\": \"Weak Pass\",\n  \"username\": \"weak{{rand}}\",\n  \"email\": \"weak{{rand}}@company.com\",\n  \"password\": \"12345\",\n  \"department\": \"IT\",\n  \"role\": \"Regular Employee\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Register - missing fields (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 400', function () { pm.response.to.have.status(400); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{users_url}}/users/register",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 400",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"incomplete{{rand}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Register - SQL injection attempt in username (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 400', function () { pm.response.to.have.status(400); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{users_url}}/users/register",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 400",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"full_name\": \"Injector\",\n  \"username\": \"x' OR '1'='1\",\n  \"email\": \"inj{{rand}}@company.com\",\n  \"password\": \"Secure#Pass2026\",\n  \"department\": \"IT\",\n  \"role\": \"Regular Employee\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Register - anonymous tries to create an Admin (403)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 403', function () { pm.response.to.have.status(403); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{users_url}}/users/register",
+            "description": "**Student:** {{student_name}}\n\nOnly an authenticated administrator may assign privileged roles. The attempt is logged as UNAUTHORIZED_ACCESS.\n\nExpected HTTP status: 403",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"full_name\": \"Evil Admin\",\n  \"username\": \"evil{{rand}}\",\n  \"email\": \"evil{{rand}}@company.com\",\n  \"password\": \"Secure#Pass2026\",\n  \"department\": \"IT\",\n  \"role\": \"Security Administrator\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Register - Admin creates a Security Analyst",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 201', function () { pm.response.to.have.status(201); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });",
+                  "if (pm.response.code < 300) { pm.collectionVariables.set('new_analyst_id', pm.response.json().data.user_id); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_admin}}"
+              }
+            ],
+            "url": "{{users_url}}/users/register",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 201",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"full_name\": \"Karim Nassar\",\n  \"username\": \"karim{{rand}}\",\n  \"email\": \"karim{{rand}}@company.com\",\n  \"password\": \"Analyst#Pass2026\",\n  \"department\": \"SOC\",\n  \"role\": \"Security Analyst\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Get all users (Admin)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_admin}}"
+              }
+            ],
+            "url": "{{users_url}}/users",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 200"
+          }
+        },
+        {
+          "name": "Get all users (Auditor)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_auditor}}"
+              }
+            ],
+            "url": "{{users_url}}/users?limit=50&offset=0",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 200"
+          }
+        },
+        {
+          "name": "Get all users - Analyst denied (403)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 403', function () { pm.response.to.have.status(403); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_analyst}}"
+              }
+            ],
+            "url": "{{users_url}}/users",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 403"
+          }
+        },
+        {
+          "name": "Get all users - no token (401)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 401', function () { pm.response.to.have.status(401); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{users_url}}/users",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 401"
+          }
+        },
+        {
+          "name": "Get user by username (Admin)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_admin}}"
+              }
+            ],
+            "url": "{{users_url}}/users/{{new_username}}",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 200"
+          }
+        },
+        {
+          "name": "Get own profile (Employee)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_employee}}"
+              }
+            ],
+            "url": "{{users_url}}/users/employee",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 200"
+          }
+        },
+        {
+          "name": "Get another user's profile - Employee denied (403)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 403', function () { pm.response.to.have.status(403); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_employee}}"
+              }
+            ],
+            "url": "{{users_url}}/users/admin",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 403"
+          }
+        },
+        {
+          "name": "Get user by username - not found (404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 404', function () { pm.response.to.have.status(404); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_auditor}}"
+              }
+            ],
+            "url": "{{users_url}}/users/nobody_here",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 404"
+          }
+        },
+        {
+          "name": "Update own info (Employee)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_employee}}"
+              }
+            ],
+            "url": "{{users_url}}/users/{{employee_id}}",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 200",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"department\": \"Accounting\",\n  \"full_name\": \"Omar Employee\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Update another user - Employee denied (403)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 403', function () { pm.response.to.have.status(403); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_employee}}"
+              }
+            ],
+            "url": "{{users_url}}/users/{{employee2_id}}",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 403",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"department\": \"Hacked\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Update own role - Employee denied (403)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 403', function () { pm.response.to.have.status(403); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_employee}}"
+              }
+            ],
+            "url": "{{users_url}}/users/{{employee_id}}",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 403",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"role\": \"Security Administrator\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Update - invalid email (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 400', function () { pm.response.to.have.status(400); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_employee}}"
+              }
+            ],
+            "url": "{{users_url}}/users/{{employee_id}}",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 400",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"wrong-format\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Admin updates user info",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_admin}}"
+              }
+            ],
+            "url": "{{users_url}}/users/{{new_user_id}}",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 200",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"full_name\": \"Maya Haddad-Khoury\",\n  \"email\": \"maya.k{{rand}}@company.com\",\n  \"department\": \"Risk\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Admin changes user role (ROLE_CHANGED log + notification)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_admin}}"
+              }
+            ],
+            "url": "{{users_url}}/users/{{new_user_id}}",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 200",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"role\": \"Auditor\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Admin suspends a user",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_admin}}"
+              }
+            ],
+            "url": "{{users_url}}/users/{{new_user_id}}",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 200",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"account_status\": \"Suspended\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Admin re-activates the user",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_admin}}"
+              }
+            ],
+            "url": "{{users_url}}/users/{{new_user_id}}",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 200",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"account_status\": \"Active\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Update - user not found (404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 404', function () { pm.response.to.have.status(404); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_admin}}"
+              }
+            ],
+            "url": "{{users_url}}/users/999999",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 404",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"department\": \"IT\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "View roles and permissions (Admin)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_admin}}"
+              }
+            ],
+            "url": "{{users_url}}/roles",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 200"
+          }
+        },
+        {
+          "name": "Delete user - Analyst denied (403)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 403', function () { pm.response.to.have.status(403); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_analyst}}"
+              }
+            ],
+            "url": "{{users_url}}/users/{{new_user_id}}",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 403"
+          }
+        },
+        {
+          "name": "Delete user - Employee denied (403)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 403', function () { pm.response.to.have.status(403); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_employee}}"
+              }
+            ],
+            "url": "{{users_url}}/users/{{new_user_id}}",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 403"
+          }
+        },
+        {
+          "name": "Delete user (Admin)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_admin}}"
+              }
+            ],
+            "url": "{{users_url}}/users/{{new_user_id}}",
+            "description": "**Student:** {{student_name}}\n\nDeletes the user. Their audit logs are kept (user_id set to NULL, original_user_id preserved); their notifications are deleted (ON DELETE CASCADE).\n\nExpected HTTP status: 200"
+          }
+        },
+        {
+          "name": "Delete user - already deleted (404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 404', function () { pm.response.to.have.status(404); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_admin}}"
+              }
+            ],
+            "url": "{{users_url}}/users/{{new_user_id}}",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 404"
+          }
+        },
+        {
+          "name": "Internal: get user with service key",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Service-Key",
+                "value": "{{service_key}}"
+              }
+            ],
+            "url": "{{users_url}}/internal/users/1",
+            "description": "**Student:** {{student_name}}\n\nService-to-service endpoint. Put the SERVICE_API_KEY value from .env in the `service_key` collection variable.\n\nExpected HTTP status: 200"
+          }
+        },
+        {
+          "name": "Internal: without service key (403)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 403', function () { pm.response.to.have.status(403); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{users_url}}/internal/users/1",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 403"
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. Security Audit Logging (5005)",
+      "item": [
+        {
+          "name": "Create log record (Admin)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 201', function () { pm.response.to.have.status(201); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });",
+                  "if (pm.response.code < 300) { pm.collectionVariables.set('log_id', pm.response.json().data.log_id); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_admin}}"
+              }
+            ],
+            "url": "{{audit_url}}/logs",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 201",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user_id\": \"{{analyst_id}}\",\n  \"action\": \"INCIDENT_CREATED\",\n  \"description\": \"Analyst opened incident #12 (phishing campaign)\",\n  \"severity\": \"Information\",\n  \"related_service\": \"Incidents\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Create log record - Warning",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 201', function () { pm.response.to.have.status(201); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_admin}}"
+              }
+            ],
+            "url": "{{audit_url}}/logs",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 201",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user_id\": \"{{employee_id}}\",\n  \"action\": \"ASSET_MODIFIED\",\n  \"description\": \"Workstation WS-22 owner changed\",\n  \"severity\": \"Warning\",\n  \"related_service\": \"Assets\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Create log record - Critical (alerts all admins)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 201', function () { pm.response.to.have.status(201); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_admin}}"
+              }
+            ],
+            "url": "{{audit_url}}/logs",
+            "description": "**Student:** {{student_name}}\n\nCritical logs automatically send a Security Alert notification to every active administrator.\n\nExpected HTTP status: 201",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user_id\": \"{{admin_id}}\",\n  \"action\": \"THREAT_DETECTED\",\n  \"description\": \"Ransomware hash detected on FS-01\",\n  \"severity\": \"Critical\",\n  \"related_service\": \"Threat Intelligence\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Create log - invalid severity (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 400', function () { pm.response.to.have.status(400); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_admin}}"
+              }
+            ],
+            "url": "{{audit_url}}/logs",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 400",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user_id\": \"{{admin_id}}\",\n  \"action\": \"TEST\",\n  \"description\": \"bad severity\",\n  \"severity\": \"Super\",\n  \"related_service\": \"Users\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Create log - missing fields (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 400', function () { pm.response.to.have.status(400); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_admin}}"
+              }
+            ],
+            "url": "{{audit_url}}/logs",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 400",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"action\": \"TEST\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Create log - Auditor denied (403)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 403', function () { pm.response.to.have.status(403); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_auditor}}"
+              }
+            ],
+            "url": "{{audit_url}}/logs",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 403",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user_id\": \"{{admin_id}}\",\n  \"action\": \"TEST\",\n  \"description\": \"auditor is read only\",\n  \"severity\": \"Information\",\n  \"related_service\": \"Users\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Create log via service key",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 201', function () { pm.response.to.have.status(201); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-Service-Key",
+                "value": "{{service_key}}"
+              }
+            ],
+            "url": "{{audit_url}}/logs",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 201",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user_id\": null,\n  \"action\": \"SYSTEM_STARTUP\",\n  \"description\": \"Scheduled integrity check\",\n  \"severity\": \"Information\",\n  \"related_service\": \"Audit Logging\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Get all logs (Admin)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_admin}}"
+              }
+            ],
+            "url": "{{audit_url}}/logs?limit=20",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 200"
+          }
+        },
+        {
+          "name": "Get all logs (Auditor)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_auditor}}"
+              }
+            ],
+            "url": "{{audit_url}}/logs",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 200"
+          }
+        },
+        {
+          "name": "Get all logs - Analyst denied (403)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 403', function () { pm.response.to.have.status(403); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_analyst}}"
+              }
+            ],
+            "url": "{{audit_url}}/logs",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 403"
+          }
+        },
+        {
+          "name": "Get all logs - Employee denied (403)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 403', function () { pm.response.to.have.status(403); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_employee}}"
+              }
+            ],
+            "url": "{{audit_url}}/logs",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 403"
+          }
+        },
+        {
+          "name": "Get specific log (Analyst)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_analyst}}"
+              }
+            ],
+            "url": "{{audit_url}}/logs/{{log_id}}",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 200"
+          }
+        },
+        {
+          "name": "Get specific log - not found (404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 404', function () { pm.response.to.have.status(404); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_admin}}"
+              }
+            ],
+            "url": "{{audit_url}}/logs/999999",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 404"
+          }
+        },
+        {
+          "name": "Get specific log - invalid id (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 400', function () { pm.response.to.have.status(400); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_admin}}"
+              }
+            ],
+            "url": "{{audit_url}}/logs/abc",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 400"
+          }
+        },
+        {
+          "name": "Search logs by action",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_auditor}}"
+              }
+            ],
+            "url": "{{audit_url}}/logs/search?action=LOGIN_FAILED",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 200"
+          }
+        },
+        {
+          "name": "Search logs by user + severity",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_admin}}"
+              }
+            ],
+            "url": "{{audit_url}}/logs/search?user=employee&severity=Warning",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 200"
+          }
+        },
+        {
+          "name": "Search logs by service + date range",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_analyst}}"
+              }
+            ],
+            "url": "{{audit_url}}/logs/search?service=Users&date_from=2026-01-01&date_to=2026-12-31",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 200"
+          }
+        },
+        {
+          "name": "Search logs by exact date",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.set('today', new Date().toISOString().slice(0,10));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_admin}}"
+              }
+            ],
+            "url": "{{audit_url}}/logs/search?date={{today}}",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 200"
+          }
+        },
+        {
+          "name": "Search logs - no criteria (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 400', function () { pm.response.to.have.status(400); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_admin}}"
+              }
+            ],
+            "url": "{{audit_url}}/logs/search",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 400"
+          }
+        },
+        {
+          "name": "Search logs - bad date format (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 400', function () { pm.response.to.have.status(400); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_admin}}"
+              }
+            ],
+            "url": "{{audit_url}}/logs/search?date=17/10/2026",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 400"
+          }
+        },
+        {
+          "name": "Search logs - Employee denied (403)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 403', function () { pm.response.to.have.status(403); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_employee}}"
+              }
+            ],
+            "url": "{{audit_url}}/logs/search?action=LOGIN",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 403"
+          }
+        },
+        {
+          "name": "Logs by user (Auditor)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_auditor}}"
+              }
+            ],
+            "url": "{{audit_url}}/logs/user/{{employee_id}}",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 200"
+          }
+        },
+        {
+          "name": "Logs by user - user with no logs",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_admin}}"
+              }
+            ],
+            "url": "{{audit_url}}/logs/user/987654",
+            "description": "**Student:** {{student_name}}\n\nReturns 200 with an empty list and count 0.\n\nExpected HTTP status: 200"
+          }
+        },
+        {
+          "name": "Logs by user - Analyst denied (403)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 403', function () { pm.response.to.have.status(403); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_analyst}}"
+              }
+            ],
+            "url": "{{audit_url}}/logs/user/{{employee_id}}",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 403"
+          }
+        },
+        {
+          "name": "Delete log - Analyst denied (403)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 403', function () { pm.response.to.have.status(403); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_analyst}}"
+              }
+            ],
+            "url": "{{audit_url}}/logs/{{log_id}}",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 403"
+          }
+        },
+        {
+          "name": "Delete log - Auditor denied (403)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 403', function () { pm.response.to.have.status(403); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_auditor}}"
+              }
+            ],
+            "url": "{{audit_url}}/logs/{{log_id}}",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 403"
+          }
+        },
+        {
+          "name": "Delete log (Admin)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_admin}}"
+              }
+            ],
+            "url": "{{audit_url}}/logs/{{log_id}}",
+            "description": "**Student:** {{student_name}}\n\nThe deletion itself is recorded as a LOG_DELETED log.\n\nExpected HTTP status: 200"
+          }
+        },
+        {
+          "name": "Delete log - not found (404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 404', function () { pm.response.to.have.status(404); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_admin}}"
+              }
+            ],
+            "url": "{{audit_url}}/logs/{{log_id}}",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 404"
+          }
+        }
+      ]
+    },
+    {
+      "name": "8. Notifications and Alerts (5008)",
+      "item": [
+        {
+          "name": "Create notification - Incident Assignment",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 201', function () { pm.response.to.have.status(201); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });",
+                  "if (pm.response.code < 300) { pm.collectionVariables.set('notification_id', pm.response.json().data.notification_id); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_admin}}"
+              }
+            ],
+            "url": "{{notifications_url}}/notifications",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 201",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user_id\": \"{{analyst_id}}\",\n  \"title\": \"New incident assigned\",\n  \"message\": \"Incident #12 (phishing) has been assigned to you.\",\n  \"notification_type\": \"Incident Assignment\",\n  \"severity\": \"High\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Create notification - Threat Alert",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 201', function () { pm.response.to.have.status(201); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_admin}}"
+              }
+            ],
+            "url": "{{notifications_url}}/notifications",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 201",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user_id\": \"{{analyst_id}}\",\n  \"title\": \"Malicious IP observed\",\n  \"message\": \"185.220.101.4 matched a threat indicator.\",\n  \"notification_type\": \"Threat Alert\",\n  \"severity\": \"Critical\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Create notification - Vulnerability Alert",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 201', function () { pm.response.to.have.status(201); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_admin}}"
+              }
+            ],
+            "url": "{{notifications_url}}/notifications",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 201",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user_id\": \"{{employee_id}}\",\n  \"title\": \"Patch required\",\n  \"message\": \"Your workstation is affected by CVE-2024-3400.\",\n  \"notification_type\": \"Vulnerability Alert\",\n  \"severity\": \"Medium\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Create notification via service key",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 201', function () { pm.response.to.have.status(201); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-Service-Key",
+                "value": "{{service_key}}"
+              }
+            ],
+            "url": "{{notifications_url}}/notifications",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 201",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user_id\": \"{{employee_id}}\",\n  \"title\": \"Security awareness\",\n  \"message\": \"Remember to report suspicious emails.\",\n  \"notification_type\": \"Security Alert\",\n  \"severity\": \"Low\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Create notification - unknown user (404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 404', function () { pm.response.to.have.status(404); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_admin}}"
+              }
+            ],
+            "url": "{{notifications_url}}/notifications",
+            "description": "**Student:** {{student_name}}\n\nThe Notification service asks the Users service (API call) whether the user exists.\n\nExpected HTTP status: 404",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user_id\": 999999,\n  \"title\": \"Nobody\",\n  \"message\": \"x\",\n  \"notification_type\": \"Security Alert\",\n  \"severity\": \"Low\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Create notification - invalid type (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 400', function () { pm.response.to.have.status(400); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_admin}}"
+              }
+            ],
+            "url": "{{notifications_url}}/notifications",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 400",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user_id\": \"{{analyst_id}}\",\n  \"title\": \"Bad type\",\n  \"message\": \"x\",\n  \"notification_type\": \"Spam\",\n  \"severity\": \"Low\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Create notification - Analyst denied (403)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 403', function () { pm.response.to.have.status(403); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_analyst}}"
+              }
+            ],
+            "url": "{{notifications_url}}/notifications",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 403",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user_id\": \"{{analyst_id}}\",\n  \"title\": \"Self\",\n  \"message\": \"x\",\n  \"notification_type\": \"Security Alert\",\n  \"severity\": \"Low\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Get my notifications (Analyst)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_analyst}}"
+              }
+            ],
+            "url": "{{notifications_url}}/notifications/user/{{analyst_id}}",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 200"
+          }
+        },
+        {
+          "name": "Get my unread notifications (Employee)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_employee}}"
+              }
+            ],
+            "url": "{{notifications_url}}/notifications/user/{{employee_id}}?status=Unread",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 200"
+          }
+        },
+        {
+          "name": "Get user notifications (Auditor)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_auditor}}"
+              }
+            ],
+            "url": "{{notifications_url}}/notifications/user/{{analyst_id}}",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 200"
+          }
+        },
+        {
+          "name": "Get user notifications - empty result",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_admin}}"
+              }
+            ],
+            "url": "{{notifications_url}}/notifications/user/{{new_analyst_id}}?status=Read",
+            "description": "**Student:** {{student_name}}\n\nThe new analyst has never read a notification, so the list is empty (count 0, HTTP 200).\n\nExpected HTTP status: 200"
+          }
+        },
+        {
+          "name": "Get another user's notifications - Employee denied (403)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 403', function () { pm.response.to.have.status(403); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_employee}}"
+              }
+            ],
+            "url": "{{notifications_url}}/notifications/user/{{analyst_id}}",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 403"
+          }
+        },
+        {
+          "name": "Get user notifications - user not found (404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 404', function () { pm.response.to.have.status(404); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_admin}}"
+              }
+            ],
+            "url": "{{notifications_url}}/notifications/user/999999",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 404"
+          }
+        },
+        {
+          "name": "Get specific notification (owner)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_analyst}}"
+              }
+            ],
+            "url": "{{notifications_url}}/notifications/{{notification_id}}",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 200"
+          }
+        },
+        {
+          "name": "Get specific notification - not owner (403)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 403', function () { pm.response.to.have.status(403); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_employee}}"
+              }
+            ],
+            "url": "{{notifications_url}}/notifications/{{notification_id}}",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 403"
+          }
+        },
+        {
+          "name": "Get specific notification - not found (404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 404', function () { pm.response.to.have.status(404); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_admin}}"
+              }
+            ],
+            "url": "{{notifications_url}}/notifications/999999",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 404"
+          }
+        },
+        {
+          "name": "Mark as read - Auditor denied (403)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 403', function () { pm.response.to.have.status(403); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_auditor}}"
+              }
+            ],
+            "url": "{{notifications_url}}/notifications/{{notification_id}}/read",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 403"
+          }
+        },
+        {
+          "name": "Mark as read - not owner (403)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 403', function () { pm.response.to.have.status(403); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_employee}}"
+              }
+            ],
+            "url": "{{notifications_url}}/notifications/{{notification_id}}/read",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 403"
+          }
+        },
+        {
+          "name": "Mark as read (owner)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_analyst}}"
+              }
+            ],
+            "url": "{{notifications_url}}/notifications/{{notification_id}}/read",
+            "description": "**Student:** {{student_name}}\n\nstatus Unread -> Read and read_at is set.\n\nExpected HTTP status: 200"
+          }
+        },
+        {
+          "name": "Mark as read - already read",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_analyst}}"
+              }
+            ],
+            "url": "{{notifications_url}}/notifications/{{notification_id}}/read",
+            "description": "**Student:** {{student_name}}\n\nIdempotent: returns 200 and keeps the original read_at.\n\nExpected HTTP status: 200"
+          }
+        },
+        {
+          "name": "Search notifications by type + severity (Auditor)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_auditor}}"
+              }
+            ],
+            "url": "{{notifications_url}}/notifications/search?type=Threat Alert&severity=Critical",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 200"
+          }
+        },
+        {
+          "name": "Search notifications by user + status (Admin)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_admin}}"
+              }
+            ],
+            "url": "{{notifications_url}}/notifications/search?user_id={{analyst_id}}&status=Read",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 200"
+          }
+        },
+        {
+          "name": "Search own notifications (Analyst)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_analyst}}"
+              }
+            ],
+            "url": "{{notifications_url}}/notifications/search?status=Unread",
+            "description": "**Student:** {{student_name}}\n\nAnalysts are automatically restricted to their own notifications.\n\nExpected HTTP status: 200"
+          }
+        },
+        {
+          "name": "Search other user's notifications - Analyst denied (403)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 403', function () { pm.response.to.have.status(403); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_analyst}}"
+              }
+            ],
+            "url": "{{notifications_url}}/notifications/search?user_id={{employee_id}}",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 403"
+          }
+        },
+        {
+          "name": "Search notifications - invalid status (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 400', function () { pm.response.to.have.status(400); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_admin}}"
+              }
+            ],
+            "url": "{{notifications_url}}/notifications/search?status=Maybe",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 400"
+          }
+        },
+        {
+          "name": "Search notifications - Employee denied (403)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 403', function () { pm.response.to.have.status(403); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_employee}}"
+              }
+            ],
+            "url": "{{notifications_url}}/notifications/search",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 403"
+          }
+        },
+        {
+          "name": "Delete notification - Analyst denied (403)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 403', function () { pm.response.to.have.status(403); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_analyst}}"
+              }
+            ],
+            "url": "{{notifications_url}}/notifications/{{notification_id}}",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 403"
+          }
+        },
+        {
+          "name": "Delete notification (Admin)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_admin}}"
+              }
+            ],
+            "url": "{{notifications_url}}/notifications/{{notification_id}}",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 200"
+          }
+        },
+        {
+          "name": "Delete notification - not found (404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 404', function () { pm.response.to.have.status(404); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_admin}}"
+              }
+            ],
+            "url": "{{notifications_url}}/notifications/{{notification_id}}",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 404"
+          }
+        }
+      ]
+    },
+    {
+      "name": "9. Logout / token revocation",
+      "item": [
+        {
+          "name": "Logout (Employee2) - revokes the token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_employee2}}"
+              }
+            ],
+            "url": "{{users_url}}/users/logout",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 200"
+          }
+        },
+        {
+          "name": "Use revoked token (401)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 401', function () { pm.response.to.have.status(401); });",
+                  "pm.test('Response has a status field', function () { pm.expect(pm.response.json()).to.have.property('status'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_employee2}}"
+              }
+            ],
+            "url": "{{users_url}}/users/employee2",
+            "description": "**Student:** {{student_name}}\n\n\n\nExpected HTTP status: 401"
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "users_url",
+      "value": "http://127.0.0.1:5001"
+    },
+    {
+      "key": "audit_url",
+      "value": "http://127.0.0.1:5005"
+    },
+    {
+      "key": "notifications_url",
+      "value": "http://127.0.0.1:5008"
+    },
+    {
+      "key": "student_name",
+      "value": "<Your Full Name>"
+    },
+    {
+      "key": "service_key",
+      "value": "PASTE_SERVICE_API_KEY_FROM_.env"
+    },
+    {
+      "key": "token_admin",
+      "value": ""
+    },
+    {
+      "key": "token_analyst",
+      "value": ""
+    },
+    {
+      "key": "token_employee",
+      "value": ""
+    },
+    {
+      "key": "token_employee2",
+      "value": ""
+    },
+    {
+      "key": "token_auditor",
+      "value": ""
+    },
+    {
+      "key": "admin_id",
+      "value": ""
+    },
+    {
+      "key": "analyst_id",
+      "value": ""
+    },
+    {
+      "key": "employee_id",
+      "value": ""
+    },
+    {
+      "key": "employee2_id",
+      "value": ""
+    },
+    {
+      "key": "auditor_id",
+      "value": ""
+    },
+    {
+      "key": "new_user_id",
+      "value": ""
+    },
+    {
+      "key": "new_username",
+      "value": ""
+    },
+    {
+      "key": "new_analyst_id",
+      "value": ""
+    },
+    {
+      "key": "log_id",
+      "value": ""
+    },
+    {
+      "key": "notification_id",
+      "value": ""
+    },
+    {
+      "key": "rand",
+      "value": ""
+    },
+    {
+      "key": "today",
+      "value": ""
+    }
+  ]
+}
