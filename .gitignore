@@ -1,0 +1,12 @@
+# secrets and runtime data - never commit
+.env
+certs/
+database/*.db
+database/*.db-wal
+database/*.db-shm
+backups/
+logs/
+__pycache__/
+*.pyc
+.venv/
+venv/
