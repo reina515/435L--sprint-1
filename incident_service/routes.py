@@ -10,13 +10,16 @@ Endpoints
   PUT    /incidents/{id}/status   next lifecycle step      (Admin | Analyst: assigned)   D2: only Admin closes
   POST   /incidents/{id}/notes    add investigation note   (Admin | Analyst: assigned)
 
-TODO (fill in when done):
-  Audit logs written: ...
-  Notifications sent: ...
-  Calls to other services: Users (GET /internal/users/{id}), Audit (POST /logs),
-  Notifications (POST /notifications), Assets (GET /internal/assets/{id}, once B adds it).
+Audit logs written: INCIDENT_CREATED, INCIDENT_ASSIGNED, INCIDENT_STATUS_CHANGED,
+  INVALID_STATUS_TRANSITION (Warning), INCIDENT_NOTE_ADDED. Denied requests are logged as
+  UNAUTHORIZED_ACCESS / UNAUTHENTICATED_ACCESS by shared/auth.py.
+Notifications sent: "Incident Assignment" to the assigned analyst; "Security Alert" to every
+  administrator when a Critical incident is reported.
+Calls to other services: Users (GET /internal/users/{id} to check the analyst), Audit (POST /logs),
+  Notifications (POST /notifications). Assets: checked directly in the shared database until the
+  Asset service exposes an internal endpoint.
+
 """
-from warnings import filters
 
 from flask import Blueprint, g, request
 
@@ -232,16 +235,44 @@ def update_incident_status(incident_id):
 
     :return: 200 with previous_status and new status | 400 invalid transition | 403 | 404
     """
-    # TODO 1  parse id; body checks (STATUS_FIELDS); validate_choice(status, "status", Incident.STATUSES)
-    # TODO 2  incident must exist -> 404; OWN scope (an analyst must be the assigned one) -> deny
-    # TODO 3  if not incident.can_move_to(new): log_event(... severity="Warning") and
-    #         bad_request("Invalid status transition from X to Y. Next allowed status: Z")
-    # TODO 4  D2: Resolved -> Closed only by an Admin -> deny(...) for anyone else
-    # TODO 5  Optional: "Under Investigation" requires an assigned analyst
-    # TODO 6  repo.update_status(id, old, new) -> False means changed meanwhile -> conflict(...)
-    # TODO 7  log_event(action="INCIDENT_STATUS_CHANGED", ...)
-    # TODO 8  success(<message>, <incident dict>, previous_status=..., new_status=...)
-    raise NotImplementedError
+    incident_id = parse_positive_int(incident_id, "id")
+    data = require_json_object(request.get_json(silent=True))
+    reject_unknown_fields(data, STATUS_FIELDS)
+    require_fields(data, STATUS_FIELDS)
+    new_status = validate_choice(data["status"], "status", Incident.STATUSES)
+
+    incident = repo.get_by_id(incident_id)
+    if incident is None:
+        return not_found(f"Incident with id {incident_id} not found")
+    if not owns_or_all(_owner_id(incident)):
+        return deny("incidents:status", reason=f"tried to change the status of incident #{incident_id}, "
+                                                f"which is not assigned to them")
+
+    me = g.current_user
+    old_status = incident.status
+    if not incident.can_move_to(new_status):
+        log_event(user_id=me["user_id"], action="INVALID_STATUS_TRANSITION",
+                  description=f"'{me['username']}' tried to move incident #{incident_id} "
+                              f"from {old_status} to {new_status}",
+                  severity="Warning")
+        return bad_request(f"Invalid status transition from {old_status} to {new_status}. "
+                           f"Next allowed status: {incident.next_status() or 'none (incident is closed)'}")
+    if new_status == "Closed" and me["role"] != ADMIN:   # D2: only administrators close incidents
+        return deny("incidents:status", reason=f"tried to close incident #{incident_id}; "
+                                                f"only administrators may close incidents")
+    if new_status == "Under Investigation" and incident.assigned_analyst_id is None:
+        return bad_request("Assign the incident to a Security Analyst before starting the investigation")
+
+    if not repo.update_status(incident_id, old_status, new_status):
+        return conflict("The incident status was changed by another request, reload and try again")
+    log_event(user_id=me["user_id"], action="INCIDENT_STATUS_CHANGED",
+              description=f"'{me['username']}' moved incident #{incident_id} "
+                          f"from {old_status} to {new_status}",
+              severity="Information")
+    return success(f"Incident status updated from {old_status} to {new_status}",
+                   repo.get_by_id(incident_id).to_dict(),
+                   previous_status=old_status, new_status=new_status)
+
 
 
 # =====================================================================
@@ -257,11 +288,28 @@ def add_investigation_note(incident_id):
 
     :return: 201 note + the incident's notes | 403 | 404
     """
-    # TODO 1  parse id; body checks (NOTE_FIELDS); clean_text(content, ..., multiline=True)
-    # TODO 2  incident must exist -> 404; OWN scope (analyst must be assigned) -> deny
-    # TODO 3  Decide: notes on a Closed incident? (e.g. 409)
-    # TODO 4  repo.add_note(id, <caller id>, content)
-    # TODO 5  log_event(action="INCIDENT_NOTE_ADDED", ...)
-    # TODO 6  success("Investigation note added successfully", {...}, 201) - include the note and
-    #         the updated incident so the screenshot shows the link between them
-    raise NotImplementedError
+    incident_id = parse_positive_int(incident_id, "id")
+    data = require_json_object(request.get_json(silent=True))
+    reject_unknown_fields(data, NOTE_FIELDS)
+    require_fields(data, NOTE_FIELDS)
+    content = clean_text(data["content"], "content", 1, 2000, multiline=True)
+
+    incident = repo.get_by_id(incident_id)
+    if incident is None:
+        return not_found(f"Incident with id {incident_id} not found")
+    if not owns_or_all(_owner_id(incident)):
+        return deny("incidents:add_note", reason=f"tried to add a note to incident #{incident_id}, "
+                                                  f"which is not assigned to them")
+    if incident.status == "Closed":
+        return conflict(f"Incident #{incident_id} is closed; notes can no longer be added")
+
+    me = g.current_user
+    note_id = repo.add_note(incident_id, me["user_id"], content)
+    log_event(user_id=me["user_id"], action="INCIDENT_NOTE_ADDED",
+              description=f"'{me['username']}' added note #{note_id} to incident #{incident_id}",
+              severity="Information")
+    updated = repo.get_by_id(incident_id)
+    note = next(n for n in updated.notes if n.note_id == note_id)
+    return success("Investigation note added successfully",
+                   {"note": note.to_dict(), "incident": updated.to_dict()}, 201)
+
