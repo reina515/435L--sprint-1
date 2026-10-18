@@ -74,7 +74,8 @@ def create_incident():
 
     Body (JSON): title, description, category, severity, asset_id
 
-    :return: 201 and the created incident
+    :return: 201 and the created incident | 403 role not allowed | 404 asset not found
+    :rtype: tuple[flask.Response, int]
     :raises ValidationError: empty body, missing/unknown field, invalid value (400)
     """
     data = require_json_object(request.get_json(silent=True))
@@ -118,9 +119,12 @@ def create_incident():
 def list_incidents():
     """All incidents with their status and assigned analyst, newest first.
 
-    Query: status, severity (optional filters), limit, offset
+    Query: status, severity (optional filters), limit, offset.
+    Analysts only see incidents assigned to them and employees only the ones they reported (D1).
 
     :return: 200 with data (list), count and total
+    :rtype: tuple[flask.Response, int]
+    :raises ValidationError: unknown query parameter or invalid filter value (400)
     """
     unknown = sorted(set(request.args) - set(LIST_PARAMS))
     if unknown:
@@ -158,6 +162,8 @@ def get_incident(incident_id):
     :param incident_id: from the URL; must be a positive integer (else 400)
     :type incident_id: str
     :return: 200 incident | 403 not yours (OWN scope) | 404 not found
+    :rtype: tuple[flask.Response, int]
+    :raises ValidationError: incident_id is not a positive integer (400)
     """
     incident_id = parse_positive_int(incident_id, "id")
     incident = repo.get_by_id(incident_id)
@@ -183,7 +189,12 @@ def assign_incident(incident_id):
 
     Body (JSON): analyst_id
 
-    :return: 200 updated incident | 400 not an analyst | 404 incident/user missing | 503 Users down
+    :param incident_id: from the URL; must be a positive integer (else 400)
+    :type incident_id: str
+    :return: 200 updated incident | 400 not an analyst | 404 incident/user missing |
+        409 incident closed | 503 Users service down
+    :rtype: tuple[flask.Response, int]
+    :raises ValidationError: invalid id, empty body, missing/unknown field (400)
     """
     incident_id = parse_positive_int(incident_id, "id")
     data = require_json_object(request.get_json(silent=True))
@@ -231,9 +242,15 @@ def assign_incident(incident_id):
 def update_incident_status(incident_id):
     """Move an incident one step: Open -> Under Investigation -> Mitigated -> Resolved -> Closed.
 
-    Body (JSON): status
+    Body (JSON): status. Only the assigned analyst (or an admin) may change it, one step at a time;
+    only an admin may close (D2); "Under Investigation" needs an assigned analyst.
 
-    :return: 200 with previous_status and new status | 400 invalid transition | 403 | 404
+    :param incident_id: from the URL; must be a positive integer (else 400)
+    :type incident_id: str
+    :return: 200 with previous_status and new_status | 400 invalid transition | 403 | 404 |
+        409 changed by another request
+    :rtype: tuple[flask.Response, int]
+    :raises ValidationError: invalid id, empty body, unknown status value (400)
     """
     incident_id = parse_positive_int(incident_id, "id")
     data = require_json_object(request.get_json(silent=True))
@@ -286,7 +303,11 @@ def add_investigation_note(incident_id):
 
     Body (JSON): content
 
-    :return: 201 note + the incident's notes | 403 | 404
+    :param incident_id: from the URL; must be a positive integer (else 400)
+    :type incident_id: str
+    :return: 201 note + the incident with all its notes | 403 not assigned | 404 | 409 incident closed
+    :rtype: tuple[flask.Response, int]
+    :raises ValidationError: invalid id, empty body, empty content (400)
     """
     incident_id = parse_positive_int(incident_id, "id")
     data = require_json_object(request.get_json(silent=True))

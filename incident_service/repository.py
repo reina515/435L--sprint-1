@@ -19,6 +19,18 @@ class IncidentRepository:
     def create(self, title, description, category, severity, reporter_id, asset_id):
         """Insert a new incident with status 'Open'.
 
+        :param title: short title of the incident
+        :type title: str
+        :param description: what happened
+        :type description: str
+        :param category: one of INCIDENT_CATEGORIES
+        :type category: str
+        :param severity: Low, Medium, High or Critical
+        :type severity: str
+        :param reporter_id: user id of the person reporting it (the logged-in user)
+        :type reporter_id: int
+        :param asset_id: id of the affected asset
+        :type asset_id: int
         :return: the new incident_id (cursor.lastrowid)
         :rtype: int
         """
@@ -57,7 +69,9 @@ class IncidentRepository:
         :param filters: may contain reporter_id, assigned_analyst_id, status, severity
         :type filters: dict
         :param limit: page size
+        :type limit: int
         :param offset: rows to skip
+        :type offset: int
         :return: (incidents, total number of matches before limit/offset)
         :rtype: tuple[list[Incident], int]
         """
@@ -79,8 +93,12 @@ class IncidentRepository:
         
 
     def asset_exists(self, asset_id):
-        """TEMPORARY check until Member B exposes GET /internal/assets/{id}.
+        """Check that an asset exists (temporary, until the Asset service exposes
+        GET /internal/assets/{id}).
 
+        :param asset_id: id of the asset
+        :type asset_id: int
+        :return: True if the asset is in the database
         :rtype: bool
         """
         conn = get_db()
@@ -91,7 +109,13 @@ class IncidentRepository:
         return row
 
     def assign(self, incident_id, analyst_id):
-        """Set assigned_analyst_id on one incident."""
+        """Set assigned_analyst_id on one incident.
+
+        :param incident_id: id of the incident
+        :type incident_id: int
+        :param analyst_id: user id of the Security Analyst
+        :type analyst_id: int
+        """
         conn = get_db()
         try:
             conn.execute("UPDATE incidents SET assigned_analyst_id = ? WHERE incident_id = ?", (analyst_id, incident_id))
@@ -105,6 +129,12 @@ class IncidentRepository:
         Put ``AND status = ?`` (old_status) in the WHERE: if two requests arrive together,
         only the first one changes the row.
 
+        :param incident_id: id of the incident
+        :type incident_id: int
+        :param old_status: the status the incident had when it was read
+        :type old_status: str
+        :param new_status: the next status in the lifecycle
+        :type new_status: str
         :return: True if the row changed, False if someone changed it first
         :rtype: bool
         """
@@ -123,6 +153,12 @@ class IncidentRepository:
     def add_note(self, incident_id, analyst_id, content):
         """Insert an investigation note linked to one incident (FK incident_id).
 
+        :param incident_id: id of the incident the note belongs to
+        :type incident_id: int
+        :param analyst_id: user id of the person writing the note
+        :type analyst_id: int
+        :param content: the note text
+        :type content: str
         :return: the new note_id
         :rtype: int
         """
@@ -141,6 +177,9 @@ class IncidentRepository:
     def get_notes(self, incident_id):
         """All notes of one incident, oldest first.
 
+        :param incident_id: id of the incident
+        :type incident_id: int
+        :return: the incident's notes (empty list if there are none)
         :rtype: list[InvestigationNote]
         """
         conn = get_db()

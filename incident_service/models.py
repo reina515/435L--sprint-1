@@ -1,9 +1,6 @@
 """
 Incident domain models (Incident Management Service).
 Implemented by: Hayam Itani
-
-each class wraps one table row, keeps its own rules (encapsulation:
-the lifecycle lives in Incident, never in the routes) and exposes to_dict().
 """
 
 
@@ -15,6 +12,7 @@ class InvestigationNote:
     """
 
     def __init__(self, row):
+        """Constructor method"""
         self.note_id = row["note_id"]
         self.incident_id = row["incident_id"]
         self.analyst_id = row["analyst_id"]
@@ -55,6 +53,7 @@ class Incident:
     }
    
     def __init__(self, row, notes=None):
+        """Constructor method"""
         self.incident_id = row["incident_id"]
         self.title = row["title"]
         self.description = row["description"]
