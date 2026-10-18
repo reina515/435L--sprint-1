@@ -104,6 +104,9 @@ NOTIFICATION_STATUSES = ("Unread", "Read")
 SERVICES = ("Users", "Assets", "Incidents", "Threat Intelligence", "Audit Logging",
             "Reports", "Vulnerabilities", "Notifications", "Playbooks")
 
+SEVERITIES = ("Low", "Medium", "High", "Critical")
+INCIDENT_CATEGORIES = ("Malware", "Phishing", "Unauthorized Access", "Data Leakage", "Denial of Service", "Account Compromise", "Other")
+
 
 def require_json_object(data):
     """Reject empty bodies, non-JSON bodies and JSON that is not an object."""
