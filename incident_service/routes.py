@@ -182,16 +182,41 @@ def assign_incident(incident_id):
 
     :return: 200 updated incident | 400 not an analyst | 404 incident/user missing | 503 Users down
     """
-    # TODO 1  parse id; body checks (ASSIGN_FIELDS); parse_positive_int(analyst_id)
-    # TODO 2  incident must exist -> 404. Decide what happens if it is Closed (e.g. 409 conflict)
-    # TODO 3  Inter-service call: get_user(analyst_id) inside try/except UserServiceUnavailable
-    #         -> 503 when the Users service is down, 404 when None
-    # TODO 4  role must be "Security Analyst" and account_status "Active" -> bad_request(...) otherwise
-    # TODO 5  repo.assign(...)
-    # TODO 6  log_event(action="INCIDENT_ASSIGNED", ...)   <- the brief requires this one
-    # TODO 7  notify(analyst_id, <title>, <message>, "Incident Assignment", incident.severity)
-    # TODO 8  success("Incident assigned successfully", <updated incident dict>)
-    raise NotImplementedError
+    incident_id = parse_positive_int(incident_id, "id")
+    data = require_json_object(request.get_json(silent=True))
+    reject_unknown_fields(data, ASSIGN_FIELDS)
+    require_fields(data, ASSIGN_FIELDS)
+    analyst_id = parse_positive_int(data["analyst_id"], "analyst_id")
+
+    incident = repo.get_by_id(incident_id)
+    if incident is None:
+        return not_found(f"Incident with id {incident_id} not found")
+    if incident.status == "Closed":
+        return conflict(f"Incident #{incident_id} is closed and cannot be reassigned")
+
+    try:
+        analyst = get_user(analyst_id)   # inter-service API call to the Users service
+    except UserServiceUnavailable:
+        return service_unavailable("Users service is unavailable, cannot verify the analyst")
+    if analyst is None:
+        return not_found(f"User with id {analyst_id} not found")
+    if analyst["role"] != ANALYST:
+        return bad_request(f"User '{analyst['username']}' is not a Security Analyst "
+                           f"(role: {analyst['role']})")
+    if analyst["account_status"] != "Active":
+        return bad_request(f"Analyst '{analyst['username']}' is {analyst['account_status'].lower()}")
+
+    repo.assign(incident_id, analyst_id)
+    me = g.current_user
+    log_event(user_id=me["user_id"], action="INCIDENT_ASSIGNED",
+              description=f"Administrator '{me['username']}' assigned incident #{incident_id} "
+                          f"to analyst '{analyst['username']}'",
+              severity="Information")
+    notify(analyst_id, f"Incident #{incident_id} assigned to you",
+           f"'{incident.title}' ({incident.severity}) was assigned to you by {me['username']}.",
+           "Incident Assignment", incident.severity)
+    return success("Incident assigned successfully", repo.get_by_id(incident_id).to_dict())
+
 
 
 # =====================================================================
