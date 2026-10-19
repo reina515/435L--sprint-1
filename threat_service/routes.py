@@ -222,7 +222,8 @@ def update_threat(threat_id):
     me = g.current_user
     log_event(user_id=me["user_id"], action="THREAT_UPDATED",
               description=f"'{me['username']}' updated threat #{threat_id}: "
-                          + ", ".join(f"{f} '{previous[f]}' -> '{v}'" for f, v in changed.items()),
+                            + ", ".join(f"{f} '{previous[f]}' to '{v}'" for f, v in changed.items()),
+
               severity="Information")
     return success("Threat indicator updated successfully", repo.get_by_id(threat_id).to_dict(),
                    previous={f: previous[f] for f in changed})
