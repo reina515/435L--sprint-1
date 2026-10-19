@@ -10,9 +10,13 @@ Endpoints
   PUT    /actions/{id}/status       update a step            (Admin, Analyst)
   DELETE /playbooks/{id}            delete (+ its steps)     (Admin)
 
-TODO (fill in when done):
-  Audit logs written: ...   (every step change is logged -> "preserve action execution history")
-  Notifications sent: ...   (e.g. to the user a step is assigned to)
+Audit logs written: PLAYBOOK_CREATED, RESPONSE_ACTION_ADDED, RESPONSE_ACTION_UPDATED (every step
+  change, so each action's execution history is kept), PLAYBOOK_DELETED (Warning). Denied requests
+  are logged as UNAUTHORIZED_ACCESS / UNAUTHENTICATED_ACCESS by shared/auth.py.
+Notifications sent: "System Notification" to the user a response step is assigned to.
+Calls to other services: Users (GET /internal/users/{id} to check the assigned user),
+  Audit (POST /logs), Notifications (POST /notifications).
+
 """
 import sqlite3
 
@@ -304,8 +308,16 @@ def delete_playbook(playbook_id):
     :rtype: tuple[flask.Response, int]
     :raises ValidationError: playbook_id is not a positive integer (400)
     """
-    # TODO 1  parse id; playbook must exist -> 404 (keep it to say how many steps were removed)
-    # TODO 2  repo.delete(id)
-    # TODO 3  log_event(action="PLAYBOOK_DELETED", severity="Warning", ...)
-    # TODO 4  success("Playbook deleted successfully", {"playbook_id": ..., "actions_deleted": ...})
-    raise NotImplementedError
+    playbook_id = parse_positive_int(playbook_id, "id")
+    playbook = repo.get_by_id(playbook_id)
+    if playbook is None:
+        return not_found(f"Playbook with id {playbook_id} not found")
+    repo.delete(playbook_id)
+    me = g.current_user
+    log_event(user_id=me["user_id"], action="PLAYBOOK_DELETED",
+              description=f"Administrator '{me['username']}' deleted playbook #{playbook_id} "
+                          f"'{playbook.name}' and its {len(playbook.actions)} response action(s)",
+              severity="Warning")
+    return success("Playbook deleted successfully",
+                   {"playbook_id": playbook_id, "actions_deleted": len(playbook.actions)})
+
