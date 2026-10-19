@@ -10,9 +10,12 @@ Endpoints
   PUT    /threats/{id}     update               (Admin)  - description, severity, source only
   DELETE /threats/{id}     delete               (Admin)
 
-TODO (fill in when done):
-  Audit logs written: ...
-  Notifications sent: ... (e.g. "Threat Alert" to analysts for High/Critical indicators)
+Audit logs written: THREAT_CREATED, THREAT_UPDATED, THREAT_DELETED (Warning). Denied requests are
+  logged as UNAUTHORIZED_ACCESS / UNAUTHENTICATED_ACCESS by shared/auth.py.
+Notifications sent: "Threat Alert" to every active analyst when a High or Critical indicator is added.
+Calls to other services: Users (GET /internal/users to find the analysts), Audit (POST /logs),
+  Notifications (POST /notifications).
+
 """
 import sqlite3
 
@@ -191,14 +194,42 @@ def update_threat(threat_id):
     :rtype: tuple[flask.Response, int]
     :raises ValidationError: invalid id, empty body, unknown or non-updatable field, invalid value (400)
     """
-    # TODO 1  parse id; threat must exist -> 404
-    # TODO 2  Body checks; threat_type / threat_value in the body -> bad_request(explain why)
-    # TODO 3  At least one of UPDATE_FIELDS present; validate each one
-    # TODO 4  Nothing actually changed? decide (200 "No changes" is fine)
-    # TODO 5  repo.update(id, changes)
-    # TODO 6  log_event(action="THREAT_UPDATED", ...) - list the changed fields
-    # TODO 7  success(..., previous=<old values>) so one screenshot shows before and after
-    raise NotImplementedError
+    threat_id = parse_positive_int(threat_id, "id")
+    threat = repo.get_by_id(threat_id)
+    if threat is None:
+        return not_found(f"Threat indicator with id {threat_id} not found")
+
+    data = require_json_object(request.get_json(silent=True))
+    if "threat_type" in data or "threat_value" in data:
+        return bad_request("threat_type and threat_value cannot be changed: they identify the indicator. "
+                           "Delete it and add a new one instead")
+    reject_unknown_fields(data, UPDATE_FIELDS)
+
+    changes = {}
+    if "description" in data:
+        changes["description"] = clean_text(data["description"], "description", 3, 1000, multiline=True)
+    if "severity" in data:
+        changes["severity"] = validate_choice(data["severity"], "severity", SEVERITIES)
+    if "source" in data:
+        changes["source"] = clean_text(data["source"], "source", 2, 100)
+
+    previous = {field: getattr(threat, field) for field in changes}
+    changed = {field: value for field, value in changes.items() if previous[field] != value}
+    if not changed:
+        return success("No changes: the values sent are the same as the stored ones", threat.to_dict())
+
+    repo.update(threat_id, changed)
+    me = g.current_user
+    log_event(user_id=me["user_id"], action="THREAT_UPDATED",
+              description=f"'{me['username']}' updated threat #{threat_id}: "
+                          + ", ".join(f"{f} '{previous[f]}' -> '{v}'" for f, v in changed.items()),
+              severity="Information")
+    return success("Threat indicator updated successfully", repo.get_by_id(threat_id).to_dict(),
+                   previous={f: previous[f] for f in changed})
+
+    
+
+
 
 
 # =====================================================================
@@ -217,8 +248,16 @@ def delete_threat(threat_id):
     :rtype: tuple[flask.Response, int]
     :raises ValidationError: threat_id is not a positive integer (400)
     """
-    # TODO 1  parse id; must exist -> 404
-    # TODO 2  repo.delete(id)
-    # TODO 3  log_event(action="THREAT_DELETED", severity="Warning", ...) - include type + value
-    # TODO 4  success("Threat indicator deleted successfully", {"threat_id": ...})
-    raise NotImplementedError
+    threat_id = parse_positive_int(threat_id, "id")
+    threat = repo.get_by_id(threat_id)
+    if threat is None:
+        return not_found(f"Threat indicator with id {threat_id} not found")
+    repo.delete(threat_id)
+    me = g.current_user
+    log_event(user_id=me["user_id"], action="THREAT_DELETED",
+                description=f"Administrator '{me['username']}' deleted {threat.threat_type} indicator "
+                            f"#{threat_id}: {threat.threat_value}",
+                severity="Warning")
+    return success("Threat indicator deleted successfully",
+                    {"threat_id": threat_id, "threat_type": threat.threat_type,
+                    "threat_value": threat.threat_value})
