@@ -165,14 +165,42 @@ def add_response_action(playbook_id):
     :rtype: tuple[flask.Response, int]
     :raises ValidationError: invalid id, empty body, missing/unknown field, step number not > 0 (400)
     """
-    # TODO 1  parse id; playbook must exist -> 404
-    # TODO 2  Body checks; clean_text description; parse_positive_int step_number (> 0)
-    # TODO 3  assigned_user_id given? -> _check_assignee(...)
-    # TODO 4  repo.add_action(...) in try/except sqlite3.IntegrityError -> conflict("Step N already exists ...")
-    # TODO 5  log_event(action="RESPONSE_ACTION_ADDED", ...)
-    # TODO 6  assigned? -> notify(assignee, ..., "System Notification", <playbook severity>)
-    # TODO 7  success(..., 201) - return the updated playbook so the ordering shows in the screenshot
-    raise NotImplementedError
+    playbook_id = parse_positive_int(playbook_id, "id")
+    playbook = repo.get_by_id(playbook_id)
+    if playbook is None:
+        return not_found(f"Playbook with id {playbook_id} not found")
+
+    data = require_json_object(request.get_json(silent=True))
+    reject_unknown_fields(data, ACTION_FIELDS)
+    require_fields(data, ["description", "step_number"])
+    description = clean_text(data["description"], "description", 3, 500, multiline=True)
+    step_number = parse_positive_int(data["step_number"], "step_number")
+
+    assigned_user_id = None
+    if data.get("assigned_user_id") is not None:
+        assigned_user_id = parse_positive_int(data["assigned_user_id"], "assigned_user_id")
+        _, error = _check_assignee(assigned_user_id)
+        if error:
+            return error
+
+    try:
+        action_id = repo.add_action(playbook_id, description, step_number, assigned_user_id)
+    except sqlite3.IntegrityError:   # UNIQUE (playbook_id, step_number)
+        return conflict(f"Step {step_number} already exists in playbook #{playbook_id}")
+
+    me = g.current_user
+    log_event(user_id=me["user_id"], action="RESPONSE_ACTION_ADDED",
+              description=f"'{me['username']}' added step {step_number} (action #{action_id}) "
+                          f"to playbook #{playbook_id}",
+              severity="Information")
+    if assigned_user_id:
+        notify(assigned_user_id, "Response step assigned to you",
+               f"Step {step_number} of playbook '{playbook.name}': {description}",
+               "System Notification", playbook.severity)
+    return success("Response action added successfully",
+                   {"action": repo.get_action(action_id).to_dict(),
+                    "playbook": repo.get_by_id(playbook_id).to_dict()}, 201)
+
 
 
 # =====================================================================
@@ -200,18 +228,65 @@ def update_action_status(action_id):
     :rtype: tuple[flask.Response, int]
     :raises ValidationError: invalid id, empty body, unknown field, invalid status or date (400)
     """
-    # TODO 1  parse id; action must exist -> 404; body checks; at least one field
-    # TODO 2  status given -> validate_choice(..., ResponseAction.STATUSES); action.can_move_to(...)
-    #         else bad_request("Invalid status transition from X to Y")
-    # TODO 3  Ordering: repo.unfinished_steps_before(...) not empty -> bad_request("Complete step(s) .. first")
-    # TODO 4  Completed action + any change -> bad_request / conflict ("Completed actions cannot change")
-    # TODO 5  assigned_user_id given -> _check_assignee(...)
-    # TODO 6  completion_date -> validate_date + the rules above; otherwise utc_now() when Completed
-    # TODO 7  repo.update_action(...)
-    # TODO 8  log_event(action="RESPONSE_ACTION_UPDATED", ...) with old -> new status (= execution history)
-    # TODO 9  new assignee -> notify(...)
-    # TODO 10 success(..., previous_status=...)
-    raise NotImplementedError
+    action_id = parse_positive_int(action_id, "id")
+    action = repo.get_action(action_id)
+    if action is None:
+        return not_found(f"Response action with id {action_id} not found")
+    data = require_json_object(request.get_json(silent=True))
+    reject_unknown_fields(data, ACTION_UPDATE_FIELDS)
+    if action.is_completed:
+        return conflict(f"Action #{action_id} is completed; completed actions cannot change")
+
+    new_status = action.status
+    if "status" in data:
+        new_status = validate_choice(data["status"], "status", ResponseAction.STATUSES)
+        if new_status != action.status:
+            if not action.can_move_to(new_status):
+                return bad_request(f"Invalid status transition from {action.status} to {new_status}. "
+                                   f"Next allowed status: {ResponseAction.NEXT_STATUS[action.status]}")
+            waiting = repo.unfinished_steps_before(action.playbook_id, action.step_number)
+            if waiting:
+                return bad_request(f"Complete step(s) {', '.join(map(str, waiting))} of this playbook first")
+
+    assigned_user_id = action.assigned_user_id
+    assignee = None
+    if "assigned_user_id" in data:
+        assigned_user_id = parse_positive_int(data["assigned_user_id"], "assigned_user_id")
+        assignee, error = _check_assignee(assigned_user_id)
+        if error:
+            return error
+
+    completed_at = None
+    if new_status == "Completed":
+        if data.get("completion_date"):
+            day = validate_date(data["completion_date"], "completion_date")
+            if day > utc_now()[:10]:
+                return bad_request("completion_date cannot be in the future")
+            if day < repo.get_by_id(action.playbook_id).created_at[:10]:
+                return bad_request("completion_date cannot be before the playbook was created")
+            completed_at = f"{day} 00:00:00"
+        else:
+            completed_at = utc_now()
+    elif data.get("completion_date"):
+        return bad_request("completion_date can only be set when the status becomes Completed")
+
+    if new_status == action.status and assigned_user_id == action.assigned_user_id:
+        return success("No changes: the values sent are the same as the stored ones", action.to_dict())
+
+    repo.update_action(action_id, new_status, assigned_user_id, completed_at)
+    me = g.current_user
+    log_event(user_id=me["user_id"], action="RESPONSE_ACTION_UPDATED",
+              description=f"'{me['username']}' updated step {action.step_number} (action #{action_id}) "
+                          f"of playbook #{action.playbook_id}: status {action.status} to {new_status}, "
+                          f"assigned user {action.assigned_user_id} to {assigned_user_id}",
+              severity="Information")
+    if assignee and assigned_user_id != action.assigned_user_id:
+        notify(assigned_user_id, "Response step assigned to you",
+               f"Step {action.step_number} of playbook #{action.playbook_id}: {action.description}",
+               "System Notification", "Medium")
+    return success("Response action updated successfully", repo.get_action(action_id).to_dict(),
+                   previous_status=action.status)
+
 
 
 # =====================================================================
