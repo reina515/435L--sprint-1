@@ -19,7 +19,7 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, ROOT)
 
 from shared.config import (AUDIT_SERVICE_URL, NOTIFICATION_SERVICE_URL,  # noqa: E402
-                           USER_SERVICE_URL, INCIDENT_SERVICE_URL, THREAT_SERVICE_URL)
+                           USER_SERVICE_URL, INCIDENT_SERVICE_URL, THREAT_SERVICE_URL, PLAYBOOK_SERVICE_URL)
 from shared.db import init_db                                             # noqa: E402
 
 SERVICES = [
@@ -28,6 +28,7 @@ SERVICES = [
     ("Notifications", os.path.join(ROOT, "notification_service", "app.py"), NOTIFICATION_SERVICE_URL),
     ("Incidents", os.path.join(ROOT, "incident_service", "app.py"), INCIDENT_SERVICE_URL),
     ("Threats", os.path.join(ROOT, "threat_service", "app.py"), THREAT_SERVICE_URL),
+    ("Playbooks", os.path.join(ROOT, "playbook_service", "app.py"), PLAYBOOK_SERVICE_URL),
 ]
 
 
