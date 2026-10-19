@@ -2,7 +2,7 @@
 Service 3 - Incident Management Service (port 5003)
 Implemented by: Hayam Itani   (also sent in the X-Student-Name response header)
 
-Endpoints
+Endpoints (all under /hayam-itani, the student's name, e.g. POST /hayam-itani/incidents)
   POST   /incidents               report an incident       (Admin, Employee)
   GET    /incidents               list                     (Admin, Auditor | D1: Analyst + Employee OWN)
   GET    /incidents/{id}          one, with notes          (Admin, Auditor: any | Analyst: assigned | Employee: reported)
@@ -36,7 +36,7 @@ from shared.user_client import UserServiceUnavailable, get_user, get_users_by_ro
 from incident_service.models import Incident
 from incident_service.repository import IncidentRepository
 
-bp = Blueprint("incidents", __name__)
+bp = Blueprint("incidents", __name__, url_prefix="/hayam-itani")
 repo = IncidentRepository()
 
 CREATE_FIELDS = ["title", "description", "category", "severity", "asset_id"]   # brief: title, description, category, severity, affected asset (reporter = the caller)

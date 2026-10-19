@@ -2,7 +2,7 @@
 Service 4 - Threat Intelligence Service (port 5004)
 Implemented by: Hayam Itani   (also sent in the X-Student-Name response header)
 
-Endpoints
+Endpoints (all under /hayam-itani, the student's name, e.g. POST /hayam-itani/threats)
   POST   /threats          add indicator        (Admin)
   GET    /threats          list                 (Admin, Analyst, Auditor)
   GET    /threats/search   search               (Admin, Analyst | D3: Auditor)
@@ -34,7 +34,7 @@ from threat_service.models import Threat
 from threat_service.repository import ThreatRepository
 from threat_service.validators import validate_threat_value
 
-bp = Blueprint("threats", __name__)
+bp = Blueprint("threats", __name__, url_prefix="/hayam-itani")
 repo = ThreatRepository()
 
 # Fields / parameters each endpoint accepts (anything else -> 400)

@@ -2,7 +2,7 @@
 Service 9 - Security Playbook and Response Automation Service (port 5009)
 Implemented by: Hayam Itani   (also sent in the X-Student-Name response header)
 
-Endpoints
+Endpoints (all under /hayam-itani, the student's name, e.g. POST /hayam-itani/playbooks)
   POST   /playbooks                 create playbook          (Admin)
   GET    /playbooks                 list                     (Admin, Analyst, Auditor)
   GET    /playbooks/{id}            one, with ordered steps  (Admin, Analyst, Auditor)
@@ -34,7 +34,7 @@ from shared.user_client import UserServiceUnavailable, get_user
 from playbook_service.models import Playbook, ResponseAction
 from playbook_service.repository import PlaybookRepository
 
-bp = Blueprint("playbooks", __name__)
+bp = Blueprint("playbooks", __name__, url_prefix="/hayam-itani")
 repo = PlaybookRepository()
 
 # Fields / parameters each endpoint accepts (anything else -> 400)
