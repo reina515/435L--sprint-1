@@ -126,12 +126,28 @@ def search_threats():
     :rtype: tuple[flask.Response, int]
     :raises ValidationError: unknown parameter or invalid value (400)
     """
-    # TODO 1  Unknown parameters -> ValidationError (copy the idea from search_notifications)
-    # TODO 2  Decide: at least one criterion required? (Reina's /logs/search says yes -> 400)
-    # TODO 3  Validate each: type/severity with validate_choice; value/source with clean_text
-    # TODO 4  repo.search(filters, limit, offset)
-    # TODO 5  success(...) with "No threat indicators match the search criteria" when empty
-    raise NotImplementedError
+    args = request.args
+    unknown = sorted(set(args) - set(SEARCH_PARAMS))
+    if unknown:
+        raise ValidationError(f"Unknown search parameter(s): {','.join(unknown)}",{"allowed_parameters": SEARCH_PARAMS})
+    filters = {}
+    if args.get("type"):
+        filters["threat_type"] = validate_choice(args["type"], "type", Threat.TYPES)
+    if args.get("severity"):
+        filters["severity"] = validate_choice(args["severity"], "severity", SEVERITIES)
+    if args.get("value"):
+        filters["threat_value"] = clean_text(args["value"], "value", 1, 255)
+    if args.get("source"):
+        filters["source"] = clean_text(args["source"], "source", 1, 100)
+    if not filters:
+        raise ValidationError("Give at least one search criterion: type, value, severity or source")
+    
+    limit, offset = pagination(args)
+    threats, total = repo.search(filters, limit, offset)
+    message = ("Threat indicators retrieved successfully" if threats
+               else "No threat indicators match the search criteria")
+    return success(message, [t.to_dict() for t in threats], count=len(threats), total=total,
+                   filters=filters)
 
 
 # =====================================================================
