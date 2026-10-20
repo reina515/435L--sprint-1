@@ -1,24 +1,5 @@
--- =====================================================================
--- Security Incident Detection and Response Management System
--- Shared SQLite database schema (all 9 services)
---
--- Tables used by my services: users, logs, notifications, revoked_tokens
--- The other tables are created here too so the whole team shares ONE
--- database with real foreign keys between the entities.
--- Enumerated values are enforced with CHECK constraints so invalid data
--- cannot enter the database even if an API forgets to validate it.
--- =====================================================================
-
 PRAGMA foreign_keys = ON;
 
--- ---------------------------------------------------------------------
--- 1. USERS  (Users and Identity Management Service)
---    * password_hash  : bcrypt hash, the plain password is never stored
---    * email_encrypted: Fernet (AES-128-CBC + HMAC) ciphertext of the email
---    * email_hash     : HMAC-SHA256 "blind index" of the lower-cased email,
---                       lets us check uniqueness / log in by email without
---                       storing the email in clear text
--- ---------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS users (
     user_id               INTEGER PRIMARY KEY AUTOINCREMENT,
     full_name             TEXT    NOT NULL,
@@ -38,16 +19,12 @@ CREATE TABLE IF NOT EXISTS users (
     last_login            TEXT
 );
 
--- Logged-out tokens (session/token management). Rows are removed after they expire.
 CREATE TABLE IF NOT EXISTS revoked_tokens (
     jti        TEXT PRIMARY KEY,
     user_id    INTEGER,
     expires_at TEXT NOT NULL
 );
 
--- ---------------------------------------------------------------------
--- 2. ASSETS
--- ---------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS assets (
     asset_id          INTEGER PRIMARY KEY AUTOINCREMENT,
     asset_name        TEXT NOT NULL,
@@ -63,9 +40,6 @@ CREATE TABLE IF NOT EXISTS assets (
     created_at        TEXT NOT NULL DEFAULT (strftime('%Y-%m-%d %H:%M:%S', 'now'))
 );
 
--- ---------------------------------------------------------------------
--- 3. INCIDENTS + INVESTIGATION NOTES
--- ---------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS incidents (
     incident_id         INTEGER PRIMARY KEY AUTOINCREMENT,
     title               TEXT NOT NULL,
@@ -89,9 +63,6 @@ CREATE TABLE IF NOT EXISTS investigation_notes (
     created_at  TEXT NOT NULL DEFAULT (strftime('%Y-%m-%d %H:%M:%S', 'now'))
 );
 
--- ---------------------------------------------------------------------
--- 4. THREATS  (type + value must be unique)
--- ---------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS threats (
     threat_id    INTEGER PRIMARY KEY AUTOINCREMENT,
     threat_type  TEXT NOT NULL CHECK (threat_type IN ('IP Address', 'Domain', 'File Hash',
@@ -104,17 +75,6 @@ CREATE TABLE IF NOT EXISTS threats (
     UNIQUE (threat_type, threat_value)
 );
 
--- ---------------------------------------------------------------------
--- 5. LOGS  (Security Audit Logging Service)
---    * user_id          : FK to users. Set to NULL automatically if the user
---                         is deleted, so the log itself survives.
---    * original_user_id : the user id at creation time. Never changes, so
---                         "logs by user" still works after the user is deleted.
---    * actor_username   : username snapshot at creation time.
---    * description      : stored ENCRYPTED (Fernet).
---    * integrity_hash   : HMAC-SHA256 of the original values. Any manual edit
---                         of the row in the .db file is detected on read.
--- ---------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS logs (
     log_id           INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id          INTEGER REFERENCES users(user_id) ON DELETE SET NULL,
@@ -131,9 +91,6 @@ CREATE TABLE IF NOT EXISTS logs (
 CREATE INDEX IF NOT EXISTS idx_logs_original_user ON logs(original_user_id);
 CREATE INDEX IF NOT EXISTS idx_logs_timestamp     ON logs(timestamp);
 
--- Audit logs must not be modified after creation.
--- The ONLY update allowed is the automatic "user_id -> NULL" done by the
--- foreign key when the user is deleted; every other UPDATE is aborted.
 CREATE TRIGGER IF NOT EXISTS logs_are_immutable
 BEFORE UPDATE ON logs
 WHEN NOT (
@@ -152,9 +109,6 @@ BEGIN
     SELECT RAISE(ABORT, 'Audit logs are immutable and cannot be modified');
 END;
 
--- ---------------------------------------------------------------------
--- 7. VULNERABILITIES
--- ---------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS vulnerabilities (
     vulnerability_id  INTEGER PRIMARY KEY AUTOINCREMENT,
     title             TEXT NOT NULL,
@@ -170,11 +124,6 @@ CREATE TABLE IF NOT EXISTS vulnerabilities (
     resolved_at       TEXT
 );
 
--- ---------------------------------------------------------------------
--- 8. NOTIFICATIONS  (Notification and Alert Management Service)
---    * message is stored ENCRYPTED (Fernet).
---    * notifications belong to a user and are deleted with that user.
--- ---------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS notifications (
     notification_id   INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id           INTEGER NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
@@ -191,9 +140,6 @@ CREATE TABLE IF NOT EXISTS notifications (
 
 CREATE INDEX IF NOT EXISTS idx_notifications_user ON notifications(user_id);
 
--- ---------------------------------------------------------------------
--- 9. PLAYBOOKS + RESPONSE ACTIONS
--- ---------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS playbooks (
     playbook_id       INTEGER PRIMARY KEY AUTOINCREMENT,
     name              TEXT NOT NULL,

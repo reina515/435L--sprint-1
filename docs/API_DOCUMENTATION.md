@@ -5,6 +5,9 @@
 ## Conventions
 
 * Base URLs: `http://127.0.0.1:5001`, `http://127.0.0.1:5005`, `http://127.0.0.1:5008`
+* **Every route starts with the student's full name: `/Reina_Hani`.** The paths below are written
+  without it for readability, e.g. `POST /users/login` is called as
+  `http://127.0.0.1:5001/Reina_Hani/users/login`.
 * Body format: JSON, header `Content-Type: application/json` (otherwise **415**). Max body size 16 KB (**413**).
 * Protected APIs need `Authorization: Bearer <token>` (token from `POST /users/login`).
 * Internal service calls use `X-Service-Key: <SERVICE_API_KEY>` instead of a token.

@@ -1,19 +1,3 @@
-"""
-Service 1 - Users and Identity Management Service (port 5001)
-Implemented by: <Your Full Name>   (also sent in the X-Student-Name response header)
-
-Endpoints
-  POST   /users/register        register a user           (anonymous, Regular Employee, Admin)
-  POST   /users/login           authenticate, get a token (anyone)
-  POST   /users/logout          revoke the current token  (any logged-in user)
-  GET    /users                 list all users            (Admin, Auditor)
-  GET    /users/{username}      get one user              (Admin, Auditor, Regular Employee: own only)
-  PUT    /users/{id}            update a user             (Admin, Regular Employee: own only)
-  DELETE /users/{id}            delete a user             (Admin)
-  GET    /roles                 roles and permissions     (Admin, Auditor)
-  GET    /internal/users/{id}   used by other services    (X-Service-Key only)
-  GET    /internal/users        used by other services    (X-Service-Key only)
-"""
 import sqlite3
 
 from flask import Blueprint, g, request
@@ -37,22 +21,18 @@ bp = Blueprint("users", __name__)
 repo = UserRepository()
 
 REGISTER_REQUIRED = ["full_name", "username", "email", "password", "department", "role"]
-REGISTER_OPTIONAL = ["account_status"]          # admin only
+REGISTER_OPTIONAL = ["account_status"]
 UPDATE_SELF_FIELDS = ["full_name", "email", "department"]
 UPDATE_ADMIN_FIELDS = UPDATE_SELF_FIELDS + ["role", "account_status"]
 
 
-# =====================================================================
-# 1. User Registration - POST /users/register
-#    Student: <Your Full Name>
-# =====================================================================
+# POST /users/register creates a new account after validating everything, only admins can create privileged roles
 @bp.route("/users/register", methods=["POST"])
 def register():
-    caller, error = get_optional_user()      # anonymous visitors may register
+    caller, error = get_optional_user()
     if error:
         return error
     if caller and caller["role"] not in (ADMIN, EMPLOYEE):
-        # Analysts and Auditors have no user-management access
         return deny("users:register", caller)
 
     data = require_json_object(request.get_json(silent=True))
@@ -67,7 +47,6 @@ def register():
     role = validate_choice(data["role"], "role", ROLES)
     is_admin = caller is not None and caller["role"] == ADMIN
 
-    # Only an authenticated administrator may create privileged accounts or set a status
     if role != EMPLOYEE and not is_admin:
         return deny("users:register", caller,
                     f"tried to register a '{role}' account; only administrators may assign this role")
@@ -77,7 +56,6 @@ def register():
             return deny("users:register", caller, "tried to set account_status during registration")
         account_status = validate_choice(data["account_status"], "account_status", ACCOUNT_STATUSES)
 
-    # Duplicate checks (the UNIQUE constraints in the database are the final safety net)
     if repo.get_by_username(username):
         return conflict(f"Username '{username}' is already taken")
     if repo.email_taken(email):
@@ -86,7 +64,7 @@ def register():
     try:
         new_id = repo.create(full_name, username, email, PasswordHasher.hash(data["password"]),
                              department, role, account_status)
-    except sqlite3.IntegrityError:           # two requests racing for the same username/email
+    except sqlite3.IntegrityError:
         return conflict("Username or email already exists")
 
     actor = caller["user_id"] if caller else new_id
@@ -104,10 +82,7 @@ def register():
     return success("User registered successfully", repo.get_by_id(new_id).to_dict(), 201)
 
 
-# =====================================================================
-# 2. User Login - POST /users/login
-#    Student: <Your Full Name>
-# =====================================================================
+# POST /users/login checks the username or email and the password and gives a token
 @bp.route("/users/login", methods=["POST"])
 def login():
     data = require_json_object(request.get_json(silent=True))
@@ -122,7 +97,7 @@ def login():
     user = repo.get_by_email(identifier) if "@" in identifier else repo.get_by_username(identifier)
 
     if user is None:
-        PasswordHasher.verify(data["password"], DUMMY_PASSWORD_HASH)   # same response time
+        PasswordHasher.verify(data["password"], DUMMY_PASSWORD_HASH)
         log_event(user_id=None, action="LOGIN_FAILED",
                   description=f"Failed login: unknown username/email '{identifier[:60]}' "
                               f"from {request.remote_addr}", severity="Warning")
@@ -142,8 +117,6 @@ def login():
                    f"If this was not you, contact a security administrator.", "Security Alert", "High")
         return unauthorized("Invalid username/email or password")
 
-    # Inactive / suspended users cannot authenticate (checked after the password so
-    # the account status is not revealed to someone who does not know the password)
     if not user.is_active:
         log_event(user_id=user.user_id, action="LOGIN_BLOCKED",
                   description=f"Login refused for '{user.username}': account is {user.account_status}",
@@ -162,10 +135,7 @@ def login():
     })
 
 
-# =====================================================================
-# Logout - POST /users/logout   (token/session management)
-#    Student: <Your Full Name>
-# =====================================================================
+# POST /users/logout revokes the current token
 @bp.route("/users/logout", methods=["POST"])
 @require_permission("users:logout")
 def logout():
@@ -176,10 +146,7 @@ def logout():
     return success("Logged out successfully, the token can no longer be used")
 
 
-# =====================================================================
-# 5. Retrieve All Users - GET /users
-#    Student: <Your Full Name>
-# =====================================================================
+# GET /users returns every user, for admins and auditors
 @bp.route("/users", methods=["GET"])
 @require_permission("users:list")
 def get_all_users():
@@ -189,10 +156,7 @@ def get_all_users():
                    count=len(users), total=repo.count(), limit=limit, offset=offset)
 
 
-# =====================================================================
-# 6. Retrieve User By Username - GET /users/{username}
-#    Student: <Your Full Name>
-# =====================================================================
+# GET /users/{username} returns one user, employees can only look at themselves
 @bp.route("/users/<username>", methods=["GET"])
 @require_permission("users:view")
 def get_user_by_username(username):
@@ -205,10 +169,7 @@ def get_user_by_username(username):
     return success("User retrieved successfully", user.to_dict())
 
 
-# =====================================================================
-# 3. Update User Information - PUT /users/{id}
-#    Student: <Your Full Name>
-# =====================================================================
+# PUT /users/{id} updates name, email and department, and admins can also change role and status
 @bp.route("/users/<user_id>", methods=["PUT"])
 @require_permission("users:update")
 def update_user(user_id):
@@ -247,7 +208,6 @@ def update_user(user_id):
         return bad_request("Administrators cannot change their own role or account status "
                            "(prevents locking the platform out of its last administrator)")
 
-    # keep only real changes
     old = target.to_dict()
     changes = {k: v for k, v in changes.items() if old.get(k) != v}
     if not changes:
@@ -280,10 +240,7 @@ def update_user(user_id):
     return success("User updated successfully", repo.get_by_id(user_id).to_dict())
 
 
-# =====================================================================
-# 4. Delete User - DELETE /users/{id}
-#    Student: <Your Full Name>
-# =====================================================================
+# DELETE /users/{id} lets an admin delete an account but not their own
 @bp.route("/users/<user_id>", methods=["DELETE"])
 @require_permission("users:delete")
 def delete_user(user_id):
@@ -303,10 +260,7 @@ def delete_user(user_id):
                    {"user_id": user_id, "username": target.username})
 
 
-# =====================================================================
-# View roles and permissions - GET /roles
-#    Student: <Your Full Name>
-# =====================================================================
+# GET /roles shows the roles, statuses, password rules and permissions
 @bp.route("/roles", methods=["GET"])
 @require_permission("roles:view")
 def get_roles():
@@ -315,10 +269,7 @@ def get_roles():
                     "password_policy": PASSWORD_RULES, "permissions": permissions_by_role()})
 
 
-# =====================================================================
-# Internal endpoints for other services (service key required)
-#    Student: <Your Full Name>
-# =====================================================================
+# internal route so other services can check that a user exists
 @bp.route("/internal/users/<int:user_id>", methods=["GET"])
 @require_service_key
 def internal_get_user(user_id):
@@ -328,6 +279,7 @@ def internal_get_user(user_id):
     return success("User found", user.to_public_dict())
 
 
+# internal route that lists users by role or status for the other services
 @bp.route("/internal/users", methods=["GET"])
 @require_service_key
 def internal_list_users():

@@ -1,12 +1,3 @@
-"""
-Creates the .env file with freshly generated random secrets.
-
-    python setup_env.py              # create .env (refuses to overwrite)
-    python setup_env.py --force      # regenerate (WARNING: existing encrypted data becomes unreadable)
-
-Lab 2: "Generate a key and store it safely, outside the codebase".
-The .env file is listed in .gitignore so the secrets never reach GitHub.
-"""
 import os
 import secrets
 import sys
@@ -46,6 +37,7 @@ USE_HTTPS=false
 """
 
 
+# creates the .env file with random secret keys the first time
 def main():
     if os.path.exists(ENV_PATH) and "--force" not in sys.argv:
         print(".env already exists - nothing changed (use --force to regenerate the secrets).")

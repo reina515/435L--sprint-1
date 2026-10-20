@@ -1,20 +1,3 @@
-"""
-Service 8 - Notification and Alert Management Service (port 5008)
-Implemented by: <Your Full Name>   (also sent in the X-Student-Name response header)
-
-Endpoints
-  POST   /notifications                 create          (Admin, or another service with X-Service-Key)
-  GET    /notifications/user/{user_id}  user's list     (Admin, Auditor: any user | Analyst, Employee: own)
-  GET    /notifications/{id}            one             (Admin, Auditor: any | Analyst, Employee: own)
-  PUT    /notifications/{id}/read       mark as read    (Admin: any | Analyst, Employee: own)
-  GET    /notifications/search          filter          (Admin, Auditor: all | Analyst: own)
-  DELETE /notifications/{id}            delete          (Admin)
-
-Notifications are generated automatically for: account creation (welcome), role
-changes, account status changes, brute-force login alerts, and every Critical
-audit event (sent to all administrators). Other services (incidents, threats,
-vulnerabilities) use shared/notification_client.py for assignments and alerts.
-"""
 from flask import Blueprint, g, request
 
 from shared.audit_client import log_event
@@ -34,15 +17,12 @@ CREATE_FIELDS = ["user_id", "title", "message", "notification_type", "severity"]
 SEARCH_PARAMS = ["user", "user_id", "type", "notification_type", "severity", "status", "limit", "offset"]
 
 
+# who to put in the audit log, None when the call came from another service
 def _actor():
-    """user_id written in the audit log (None when another service is the caller)."""
     return None if g.get("is_service") else g.current_user["user_id"]
 
 
-# =====================================================================
-# 1. Create Notification - POST /notifications
-#    Student: <Your Full Name>
-# =====================================================================
+# POST /notifications creates a notification after asking the users service if the user exists
 @bp.route("/notifications", methods=["POST"])
 @require_permission("notifications:create", allow_service=True)
 def create_notification():
@@ -55,7 +35,6 @@ def create_notification():
     notification_type = validate_choice(data["notification_type"], "notification_type", NOTIFICATION_TYPES)
     severity = validate_choice(data["severity"], "severity", NOTIFICATION_SEVERITIES)
 
-    # Inter-service API call: ask the Users service whether the recipient exists
     try:
         recipient = get_user(user_id)
     except UserServiceUnavailable:
@@ -72,10 +51,7 @@ def create_notification():
     return success("Notification created successfully", repo.get_by_id(notification_id).to_dict(), 201)
 
 
-# =====================================================================
-# 2. Retrieve User Notifications - GET /notifications/user/{user_id}
-#    Student: <Your Full Name>
-# =====================================================================
+# GET /notifications/user/{user_id} lists a user's notifications with the unread count
 @bp.route("/notifications/user/<user_id>", methods=["GET"])
 @require_permission("notifications:by_user")
 def get_user_notifications(user_id):
@@ -94,17 +70,14 @@ def get_user_notifications(user_id):
             if get_user(user_id) is None:
                 return not_found(f"User with id {user_id} not found")
         except UserServiceUnavailable:
-            pass  # cannot tell, return the empty list
+            pass
     message = (f"Notifications for user {user_id} retrieved successfully" if notifications
                else f"User {user_id} has no notifications")
     return success(message, [n.to_dict() for n in notifications], user_id=user_id,
                    count=len(notifications), total=total, unread=repo.unread_count(user_id))
 
 
-# =====================================================================
-# 5. Search Notifications - GET /notifications/search?user_id=&type=&severity=&status=
-#    Student: <Your Full Name>
-# =====================================================================
+# GET /notifications/search filters notifications, analysts only see their own
 @bp.route("/notifications/search", methods=["GET"])
 @require_permission("notifications:search")
 def search_notifications():
@@ -125,7 +98,7 @@ def search_notifications():
     if args.get("status"):
         filters["status"] = validate_choice(args["status"], "status", NOTIFICATION_STATUSES)
 
-    if g.scope == OWN:   # analysts may only search their own notifications
+    if g.scope == OWN:
         own_id = g.current_user["user_id"]
         if filters.get("user_id", own_id) != own_id:
             return deny("notifications:search",
@@ -140,10 +113,7 @@ def search_notifications():
                    count=len(notifications), total=total, filters=filters)
 
 
-# =====================================================================
-# 3. Retrieve Specific Notification - GET /notifications/{id}
-#    Student: <Your Full Name>
-# =====================================================================
+# GET /notifications/{id} returns one notification if you are allowed to see it
 @bp.route("/notifications/<notification_id>", methods=["GET"])
 @require_permission("notifications:view")
 def get_notification(notification_id):
@@ -157,10 +127,7 @@ def get_notification(notification_id):
     return success("Notification retrieved successfully", notification.to_dict())
 
 
-# =====================================================================
-# 4. Mark Notification as Read - PUT /notifications/{id}/read
-#    Student: <Your Full Name>
-# =====================================================================
+# PUT /notifications/{id}/read marks a notification as read
 @bp.route("/notifications/<notification_id>/read", methods=["PUT"])
 @require_permission("notifications:mark_read")
 def mark_notification_read(notification_id):
@@ -184,10 +151,7 @@ def mark_notification_read(notification_id):
                    previous_status="Unread")
 
 
-# =====================================================================
-# 6. Delete Notification - DELETE /notifications/{id}
-#    Student: <Your Full Name>
-# =====================================================================
+# DELETE /notifications/{id} admins only
 @bp.route("/notifications/<notification_id>", methods=["DELETE"])
 @require_permission("notifications:delete")
 def delete_notification(notification_id):

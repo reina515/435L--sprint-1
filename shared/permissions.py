@@ -1,17 +1,3 @@
-"""
-Role-Based Access Control (RBAC) matrix - the single source of truth.
-
-Every protected route is decorated with @require_permission("<name>") and the
-decorator looks the permission up here.  The value says which roles may use it
-and with which scope:
-
-    ALL -> the role may act on any record
-    OWN -> the role may only act on its own records (own profile, own notifications)
-
-A role that is not listed for a permission is rejected with 403 and the attempt
-is written to the Security Audit Logging Service.
-"""
-
 ADMIN = "Security Administrator"
 ANALYST = "Security Analyst"
 EMPLOYEE = "Regular Employee"
@@ -21,8 +7,7 @@ ALL = "all"
 OWN = "own"
 
 PERMISSIONS = {
-    # ---------------- Service 1: Users and Identity Management ----------------
-    "users:register":      {ADMIN: ALL, EMPLOYEE: ALL},     # (also open to anonymous visitors)
+    "users:register":      {ADMIN: ALL, EMPLOYEE: ALL},
     "users:logout":        {ADMIN: ALL, ANALYST: ALL, EMPLOYEE: ALL, AUDITOR: ALL},
     "users:update":        {ADMIN: ALL, EMPLOYEE: OWN},
     "users:change_role":   {ADMIN: ALL},
@@ -32,7 +17,6 @@ PERMISSIONS = {
     "users:view":          {ADMIN: ALL, AUDITOR: ALL, EMPLOYEE: OWN},
     "roles:view":          {ADMIN: ALL, AUDITOR: ALL},
 
-    # ---------------- Service 5: Security Audit Logging ----------------
     "logs:create":         {ADMIN: ALL},
     "logs:list":           {ADMIN: ALL, AUDITOR: ALL},
     "logs:view":           {ADMIN: ALL, AUDITOR: ALL, ANALYST: ALL},
@@ -40,7 +24,6 @@ PERMISSIONS = {
     "logs:delete":         {ADMIN: ALL},
     "logs:by_user":        {ADMIN: ALL, AUDITOR: ALL},
 
-    # ---------------- Service 8: Notification and Alert Management ----------------
     "notifications:create":    {ADMIN: ALL},
     "notifications:by_user":   {ADMIN: ALL, AUDITOR: ALL, ANALYST: OWN, EMPLOYEE: OWN},
     "notifications:view":      {ADMIN: ALL, AUDITOR: ALL, ANALYST: OWN, EMPLOYEE: OWN},
@@ -50,13 +33,13 @@ PERMISSIONS = {
 }
 
 
+# looks up if a role can use a permission and if it is for all records or only its own
 def scope_for(role, permission):
-    """Return ALL, OWN, or None (= not allowed)."""
     return PERMISSIONS.get(permission, {}).get(role)
 
 
+# flips the permissions table so each role shows the list of things it can do
 def permissions_by_role():
-    """{role: {permission: scope}} - returned by GET /roles."""
     result = {role: {} for role in (ADMIN, ANALYST, EMPLOYEE, AUDITOR)}
     for permission, roles in PERMISSIONS.items():
         for role, scope in roles.items():

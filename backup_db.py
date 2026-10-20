@@ -1,13 +1,3 @@
-"""
-Database backup (Lab 2 item 8: "Backup Database Regularly").
-
-    python backup_db.py            # creates backups/security_YYYYMMDD_HHMMSS.db, keeps the last 10
-
-Uses SQLite's online backup API, so it is safe while the services are running.
-To automate it on Windows, create a Task Scheduler task that runs:
-    python "C:\\...\\sprint1\\backup_db.py"
-(on Linux/macOS: a cron job, e.g.  0 2 * * * python3 /path/sprint1/backup_db.py)
-"""
 import glob
 import os
 import sqlite3
@@ -16,12 +6,13 @@ from datetime import datetime
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-from shared.config import BACKUP_DIR, DATABASE_PATH       # noqa: E402
-from shared.db import restrict_file_permissions           # noqa: E402
+from shared.config import BACKUP_DIR, DATABASE_PATH
+from shared.db import restrict_file_permissions
 
 KEEP_LAST = 10
 
 
+# copies the database into the backups folder and keeps only the last 10 copies
 def backup():
     if not os.path.exists(DATABASE_PATH):
         print(f"No database found at {DATABASE_PATH}")

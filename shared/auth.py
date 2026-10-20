@@ -1,18 +1,3 @@
-"""
-Authentication (who are you?) and authorization (are you allowed?).
-
-Mechanism: JSON Web Tokens (JWT, HS256)
-  1. POST /users/login checks username/email + bcrypt password and returns a token
-     signed with JWT_SECRET. It contains user_id, username, role, a unique id (jti)
-     and an expiry time (exp).
-  2. The client sends it on every request:   Authorization: Bearer <token>
-  3. Every service verifies the signature and expiry, checks the token was not
-     revoked by logout, and RE-LOADS the user from the database so a deleted,
-     suspended or re-roled user is handled immediately (the role in the database
-     wins over the role written in the token).
-  4. The role is checked against the RBAC matrix in shared/permissions.py.
-     Rejections return 401/403 and are recorded in the audit log.
-"""
 import hmac
 import uuid
 from datetime import datetime, timedelta, timezone
@@ -29,7 +14,7 @@ from shared.permissions import OWN, scope_for
 from shared.service_client import SERVICE_KEY_HEADER
 
 
-# ---------------------------------------------------------------- tokens
+# makes a jwt for the user that expires after the time set in .env
 def create_token(user):
     now = datetime.now(timezone.utc)
     expires = now + timedelta(minutes=JWT_EXPIRES_MINUTES)
@@ -45,12 +30,13 @@ def create_token(user):
     return token, expires.strftime("%Y-%m-%d %H:%M:%S")
 
 
+# checks the token signature and expiry and gives back what is inside
 def decode_token(token):
-    # algorithms=[...] is pinned so a forged token using "none" is refused
     return jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM],
                       options={"require": ["exp", "sub", "jti"]})
 
 
+# on logout the token id is saved here so it cannot be used again
 def revoke_token(claims):
     expires = datetime.fromtimestamp(claims["exp"], tz=timezone.utc).strftime("%Y-%m-%d %H:%M:%S")
     conn = get_db()
@@ -63,6 +49,7 @@ def revoke_token(claims):
         conn.close()
 
 
+# was this token already logged out?
 def _is_revoked(jti):
     conn = get_db()
     try:
@@ -71,6 +58,7 @@ def _is_revoked(jti):
         conn.close()
 
 
+# reads the user again from the database so a deleted or suspended user is caught right away
 def _load_user(user_id):
     conn = get_db()
     try:
@@ -81,6 +69,7 @@ def _load_user(user_id):
         conn.close()
 
 
+# pulls the token out of the Authorization header
 def _bearer_token():
     header = request.headers.get("Authorization", "")
     if not header:
@@ -91,9 +80,8 @@ def _bearer_token():
     return parts[1]
 
 
-# ---------------------------------------------------------------- authentication
+# main login check for every protected route, gives back the user or an error
 def authenticate():
-    """Returns (user, None) on success or (None, error_response) on failure."""
     token = _bearer_token()
     if token is None:
         _log_auth_failure(None, "Missing Authorization header")
@@ -126,28 +114,28 @@ def authenticate():
     return user, None
 
 
+# every failed authentication gets written in the audit logs as a warning
 def _log_auth_failure(user_id, reason):
     log_event(user_id=user_id, action="UNAUTHENTICATED_ACCESS",
               description=f"{reason} on {request.method} {request.path} from {request.remote_addr}",
               severity="Warning")
 
 
+# for register, where you can be logged in or not
 def get_optional_user():
-    """For endpoints open to anonymous users (registration).
-    No header -> (None, None).  Header present -> must be valid."""
     if request.headers.get("Authorization") is None:
         return None, None
     return authenticate()
 
 
+# true only if the request carries the right service key
 def is_service_request():
     key = request.headers.get(SERVICE_KEY_HEADER)
     return bool(key) and hmac.compare_digest(key, SERVICE_API_KEY)
 
 
-# ---------------------------------------------------------------- authorization
+# refuses the request with 403 and saves the attempt in the audit logs
 def deny(permission, user=None, reason=None):
-    """Reject with 403 AND record the permission violation in the audit log."""
     user = user or g.get("current_user")
     text = reason or f"attempted {request.method} {request.path} without permission '{permission}'"
     log_event(user_id=user["user_id"] if user else None, action="UNAUTHORIZED_ACCESS",
@@ -157,14 +145,11 @@ def deny(permission, user=None, reason=None):
     return forbidden()
 
 
+# decorator i put on routes to check the token and the role before the route runs
 def require_permission(permission, allow_service=False):
-    """Decorator: authenticate the caller and check the RBAC matrix.
-
-    Sets g.current_user (dict) and g.scope ("all" / "own").
-    With allow_service=True, a trusted internal service (X-Service-Key) is also accepted;
-    then g.current_user is None and g.is_service is True.
-    """
+    # wraps the route function
     def decorator(view):
+        # this is what runs on each request, it checks the user and the permission then calls the route
         @wraps(view)
         def wrapper(*args, **kwargs):
             g.is_service = False
@@ -185,8 +170,9 @@ def require_permission(permission, allow_service=False):
     return decorator
 
 
+# decorator for internal routes that only my other services are allowed to call
 def require_service_key(view):
-    """Decorator for /internal/* endpoints: only other services may call them."""
+    # blocks the call with 403 if the service key is wrong
     @wraps(view)
     def wrapper(*args, **kwargs):
         if not is_service_request():
@@ -198,8 +184,8 @@ def require_service_key(view):
     return wrapper
 
 
+# checks if the user can see every record or if this record belongs to them
 def owns_or_all(owner_id):
-    """True if the caller's scope is ALL, or OWN and the record belongs to them."""
     if g.get("is_service") or g.scope != OWN:
         return True
     return g.current_user["user_id"] == owner_id
