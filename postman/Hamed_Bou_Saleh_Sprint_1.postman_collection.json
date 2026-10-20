@@ -1,0 +1,4972 @@
+{
+	"info": {
+		"_postman_id": "bc60e086-6750-4663-9a89-1c0ee3707308",
+		"name": "Hamed Bou Saleh Sprint 1",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "50866486",
+		"_collection_link": "https://go.postman.co/collection/50866486-bc60e086-6750-4663-9a89-1c0ee3707308?source=collection_link"
+	},
+	"item": [
+		{
+			"name": "Assets",
+			"item": [
+				{
+					"name": "Add asset",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"asset_name\": \"Web Server Test\",\n  \"asset_type\": \"Server\",\n  \"ip_address\": \"10.0.0.5\",\n  \"operating_system\": \"Ubuntu 22.04\",\n  \"department\": \"IT\",\n  \"owner_id\": 1,\n  \"location\": \"Datacenter A\",\n  \"criticality_level\": \"Low\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:5002/Hamed_Bou_Saleh/assets",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5002",
+							"path": [
+								"Hamed_Bou_Saleh",
+								"assets"
+							]
+						},
+						"description": "Creates a new asset. Roles: Administrator. Success 201. Errors: 400 invalid input, 401 no token, 403 role not allowed, 404 owner not found. Implemented by Hamed Bou Saleh."
+					},
+					"response": [
+						{
+							"name": "Add asset",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"asset_name\": \"Web Server Test\",\n  \"asset_type\": \"Server\",\n  \"ip_address\": \"10.0.0.5\",\n  \"operating_system\": \"Ubuntu 22.04\",\n  \"department\": \"IT\",\n  \"owner_id\": 1,\n  \"location\": \"Datacenter A\",\n  \"criticality_level\": \"Low\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:5002/Hamed_Bou_Saleh/assets",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "5002",
+									"path": [
+										"Hamed_Bou_Saleh",
+										"assets"
+									]
+								}
+							},
+							"status": "CREATED",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "server",
+									"value": "Werkzeug/3.1.9 Python/3.13.7"
+								},
+								{
+									"key": "date",
+									"value": "Mon, 19 Oct 2026 18:04:25 GMT"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "content-length",
+									"value": "329"
+								},
+								{
+									"key": "x-student-name",
+									"value": "<Your Full Name>"
+								},
+								{
+									"key": "x-service-name",
+									"value": "Asset Management Service"
+								},
+								{
+									"key": "x-content-type-options",
+									"value": "nosniff"
+								},
+								{
+									"key": "x-frame-options",
+									"value": "DENY"
+								},
+								{
+									"key": "cache-control",
+									"value": "no-store"
+								},
+								{
+									"key": "connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"status\": \"success\",\n  \"message\": \"Asset created successfully\",\n  \"data\": {\n    \"asset_id\": 1,\n    \"asset_name\": \"Web Server Test\",\n    \"asset_type\": \"Server\",\n    \"ip_address\": \"10.0.0.5\",\n    \"operating_system\": \"Ubuntu 22.04\",\n    \"owner_id\": 1,\n    \"department\": \"IT\",\n    \"location\": \"Datacenter A\",\n    \"criticality_level\": \"Low\",\n    \"status\": \"Active\",\n    \"created_at\": \"2026-10-19 18:04:25\"\n  }\n}"
+						},
+						{
+							"name": "Missing asset_name field",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"asset_type\": \"Server\",\n  \"ip_address\": \"999.1.1.1\",\n  \"operating_system\": \"Ubuntu 22.04\",\n  \"department\": \"IT\",\n  \"owner_id\": 1,\n  \"location\": \"Datacenter A\",\n  \"criticality_level\": \"Huge\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:5002/Hamed_Bou_Saleh/assets",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "5002",
+									"path": [
+										"Hamed_Bou_Saleh",
+										"assets"
+									]
+								}
+							},
+							"status": "BAD REQUEST",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "server",
+									"value": "Werkzeug/3.1.9 Python/3.13.7"
+								},
+								{
+									"key": "date",
+									"value": "Mon, 19 Oct 2026 18:04:37 GMT"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "content-length",
+									"value": "69"
+								},
+								{
+									"key": "x-student-name",
+									"value": "<Your Full Name>"
+								},
+								{
+									"key": "x-service-name",
+									"value": "Asset Management Service"
+								},
+								{
+									"key": "x-content-type-options",
+									"value": "nosniff"
+								},
+								{
+									"key": "x-frame-options",
+									"value": "DENY"
+								},
+								{
+									"key": "cache-control",
+									"value": "no-store"
+								},
+								{
+									"key": "connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"status\": \"error\",\n  \"message\": \"Missing required field(s): asset_name\"\n}"
+						},
+						{
+							"name": "Invalid criticality_level",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"asset_name\": \"Web Server 01\",\n  \"asset_type\": \"Server\",\n  \"ip_address\": \"10.0.0.5\",\n  \"operating_system\": \"Ubuntu 22.04\",\n  \"department\": \"IT\",\n  \"owner_id\": 1,\n  \"location\": \"Datacenter A\",\n  \"criticality_level\": \"Huge\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:5002/Hamed_Bou_Saleh/assets",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "5002",
+									"path": [
+										"Hamed_Bou_Saleh",
+										"assets"
+									]
+								}
+							},
+							"status": "BAD REQUEST",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "server",
+									"value": "Werkzeug/3.1.9 Python/3.13.7"
+								},
+								{
+									"key": "date",
+									"value": "Mon, 19 Oct 2026 18:04:46 GMT"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "content-length",
+									"value": "102"
+								},
+								{
+									"key": "x-student-name",
+									"value": "<Your Full Name>"
+								},
+								{
+									"key": "x-service-name",
+									"value": "Asset Management Service"
+								},
+								{
+									"key": "x-content-type-options",
+									"value": "nosniff"
+								},
+								{
+									"key": "x-frame-options",
+									"value": "DENY"
+								},
+								{
+									"key": "cache-control",
+									"value": "no-store"
+								},
+								{
+									"key": "connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"status\": \"error\",\n  \"message\": \"Invalid criticality_level. Allowed values: Low, Medium, High, Critical\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Get asset by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:5002/Hamed_Bou_Saleh/assets/2",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5002",
+							"path": [
+								"Hamed_Bou_Saleh",
+								"assets",
+								"2"
+							]
+						},
+						"description": "Returns one asset by id. Roles: Administrator, Analyst, Auditor. Success 200. Errors: 400 invalid id, 401, 403, 404 not found. Implemented by Hamed Bou Saleh."
+					},
+					"response": [
+						{
+							"name": "Get asset",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:5002/Hamed_Bou_Saleh/assets/1",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "5002",
+									"path": [
+										"Hamed_Bou_Saleh",
+										"assets",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "server",
+									"value": "Werkzeug/3.1.9 Python/3.13.7"
+								},
+								{
+									"key": "date",
+									"value": "Mon, 19 Oct 2026 18:06:47 GMT"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "content-length",
+									"value": "331"
+								},
+								{
+									"key": "x-student-name",
+									"value": "<Your Full Name>"
+								},
+								{
+									"key": "x-service-name",
+									"value": "Asset Management Service"
+								},
+								{
+									"key": "x-content-type-options",
+									"value": "nosniff"
+								},
+								{
+									"key": "x-frame-options",
+									"value": "DENY"
+								},
+								{
+									"key": "cache-control",
+									"value": "no-store"
+								},
+								{
+									"key": "connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"status\": \"success\",\n  \"message\": \"Asset retrieved successfully\",\n  \"data\": {\n    \"asset_id\": 1,\n    \"asset_name\": \"Web Server Test\",\n    \"asset_type\": \"Server\",\n    \"ip_address\": \"10.0.0.5\",\n    \"operating_system\": \"Ubuntu 22.04\",\n    \"owner_id\": 1,\n    \"department\": \"IT\",\n    \"location\": \"Datacenter A\",\n    \"criticality_level\": \"Low\",\n    \"status\": \"Active\",\n    \"created_at\": \"2026-10-19 18:04:25\"\n  }\n}"
+						},
+						{
+							"name": "Bad request",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:5002/Hamed_Bou_Saleh/assets/abc",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "5002",
+									"path": [
+										"Hamed_Bou_Saleh",
+										"assets",
+										"abc"
+									]
+								}
+							},
+							"status": "BAD REQUEST",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "server",
+									"value": "Werkzeug/3.1.9 Python/3.13.7"
+								},
+								{
+									"key": "date",
+									"value": "Mon, 19 Oct 2026 18:07:08 GMT"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "content-length",
+									"value": "69"
+								},
+								{
+									"key": "x-student-name",
+									"value": "<Your Full Name>"
+								},
+								{
+									"key": "x-service-name",
+									"value": "Asset Management Service"
+								},
+								{
+									"key": "x-content-type-options",
+									"value": "nosniff"
+								},
+								{
+									"key": "x-frame-options",
+									"value": "DENY"
+								},
+								{
+									"key": "cache-control",
+									"value": "no-store"
+								},
+								{
+									"key": "connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"status\": \"error\",\n  \"message\": \"'asset_id' must be a positive integer\"\n}"
+						},
+						{
+							"name": "Get asset failed by invalid id",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:5002/Hamed_Bou_Saleh/assets/99",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "5002",
+									"path": [
+										"Hamed_Bou_Saleh",
+										"assets",
+										"99"
+									]
+								}
+							},
+							"status": "NOT FOUND",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "server",
+									"value": "Werkzeug/3.1.9 Python/3.13.7"
+								},
+								{
+									"key": "date",
+									"value": "Mon, 19 Oct 2026 20:43:02 GMT"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "content-length",
+									"value": "58"
+								},
+								{
+									"key": "x-student-name",
+									"value": "<Your Full Name>"
+								},
+								{
+									"key": "x-service-name",
+									"value": "Asset Management Service"
+								},
+								{
+									"key": "x-content-type-options",
+									"value": "nosniff"
+								},
+								{
+									"key": "x-frame-options",
+									"value": "DENY"
+								},
+								{
+									"key": "cache-control",
+									"value": "no-store"
+								},
+								{
+									"key": "connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"status\": \"error\",\n  \"message\": \"Asset with id 99 not found\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Get all assets",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5002/Hamed_Bou_Saleh/assets",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5002",
+							"path": [
+								"Hamed_Bou_Saleh",
+								"assets"
+							]
+						},
+						"description": "Lists all assets with count and total. Roles: Administrator, Auditor. Success 200. Errors: 401, 403. Implemented by Hamed Bou Saleh."
+					},
+					"response": [
+						{
+							"name": "Get all assets pre update",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:5002/Hamed_Bou_Saleh/assets",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "5002",
+									"path": [
+										"Hamed_Bou_Saleh",
+										"assets"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "server",
+									"value": "Werkzeug/3.1.9 Python/3.13.7"
+								},
+								{
+									"key": "date",
+									"value": "Mon, 19 Oct 2026 18:08:40 GMT"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "content-length",
+									"value": "354"
+								},
+								{
+									"key": "x-student-name",
+									"value": "<Your Full Name>"
+								},
+								{
+									"key": "x-service-name",
+									"value": "Asset Management Service"
+								},
+								{
+									"key": "x-content-type-options",
+									"value": "nosniff"
+								},
+								{
+									"key": "x-frame-options",
+									"value": "DENY"
+								},
+								{
+									"key": "cache-control",
+									"value": "no-store"
+								},
+								{
+									"key": "connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"status\": \"success\",\n  \"message\": \"Assets retrieved successfully\",\n  \"data\": [\n    {\n      \"asset_id\": 1,\n      \"asset_name\": \"Web Server Test\",\n      \"asset_type\": \"Server\",\n      \"ip_address\": \"10.0.0.5\",\n      \"operating_system\": \"Ubuntu 22.04\",\n      \"owner_id\": 1,\n      \"department\": \"IT\",\n      \"location\": \"Datacenter A\",\n      \"criticality_level\": \"Low\",\n      \"status\": \"Active\",\n      \"created_at\": \"2026-10-19 18:04:25\"\n    }\n  ],\n  \"count\": 1,\n  \"total\": 1\n}"
+						},
+						{
+							"name": "Get all assets post update",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:5002/Hamed_Bou_Saleh/assets",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "5002",
+									"path": [
+										"Hamed_Bou_Saleh",
+										"assets"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "server",
+									"value": "Werkzeug/3.1.9 Python/3.13.7"
+								},
+								{
+									"key": "date",
+									"value": "Mon, 19 Oct 2026 20:49:24 GMT"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "content-length",
+									"value": "650"
+								},
+								{
+									"key": "x-student-name",
+									"value": "<Your Full Name>"
+								},
+								{
+									"key": "x-service-name",
+									"value": "Asset Management Service"
+								},
+								{
+									"key": "x-content-type-options",
+									"value": "nosniff"
+								},
+								{
+									"key": "x-frame-options",
+									"value": "DENY"
+								},
+								{
+									"key": "cache-control",
+									"value": "no-store"
+								},
+								{
+									"key": "connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"status\": \"success\",\n  \"message\": \"Assets retrieved successfully\",\n  \"data\": [\n    {\n      \"asset_id\": 2,\n      \"asset_name\": \"Another Web Server Updated by hamed\",\n      \"asset_type\": \"Server\",\n      \"ip_address\": \"10.0.0.5\",\n      \"operating_system\": \"Ubuntu 22.04\",\n      \"owner_id\": 1,\n      \"department\": \"IT\",\n      \"location\": \"Datacenter A\",\n      \"criticality_level\": \"Medium\",\n      \"status\": \"Under Maintenance\",\n      \"created_at\": \"2026-10-19 18:19:13\"\n    },\n    {\n      \"asset_id\": 3,\n      \"asset_name\": \"Web Server Test\",\n      \"asset_type\": \"Server\",\n      \"ip_address\": \"10.0.0.5\",\n      \"operating_system\": \"Ubuntu 22.04\",\n      \"owner_id\": 1,\n      \"department\": \"IT\",\n      \"location\": \"Datacenter A\",\n      \"criticality_level\": \"Low\",\n      \"status\": \"Active\",\n      \"created_at\": \"2026-10-19 18:19:16\"\n    }\n  ],\n  \"count\": 2,\n  \"total\": 2\n}"
+						}
+					]
+				},
+				{
+					"name": "Search assets",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:5002/Hamed_Bou_Saleh/assets/search?department=IT",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5002",
+							"path": [
+								"Hamed_Bou_Saleh",
+								"assets",
+								"search"
+							],
+							"query": [
+								{
+									"key": "department",
+									"value": "IT"
+								}
+							]
+						},
+						"description": "Searches assets by name, type, ip, department or criticality (filters combined with AND). Roles: Administrator, Analyst, Auditor. Success 200 (count 0 if nothing matches). Errors: 400 invalid filter or unknown parameter, 401, 403. Implemented by Hamed Bou Saleh."
+					},
+					"response": [
+						{
+							"name": "Search assets by department",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:5002/Hamed_Bou_Saleh/assets/search?department=IT",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "5002",
+									"path": [
+										"Hamed_Bou_Saleh",
+										"assets",
+										"search"
+									],
+									"query": [
+										{
+											"key": "department",
+											"value": "IT"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "server",
+									"value": "Werkzeug/3.1.9 Python/3.13.7"
+								},
+								{
+									"key": "date",
+									"value": "Mon, 19 Oct 2026 18:13:05 GMT"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "content-length",
+									"value": "384"
+								},
+								{
+									"key": "x-student-name",
+									"value": "<Your Full Name>"
+								},
+								{
+									"key": "x-service-name",
+									"value": "Asset Management Service"
+								},
+								{
+									"key": "x-content-type-options",
+									"value": "nosniff"
+								},
+								{
+									"key": "x-frame-options",
+									"value": "DENY"
+								},
+								{
+									"key": "cache-control",
+									"value": "no-store"
+								},
+								{
+									"key": "connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"status\": \"success\",\n  \"message\": \"Assets retrieved successfully\",\n  \"data\": [\n    {\n      \"asset_id\": 1,\n      \"asset_name\": \"Web Server Test\",\n      \"asset_type\": \"Server\",\n      \"ip_address\": \"10.0.0.5\",\n      \"operating_system\": \"Ubuntu 22.04\",\n      \"owner_id\": 1,\n      \"department\": \"IT\",\n      \"location\": \"Datacenter A\",\n      \"criticality_level\": \"Low\",\n      \"status\": \"Active\",\n      \"created_at\": \"2026-10-19 18:04:25\"\n    }\n  ],\n  \"count\": 1,\n  \"total\": 1,\n  \"filters\": {\n    \"department\": \"IT\"\n  }\n}"
+						},
+						{
+							"name": "Search asset by type",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:5002/Hamed_Bou_Saleh/assets/search?type=database",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "5002",
+									"path": [
+										"Hamed_Bou_Saleh",
+										"assets",
+										"search"
+									],
+									"query": [
+										{
+											"key": "type",
+											"value": "database"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "server",
+									"value": "Werkzeug/3.1.9 Python/3.13.7"
+								},
+								{
+									"key": "date",
+									"value": "Mon, 19 Oct 2026 18:13:38 GMT"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "content-length",
+									"value": "135"
+								},
+								{
+									"key": "x-student-name",
+									"value": "<Your Full Name>"
+								},
+								{
+									"key": "x-service-name",
+									"value": "Asset Management Service"
+								},
+								{
+									"key": "x-content-type-options",
+									"value": "nosniff"
+								},
+								{
+									"key": "x-frame-options",
+									"value": "DENY"
+								},
+								{
+									"key": "cache-control",
+									"value": "no-store"
+								},
+								{
+									"key": "connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"status\": \"success\",\n  \"message\": \"No assets match the search criteria\",\n  \"data\": [],\n  \"count\": 0,\n  \"total\": 0,\n  \"filters\": {\n    \"asset_type\": \"Database\"\n  }\n}"
+						},
+						{
+							"name": "Search assets by department",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:5002/Hamed_Bou_Saleh/assets/search?department=IT",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "5002",
+									"path": [
+										"Hamed_Bou_Saleh",
+										"assets",
+										"search"
+									],
+									"query": [
+										{
+											"key": "department",
+											"value": "IT"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "server",
+									"value": "Werkzeug/3.1.9 Python/3.13.7"
+								},
+								{
+									"key": "date",
+									"value": "Mon, 19 Oct 2026 20:51:05 GMT"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "content-length",
+									"value": "680"
+								},
+								{
+									"key": "x-student-name",
+									"value": "<Your Full Name>"
+								},
+								{
+									"key": "x-service-name",
+									"value": "Asset Management Service"
+								},
+								{
+									"key": "x-content-type-options",
+									"value": "nosniff"
+								},
+								{
+									"key": "x-frame-options",
+									"value": "DENY"
+								},
+								{
+									"key": "cache-control",
+									"value": "no-store"
+								},
+								{
+									"key": "connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"status\": \"success\",\n  \"message\": \"Assets retrieved successfully\",\n  \"data\": [\n    {\n      \"asset_id\": 2,\n      \"asset_name\": \"Another Web Server Updated by hamed\",\n      \"asset_type\": \"Server\",\n      \"ip_address\": \"10.0.0.5\",\n      \"operating_system\": \"Ubuntu 22.04\",\n      \"owner_id\": 1,\n      \"department\": \"IT\",\n      \"location\": \"Datacenter A\",\n      \"criticality_level\": \"Medium\",\n      \"status\": \"Under Maintenance\",\n      \"created_at\": \"2026-10-19 18:19:13\"\n    },\n    {\n      \"asset_id\": 3,\n      \"asset_name\": \"Web Server Test\",\n      \"asset_type\": \"Server\",\n      \"ip_address\": \"10.0.0.5\",\n      \"operating_system\": \"Ubuntu 22.04\",\n      \"owner_id\": 1,\n      \"department\": \"IT\",\n      \"location\": \"Datacenter A\",\n      \"criticality_level\": \"Low\",\n      \"status\": \"Active\",\n      \"created_at\": \"2026-10-19 18:19:16\"\n    }\n  ],\n  \"count\": 2,\n  \"total\": 2,\n  \"filters\": {\n    \"department\": \"IT\"\n  }\n}"
+						},
+						{
+							"name": "Search assets by name",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:5002/Hamed_Bou_Saleh/assets/search?name=Web Server Test",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "5002",
+									"path": [
+										"Hamed_Bou_Saleh",
+										"assets",
+										"search"
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "Web Server Test"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "server",
+									"value": "Werkzeug/3.1.9 Python/3.13.7"
+								},
+								{
+									"key": "date",
+									"value": "Tue, 20 Oct 2026 13:18:02 GMT"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "content-length",
+									"value": "397"
+								},
+								{
+									"key": "x-student-name",
+									"value": "<Your Full Name>"
+								},
+								{
+									"key": "x-service-name",
+									"value": "Asset Management Service"
+								},
+								{
+									"key": "x-content-type-options",
+									"value": "nosniff"
+								},
+								{
+									"key": "x-frame-options",
+									"value": "DENY"
+								},
+								{
+									"key": "cache-control",
+									"value": "no-store"
+								},
+								{
+									"key": "connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"status\": \"success\",\n  \"message\": \"Assets retrieved successfully\",\n  \"data\": [\n    {\n      \"asset_id\": 3,\n      \"asset_name\": \"Web Server Test\",\n      \"asset_type\": \"Server\",\n      \"ip_address\": \"10.0.0.5\",\n      \"operating_system\": \"Ubuntu 22.04\",\n      \"owner_id\": 1,\n      \"department\": \"IT\",\n      \"location\": \"Datacenter A\",\n      \"criticality_level\": \"Low\",\n      \"status\": \"Active\",\n      \"created_at\": \"2026-10-19 18:19:16\"\n    }\n  ],\n  \"count\": 1,\n  \"total\": 1,\n  \"filters\": {\n    \"asset_name\": \"Web Server Test\"\n  }\n}"
+						},
+						{
+							"name": "Search assets by ip address",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:5002/Hamed_Bou_Saleh/assets/search?ip=10.0.0.5",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "5002",
+									"path": [
+										"Hamed_Bou_Saleh",
+										"assets",
+										"search"
+									],
+									"query": [
+										{
+											"key": "ip",
+											"value": "10.0.0.5"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "server",
+									"value": "Werkzeug/3.1.9 Python/3.13.7"
+								},
+								{
+									"key": "date",
+									"value": "Tue, 20 Oct 2026 13:20:31 GMT"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "content-length",
+									"value": "686"
+								},
+								{
+									"key": "x-student-name",
+									"value": "<Your Full Name>"
+								},
+								{
+									"key": "x-service-name",
+									"value": "Asset Management Service"
+								},
+								{
+									"key": "x-content-type-options",
+									"value": "nosniff"
+								},
+								{
+									"key": "x-frame-options",
+									"value": "DENY"
+								},
+								{
+									"key": "cache-control",
+									"value": "no-store"
+								},
+								{
+									"key": "connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"status\": \"success\",\n  \"message\": \"Assets retrieved successfully\",\n  \"data\": [\n    {\n      \"asset_id\": 2,\n      \"asset_name\": \"Another Web Server Updated by hamed\",\n      \"asset_type\": \"Server\",\n      \"ip_address\": \"10.0.0.5\",\n      \"operating_system\": \"Ubuntu 22.04\",\n      \"owner_id\": 1,\n      \"department\": \"IT\",\n      \"location\": \"Datacenter A\",\n      \"criticality_level\": \"Medium\",\n      \"status\": \"Under Maintenance\",\n      \"created_at\": \"2026-10-19 18:19:13\"\n    },\n    {\n      \"asset_id\": 3,\n      \"asset_name\": \"Web Server Test\",\n      \"asset_type\": \"Server\",\n      \"ip_address\": \"10.0.0.5\",\n      \"operating_system\": \"Ubuntu 22.04\",\n      \"owner_id\": 1,\n      \"department\": \"IT\",\n      \"location\": \"Datacenter A\",\n      \"criticality_level\": \"Low\",\n      \"status\": \"Active\",\n      \"created_at\": \"2026-10-19 18:19:16\"\n    }\n  ],\n  \"count\": 2,\n  \"total\": 2,\n  \"filters\": {\n    \"ip_address\": \"10.0.0.5\"\n  }\n}"
+						},
+						{
+							"name": "Search assets by criticality",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:5002/Hamed_Bou_Saleh/assets/search?criticality=medium",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "5002",
+									"path": [
+										"Hamed_Bou_Saleh",
+										"assets",
+										"search"
+									],
+									"query": [
+										{
+											"key": "criticality",
+											"value": "medium"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "server",
+									"value": "Werkzeug/3.1.9 Python/3.13.7"
+								},
+								{
+									"key": "date",
+									"value": "Tue, 20 Oct 2026 13:28:23 GMT"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "content-length",
+									"value": "429"
+								},
+								{
+									"key": "x-student-name",
+									"value": "<Your Full Name>"
+								},
+								{
+									"key": "x-service-name",
+									"value": "Asset Management Service"
+								},
+								{
+									"key": "x-content-type-options",
+									"value": "nosniff"
+								},
+								{
+									"key": "x-frame-options",
+									"value": "DENY"
+								},
+								{
+									"key": "cache-control",
+									"value": "no-store"
+								},
+								{
+									"key": "connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"status\": \"success\",\n  \"message\": \"Assets retrieved successfully\",\n  \"data\": [\n    {\n      \"asset_id\": 2,\n      \"asset_name\": \"Another Web Server Updated by hamed\",\n      \"asset_type\": \"Server\",\n      \"ip_address\": \"10.0.0.5\",\n      \"operating_system\": \"Ubuntu 22.04\",\n      \"owner_id\": 1,\n      \"department\": \"IT\",\n      \"location\": \"Datacenter A\",\n      \"criticality_level\": \"Medium\",\n      \"status\": \"Under Maintenance\",\n      \"created_at\": \"2026-10-19 18:19:13\"\n    }\n  ],\n  \"count\": 1,\n  \"total\": 1,\n  \"filters\": {\n    \"criticality_level\": \"Medium\"\n  }\n}"
+						}
+					]
+				},
+				{
+					"name": "Update asset",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"status\":\"Gone\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:5002/Hamed_Bou_Saleh/assets/2",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5002",
+							"path": [
+								"Hamed_Bou_Saleh",
+								"assets",
+								"2"
+							]
+						},
+						"description": "Updates asset name, owner, department, criticality or status. Roles: Administrator. Success 200. Errors: 400 invalid or unknown field, 401, 403, 404. Implemented by Hamed Bou Saleh."
+					},
+					"response": [
+						{
+							"name": "Update asset invalid update",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{ \"status\":\"Gone\"}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:5002/Hamed_Bou_Saleh/assets/1",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "5002",
+									"path": [
+										"Hamed_Bou_Saleh",
+										"assets",
+										"1"
+									]
+								}
+							},
+							"status": "BAD REQUEST",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "server",
+									"value": "Werkzeug/3.1.9 Python/3.13.7"
+								},
+								{
+									"key": "date",
+									"value": "Mon, 19 Oct 2026 18:15:19 GMT"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "content-length",
+									"value": "99"
+								},
+								{
+									"key": "x-student-name",
+									"value": "<Your Full Name>"
+								},
+								{
+									"key": "x-service-name",
+									"value": "Asset Management Service"
+								},
+								{
+									"key": "x-content-type-options",
+									"value": "nosniff"
+								},
+								{
+									"key": "x-frame-options",
+									"value": "DENY"
+								},
+								{
+									"key": "cache-control",
+									"value": "no-store"
+								},
+								{
+									"key": "connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"status\": \"error\",\n  \"message\": \"Invalid status. Allowed values: Active, Inactive, Under Maintenance\"\n}"
+						},
+						{
+							"name": "Empty request for updating asset",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:5002/Hamed_Bou_Saleh/assets/1",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "5002",
+									"path": [
+										"Hamed_Bou_Saleh",
+										"assets",
+										"1"
+									]
+								}
+							},
+							"status": "BAD REQUEST",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "server",
+									"value": "Werkzeug/3.1.9 Python/3.13.7"
+								},
+								{
+									"key": "date",
+									"value": "Mon, 19 Oct 2026 18:15:57 GMT"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "content-length",
+									"value": "60"
+								},
+								{
+									"key": "x-student-name",
+									"value": "<Your Full Name>"
+								},
+								{
+									"key": "x-service-name",
+									"value": "Asset Management Service"
+								},
+								{
+									"key": "x-content-type-options",
+									"value": "nosniff"
+								},
+								{
+									"key": "x-frame-options",
+									"value": "DENY"
+								},
+								{
+									"key": "cache-control",
+									"value": "no-store"
+								},
+								{
+									"key": "connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"status\": \"error\",\n  \"message\": \"Request body cannot be empty\"\n}"
+						},
+						{
+							"name": "Update asset successful",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{ \"asset_name\": \"Another Web Server\", \"criticality_level\": \"Medium\", \"status\": \"Under Maintenance\" }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:5002/Hamed_Bou_Saleh/assets/1",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "5002",
+									"path": [
+										"Hamed_Bou_Saleh",
+										"assets",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "server",
+									"value": "Werkzeug/3.1.9 Python/3.13.7"
+								},
+								{
+									"key": "date",
+									"value": "Mon, 19 Oct 2026 18:16:56 GMT"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "content-length",
+									"value": "346"
+								},
+								{
+									"key": "x-student-name",
+									"value": "<Your Full Name>"
+								},
+								{
+									"key": "x-service-name",
+									"value": "Asset Management Service"
+								},
+								{
+									"key": "x-content-type-options",
+									"value": "nosniff"
+								},
+								{
+									"key": "x-frame-options",
+									"value": "DENY"
+								},
+								{
+									"key": "cache-control",
+									"value": "no-store"
+								},
+								{
+									"key": "connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"status\": \"success\",\n  \"message\": \"Asset updated successfully\",\n  \"data\": {\n    \"asset_id\": 1,\n    \"asset_name\": \"Another Web Server\",\n    \"asset_type\": \"Server\",\n    \"ip_address\": \"10.0.0.5\",\n    \"operating_system\": \"Ubuntu 22.04\",\n    \"owner_id\": 1,\n    \"department\": \"IT\",\n    \"location\": \"Datacenter A\",\n    \"criticality_level\": \"Medium\",\n    \"status\": \"Under Maintenance\",\n    \"created_at\": \"2026-10-19 18:04:25\"\n  }\n}"
+						},
+						{
+							"name": "Update asset successful",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{ \"asset_name\": \"Another Web Server Updated by hamed\", \"criticality_level\": \"Medium\", \"status\": \"Under Maintenance\" }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:5002/Hamed_Bou_Saleh/assets/2",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "5002",
+									"path": [
+										"Hamed_Bou_Saleh",
+										"assets",
+										"2"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "server",
+									"value": "Werkzeug/3.1.9 Python/3.13.7"
+								},
+								{
+									"key": "date",
+									"value": "Mon, 19 Oct 2026 20:49:02 GMT"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "content-length",
+									"value": "363"
+								},
+								{
+									"key": "x-student-name",
+									"value": "<Your Full Name>"
+								},
+								{
+									"key": "x-service-name",
+									"value": "Asset Management Service"
+								},
+								{
+									"key": "x-content-type-options",
+									"value": "nosniff"
+								},
+								{
+									"key": "x-frame-options",
+									"value": "DENY"
+								},
+								{
+									"key": "cache-control",
+									"value": "no-store"
+								},
+								{
+									"key": "connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"status\": \"success\",\n  \"message\": \"Asset updated successfully\",\n  \"data\": {\n    \"asset_id\": 2,\n    \"asset_name\": \"Another Web Server Updated by hamed\",\n    \"asset_type\": \"Server\",\n    \"ip_address\": \"10.0.0.5\",\n    \"operating_system\": \"Ubuntu 22.04\",\n    \"owner_id\": 1,\n    \"department\": \"IT\",\n    \"location\": \"Datacenter A\",\n    \"criticality_level\": \"Medium\",\n    \"status\": \"Under Maintenance\",\n    \"created_at\": \"2026-10-19 18:19:13\"\n  }\n}"
+						}
+					]
+				},
+				{
+					"name": "Delete Asset by Id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5002/Hamed_Bou_Saleh/assets/3",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5002",
+							"path": [
+								"Hamed_Bou_Saleh",
+								"assets",
+								"3"
+							]
+						},
+						"description": "Deletes an asset. Roles: Administrator. Success 200. Errors: 401, 403, 404, 409 asset is referenced by incidents or vulnerabilities. Implemented by Hamed Bou Saleh."
+					},
+					"response": [
+						{
+							"name": "Delete asset",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:5002/Hamed_Bou_Saleh/assets/3",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "5002",
+									"path": [
+										"Hamed_Bou_Saleh",
+										"assets",
+										"3"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "server",
+									"value": "Werkzeug/3.1.9 Python/3.13.7"
+								},
+								{
+									"key": "date",
+									"value": "Sun, 18 Oct 2026 10:56:58 GMT"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "content-length",
+									"value": "60"
+								},
+								{
+									"key": "x-student-name",
+									"value": "<Your Full Name>"
+								},
+								{
+									"key": "x-service-name",
+									"value": "Asset Management Service"
+								},
+								{
+									"key": "x-content-type-options",
+									"value": "nosniff"
+								},
+								{
+									"key": "x-frame-options",
+									"value": "DENY"
+								},
+								{
+									"key": "cache-control",
+									"value": "no-store"
+								},
+								{
+									"key": "connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"status\": \"success\",\n  \"message\": \"Asset deleted successfully\"\n}"
+						},
+						{
+							"name": "Deleting a nonexistent asset",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:5002/Hamed_Bou_Saleh/assets/99",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "5002",
+									"path": [
+										"Hamed_Bou_Saleh",
+										"assets",
+										"99"
+									]
+								}
+							},
+							"status": "NOT FOUND",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "server",
+									"value": "Werkzeug/3.1.9 Python/3.13.7"
+								},
+								{
+									"key": "date",
+									"value": "Mon, 19 Oct 2026 18:20:23 GMT"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "content-length",
+									"value": "58"
+								},
+								{
+									"key": "x-student-name",
+									"value": "<Your Full Name>"
+								},
+								{
+									"key": "x-service-name",
+									"value": "Asset Management Service"
+								},
+								{
+									"key": "x-content-type-options",
+									"value": "nosniff"
+								},
+								{
+									"key": "x-frame-options",
+									"value": "DENY"
+								},
+								{
+									"key": "cache-control",
+									"value": "no-store"
+								},
+								{
+									"key": "connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"status\": \"error\",\n  \"message\": \"Asset with id 99 not found\"\n}"
+						},
+						{
+							"name": "Failed delete asset invalid user",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:5002/Hamed_Bou_Saleh/assets/3",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "5002",
+									"path": [
+										"Hamed_Bou_Saleh",
+										"assets",
+										"3"
+									]
+								}
+							},
+							"status": "FORBIDDEN",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "server",
+									"value": "Werkzeug/3.1.9 Python/3.13.7"
+								},
+								{
+									"key": "date",
+									"value": "Mon, 19 Oct 2026 20:41:24 GMT"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "content-length",
+									"value": "87"
+								},
+								{
+									"key": "x-student-name",
+									"value": "<Your Full Name>"
+								},
+								{
+									"key": "x-service-name",
+									"value": "Asset Management Service"
+								},
+								{
+									"key": "x-content-type-options",
+									"value": "nosniff"
+								},
+								{
+									"key": "x-frame-options",
+									"value": "DENY"
+								},
+								{
+									"key": "cache-control",
+									"value": "no-store"
+								},
+								{
+									"key": "connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"status\": \"error\",\n  \"message\": \"User does not have permission to perform this operation\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Vulnerabilities",
+			"item": [
+				{
+					"name": "Create Vulnerability",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Log4Shell RCE 2\",\n  \"description\": \"Remote code execution in log4j\",\n  \"cve_id\": \"CVE-2021-44228\",\n  \"cvss_score\": 9.00,\n  \"severity\": \"low\",\n  \"asset_id\": 2,\n  \"discovery_source\": \"Nessus scan\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:5007/Hamed_Bou_Saleh/vulnerabilities",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5007",
+							"path": [
+								"Hamed_Bou_Saleh",
+								"vulnerabilities"
+							]
+						},
+						"description": "Creates a vulnerability linked to an existing asset, always starting as Open. Roles: Administrator. Success 201. Errors: 400 invalid CVE, CVSS or severity, 401, 403, 404 asset not found, 503 asset service unavailable. Implemented by Hamed Bou Saleh."
+					},
+					"response": [
+						{
+							"name": "Create Vulnerability",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"title\": \"Log4Shell RCE 2\",\n  \"description\": \"Remote code execution in log4j\",\n  \"cve_id\": \"CVE-2021-44228\",\n  \"cvss_score\": 9.00,\n  \"severity\": \"low\",\n  \"asset_id\": 2,\n  \"discovery_source\": \"Nessus scan\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:5007/Hamed_Bou_Saleh/vulnerabilities",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "5007",
+									"path": [
+										"Hamed_Bou_Saleh",
+										"vulnerabilities"
+									]
+								}
+							},
+							"status": "CREATED",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "server",
+									"value": "Werkzeug/3.1.9 Python/3.13.7"
+								},
+								{
+									"key": "date",
+									"value": "Mon, 19 Oct 2026 18:29:55 GMT"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "content-length",
+									"value": "347"
+								},
+								{
+									"key": "x-student-name",
+									"value": "<Your Full Name>"
+								},
+								{
+									"key": "x-service-name",
+									"value": "Vulnerability Management Service"
+								},
+								{
+									"key": "x-content-type-options",
+									"value": "nosniff"
+								},
+								{
+									"key": "x-frame-options",
+									"value": "DENY"
+								},
+								{
+									"key": "cache-control",
+									"value": "no-store"
+								},
+								{
+									"key": "connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"status\": \"success\",\n  \"message\": \"Vulnerability created successfully\",\n  \"data\": {\n    \"vulnerability_id\": 1,\n    \"title\": \"Log4Shell RCE 2\",\n    \"description\": \"Remote code execution in log4j\",\n    \"cve_id\": \"CVE-2021-44228\",\n    \"cvss_score\": 9,\n    \"severity\": \"Low\",\n    \"asset_id\": 2,\n    \"discovery_source\": \"Nessus scan\",\n    \"status\": \"Open\",\n    \"created_at\": \"2026-10-19 18:29:55\",\n    \"resolved_at\": null\n  }\n}"
+						},
+						{
+							"name": "Create vulnerability invalid CVE",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"title\": \"Log4Shell RCE\",\n  \"description\": \"Remote code execution in log4j\",\n  \"cve_id\": \"abc\",\n  \"cvss_score\": 10.0,\n  \"severity\": \"Critical\",\n  \"asset_id\": 2,\n  \"discovery_source\": \"Nessus scan\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:5007/Hamed_Bou_Saleh/vulnerabilities",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "5007",
+									"path": [
+										"Hamed_Bou_Saleh",
+										"vulnerabilities"
+									]
+								}
+							},
+							"status": "BAD REQUEST",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "server",
+									"value": "Werkzeug/3.1.9 Python/3.13.7"
+								},
+								{
+									"key": "date",
+									"value": "Mon, 19 Oct 2026 18:30:53 GMT"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "content-length",
+									"value": "112"
+								},
+								{
+									"key": "x-student-name",
+									"value": "<Your Full Name>"
+								},
+								{
+									"key": "x-service-name",
+									"value": "Vulnerability Management Service"
+								},
+								{
+									"key": "x-content-type-options",
+									"value": "nosniff"
+								},
+								{
+									"key": "x-frame-options",
+									"value": "DENY"
+								},
+								{
+									"key": "cache-control",
+									"value": "no-store"
+								},
+								{
+									"key": "connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"status\": \"error\",\n  \"message\": \"Invalid CVE identifier. Expected format: CVE-YYYY-NNNN (example: CVE-2021-44228)\"\n}"
+						},
+						{
+							"name": "Invalid cvss as string",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"title\": \"Log4Shell RCE\",\n  \"description\": \"Remote code execution in log4j\",\n  \"cve_id\": \"CVE-2021-44228\",\n  \"cvss_score\": \"9\",\n  \"severity\": \"Critical\",\n  \"asset_id\": 2,\n  \"discovery_source\": \"Nessus scan\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:5007/Hamed_Bou_Saleh/vulnerabilities",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "5007",
+									"path": [
+										"Hamed_Bou_Saleh",
+										"vulnerabilities"
+									]
+								}
+							},
+							"status": "BAD REQUEST",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "server",
+									"value": "Werkzeug/3.1.9 Python/3.13.7"
+								},
+								{
+									"key": "date",
+									"value": "Mon, 19 Oct 2026 18:31:41 GMT"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "content-length",
+									"value": "82"
+								},
+								{
+									"key": "x-student-name",
+									"value": "<Your Full Name>"
+								},
+								{
+									"key": "x-service-name",
+									"value": "Vulnerability Management Service"
+								},
+								{
+									"key": "x-content-type-options",
+									"value": "nosniff"
+								},
+								{
+									"key": "x-frame-options",
+									"value": "DENY"
+								},
+								{
+									"key": "cache-control",
+									"value": "no-store"
+								},
+								{
+									"key": "connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"status\": \"error\",\n  \"message\": \"'cvss_score' must be a number between 0.0 and 10.0\"\n}"
+						},
+						{
+							"name": "Create Vulnerability failed invalid user",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"title\": \"Log4Shell RCE 2\",\n  \"description\": \"Remote code execution in log4j\",\n  \"cve_id\": \"CVE-2021-44228\",\n  \"cvss_score\": 9.00,\n  \"severity\": \"low\",\n  \"asset_id\": 1,\n  \"discovery_source\": \"Nessus scan\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:5007/Hamed_Bou_Saleh/vulnerabilities",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "5007",
+									"path": [
+										"Hamed_Bou_Saleh",
+										"vulnerabilities"
+									]
+								}
+							},
+							"status": "FORBIDDEN",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "server",
+									"value": "Werkzeug/3.1.9 Python/3.13.7"
+								},
+								{
+									"key": "date",
+									"value": "Mon, 19 Oct 2026 20:44:20 GMT"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "content-length",
+									"value": "87"
+								},
+								{
+									"key": "x-student-name",
+									"value": "<Your Full Name>"
+								},
+								{
+									"key": "x-service-name",
+									"value": "Vulnerability Management Service"
+								},
+								{
+									"key": "x-content-type-options",
+									"value": "nosniff"
+								},
+								{
+									"key": "x-frame-options",
+									"value": "DENY"
+								},
+								{
+									"key": "cache-control",
+									"value": "no-store"
+								},
+								{
+									"key": "connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"status\": \"error\",\n  \"message\": \"User does not have permission to perform this operation\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Get all vulnerabilities",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5007/Hamed_Bou_Saleh/vulnerabilities",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5007",
+							"path": [
+								"Hamed_Bou_Saleh",
+								"vulnerabilities"
+							]
+						},
+						"description": "Lists all vulnerabilities. Roles: Administrator, Analyst, Auditor. Success 200. Errors: 401, 403. Implemented by Hamed Bou Saleh."
+					},
+					"response": [
+						{
+							"name": "Get all vulnerabilities pre update",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:5007/Hamed_Bou_Saleh/vulnerabilities",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "5007",
+									"path": [
+										"Hamed_Bou_Saleh",
+										"vulnerabilities"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "server",
+									"value": "Werkzeug/3.1.9 Python/3.13.7"
+								},
+								{
+									"key": "date",
+									"value": "Mon, 19 Oct 2026 18:32:39 GMT"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "content-length",
+									"value": "373"
+								},
+								{
+									"key": "x-student-name",
+									"value": "<Your Full Name>"
+								},
+								{
+									"key": "x-service-name",
+									"value": "Vulnerability Management Service"
+								},
+								{
+									"key": "x-content-type-options",
+									"value": "nosniff"
+								},
+								{
+									"key": "x-frame-options",
+									"value": "DENY"
+								},
+								{
+									"key": "cache-control",
+									"value": "no-store"
+								},
+								{
+									"key": "connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"status\": \"success\",\n  \"message\": \"Vulnerabilities retrieved successfully\",\n  \"data\": [\n    {\n      \"vulnerability_id\": 1,\n      \"title\": \"Log4Shell RCE 2\",\n      \"description\": \"Remote code execution in log4j\",\n      \"cve_id\": \"CVE-2021-44228\",\n      \"cvss_score\": 9,\n      \"severity\": \"Low\",\n      \"asset_id\": 2,\n      \"discovery_source\": \"Nessus scan\",\n      \"status\": \"Open\",\n      \"created_at\": \"2026-10-19 18:29:55\",\n      \"resolved_at\": null\n    }\n  ],\n  \"count\": 1,\n  \"total\": 1\n}"
+						},
+						{
+							"name": "Get all vulnerabilities post update",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:5007/Hamed_Bou_Saleh/vulnerabilities",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "5007",
+									"path": [
+										"Hamed_Bou_Saleh",
+										"vulnerabilities"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "server",
+									"value": "Werkzeug/3.1.9 Python/3.13.7"
+								},
+								{
+									"key": "date",
+									"value": "Mon, 19 Oct 2026 20:47:24 GMT"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "content-length",
+									"value": "641"
+								},
+								{
+									"key": "x-student-name",
+									"value": "<Your Full Name>"
+								},
+								{
+									"key": "x-service-name",
+									"value": "Vulnerability Management Service"
+								},
+								{
+									"key": "x-content-type-options",
+									"value": "nosniff"
+								},
+								{
+									"key": "x-frame-options",
+									"value": "DENY"
+								},
+								{
+									"key": "cache-control",
+									"value": "no-store"
+								},
+								{
+									"key": "connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"status\": \"success\",\n  \"message\": \"Vulnerabilities retrieved successfully\",\n  \"data\": [\n    {\n      \"vulnerability_id\": 1,\n      \"title\": \"Log4Shell RCE 2\",\n      \"description\": \"Updated description hamed\",\n      \"cve_id\": \"CVE-2021-44228\",\n      \"cvss_score\": 6,\n      \"severity\": \"High\",\n      \"asset_id\": 2,\n      \"discovery_source\": \"Nessus scan\",\n      \"status\": \"Open\",\n      \"created_at\": \"2026-10-19 18:29:55\",\n      \"resolved_at\": null\n    },\n    {\n      \"vulnerability_id\": 2,\n      \"title\": \"Log4Shell RCE 2\",\n      \"description\": \"Remote code execution in log4j\",\n      \"cve_id\": \"CVE-2021-44228\",\n      \"cvss_score\": 9,\n      \"severity\": \"Low\",\n      \"asset_id\": 2,\n      \"discovery_source\": \"Nessus scan\",\n      \"status\": \"Open\",\n      \"created_at\": \"2026-10-19 20:12:58\",\n      \"resolved_at\": null\n    }\n  ],\n  \"count\": 2,\n  \"total\": 2\n}"
+						}
+					]
+				},
+				{
+					"name": "Search vulnerabilities",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5007/Hamed_Bou_Saleh/vulnerabilities/search?severity=Critical",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5007",
+							"path": [
+								"Hamed_Bou_Saleh",
+								"vulnerabilities",
+								"search"
+							],
+							"query": [
+								{
+									"key": "severity",
+									"value": "Critical"
+								}
+							]
+						},
+						"description": "Searches by cve, severity, asset or status. Roles: Administrator, Analyst, Auditor. Success 200. Errors: 400 invalid filter, 401, 403. Implemented by Hamed Bou Saleh."
+					},
+					"response": [
+						{
+							"name": "Search vulnerabilities unknown parameter",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:5007/Hamed_Bou_Saleh/vulnerabilities/search?x=1",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "5007",
+									"path": [
+										"Hamed_Bou_Saleh",
+										"vulnerabilities",
+										"search"
+									],
+									"query": [
+										{
+											"key": "x",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"status": "BAD REQUEST",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "server",
+									"value": "Werkzeug/3.1.9 Python/3.13.7"
+								},
+								{
+									"key": "date",
+									"value": "Mon, 19 Oct 2026 18:33:26 GMT"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "content-length",
+									"value": "148"
+								},
+								{
+									"key": "x-student-name",
+									"value": "<Your Full Name>"
+								},
+								{
+									"key": "x-service-name",
+									"value": "Vulnerability Management Service"
+								},
+								{
+									"key": "x-content-type-options",
+									"value": "nosniff"
+								},
+								{
+									"key": "x-frame-options",
+									"value": "DENY"
+								},
+								{
+									"key": "cache-control",
+									"value": "no-store"
+								},
+								{
+									"key": "connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"status\": \"error\",\n  \"message\": \"Unknown search parameter(s): x\",\n  \"details\": {\n    \"allowed_parameters\": [\n      \"cve\",\n      \"severity\",\n      \"asset\",\n      \"status\",\n      \"limit\",\n      \"offset\"\n    ]\n  }\n}"
+						},
+						{
+							"name": "Get vulnerability by cve",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:5007/Hamed_Bou_Saleh/vulnerabilities/search?cve=CVE-2021-44228",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "5007",
+									"path": [
+										"Hamed_Bou_Saleh",
+										"vulnerabilities",
+										"search"
+									],
+									"query": [
+										{
+											"key": "cve",
+											"value": "CVE-2021-44228"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "server",
+									"value": "Werkzeug/3.1.9 Python/3.13.7"
+								},
+								{
+									"key": "date",
+									"value": "Mon, 19 Oct 2026 18:34:20 GMT"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "content-length",
+									"value": "411"
+								},
+								{
+									"key": "x-student-name",
+									"value": "<Your Full Name>"
+								},
+								{
+									"key": "x-service-name",
+									"value": "Vulnerability Management Service"
+								},
+								{
+									"key": "x-content-type-options",
+									"value": "nosniff"
+								},
+								{
+									"key": "x-frame-options",
+									"value": "DENY"
+								},
+								{
+									"key": "cache-control",
+									"value": "no-store"
+								},
+								{
+									"key": "connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"status\": \"success\",\n  \"message\": \"Vulnerabilities retrieved successfully\",\n  \"data\": [\n    {\n      \"vulnerability_id\": 1,\n      \"title\": \"Log4Shell RCE 2\",\n      \"description\": \"Remote code execution in log4j\",\n      \"cve_id\": \"CVE-2021-44228\",\n      \"cvss_score\": 9,\n      \"severity\": \"Low\",\n      \"asset_id\": 2,\n      \"discovery_source\": \"Nessus scan\",\n      \"status\": \"Open\",\n      \"created_at\": \"2026-10-19 18:29:55\",\n      \"resolved_at\": null\n    }\n  ],\n  \"count\": 1,\n  \"total\": 1,\n  \"filters\": {\n    \"cve_id\": \"CVE-2021-44228\"\n  }\n}"
+						},
+						{
+							"name": "Search vulnerabilities with no filters",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:5007/Hamed_Bou_Saleh/vulnerabilities/search",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "5007",
+									"path": [
+										"Hamed_Bou_Saleh",
+										"vulnerabilities",
+										"search"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "server",
+									"value": "Werkzeug/3.1.9 Python/3.13.7"
+								},
+								{
+									"key": "date",
+									"value": "Mon, 19 Oct 2026 18:34:57 GMT"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "content-length",
+									"value": "386"
+								},
+								{
+									"key": "x-student-name",
+									"value": "<Your Full Name>"
+								},
+								{
+									"key": "x-service-name",
+									"value": "Vulnerability Management Service"
+								},
+								{
+									"key": "x-content-type-options",
+									"value": "nosniff"
+								},
+								{
+									"key": "x-frame-options",
+									"value": "DENY"
+								},
+								{
+									"key": "cache-control",
+									"value": "no-store"
+								},
+								{
+									"key": "connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"status\": \"success\",\n  \"message\": \"Vulnerabilities retrieved successfully\",\n  \"data\": [\n    {\n      \"vulnerability_id\": 1,\n      \"title\": \"Log4Shell RCE 2\",\n      \"description\": \"Remote code execution in log4j\",\n      \"cve_id\": \"CVE-2021-44228\",\n      \"cvss_score\": 9,\n      \"severity\": \"Low\",\n      \"asset_id\": 2,\n      \"discovery_source\": \"Nessus scan\",\n      \"status\": \"Open\",\n      \"created_at\": \"2026-10-19 18:29:55\",\n      \"resolved_at\": null\n    }\n  ],\n  \"count\": 1,\n  \"total\": 1,\n  \"filters\": {}\n}"
+						},
+						{
+							"name": "Get vulnerability by severity",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:5007/Hamed_Bou_Saleh/vulnerabilities/search?severity=critical",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "5007",
+									"path": [
+										"Hamed_Bou_Saleh",
+										"vulnerabilities",
+										"search"
+									],
+									"query": [
+										{
+											"key": "severity",
+											"value": "critical"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "server",
+									"value": "Werkzeug/3.1.9 Python/3.13.7"
+								},
+								{
+									"key": "date",
+									"value": "Tue, 20 Oct 2026 12:14:32 GMT"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "content-length",
+									"value": "142"
+								},
+								{
+									"key": "x-student-name",
+									"value": "<Your Full Name>"
+								},
+								{
+									"key": "x-service-name",
+									"value": "Vulnerability Management Service"
+								},
+								{
+									"key": "x-content-type-options",
+									"value": "nosniff"
+								},
+								{
+									"key": "x-frame-options",
+									"value": "DENY"
+								},
+								{
+									"key": "cache-control",
+									"value": "no-store"
+								},
+								{
+									"key": "connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"status\": \"success\",\n  \"message\": \"No vulnerabilities match the search criteria\",\n  \"data\": [],\n  \"count\": 0,\n  \"total\": 0,\n  \"filters\": {\n    \"severity\": \"Critical\"\n  }\n}"
+						}
+					]
+				},
+				{
+					"name": "Update vulnerability",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"resolved_at\":\"2026-10-17\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:5007/Hamed_Bou_Saleh/vulnerabilities/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5007",
+							"path": [
+								"Hamed_Bou_Saleh",
+								"vulnerabilities",
+								"1"
+							]
+						},
+						"description": "Updates description, severity, CVSS score, status or resolution date. Status moves one step at a time (Open, Under Investigation, In Progress, Resolved, Closed). Roles: Administrator, Analyst. Success 200. Errors: 400 invalid field or status transition, 401, 403, 404. Implemented by Hamed Bou Saleh."
+					},
+					"response": [
+						{
+							"name": "Update vulnerability with resolved at failed",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"resolved_at\":\"2026-10-17\"}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:5007/Hamed_Bou_Saleh/vulnerabilities/1",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "5007",
+									"path": [
+										"Hamed_Bou_Saleh",
+										"vulnerabilities",
+										"1"
+									]
+								}
+							},
+							"status": "BAD REQUEST",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "server",
+									"value": "Werkzeug/3.1.9 Python/3.13.7"
+								},
+								{
+									"key": "date",
+									"value": "Mon, 19 Oct 2026 20:10:18 GMT"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "content-length",
+									"value": "100"
+								},
+								{
+									"key": "x-student-name",
+									"value": "<Your Full Name>"
+								},
+								{
+									"key": "x-service-name",
+									"value": "Vulnerability Management Service"
+								},
+								{
+									"key": "x-content-type-options",
+									"value": "nosniff"
+								},
+								{
+									"key": "x-frame-options",
+									"value": "DENY"
+								},
+								{
+									"key": "cache-control",
+									"value": "no-store"
+								},
+								{
+									"key": "connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"status\": \"error\",\n  \"message\": \"'resolved_at' can only be set for Resolved or Closed vulnerabilities\"\n}"
+						},
+						{
+							"name": "Update vulnerability",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"description\":\"Updated description text\", \"cvss_score\":6.0,\n\"severity\":\"High\"}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:5007/Hamed_Bou_Saleh/vulnerabilities/1",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "5007",
+									"path": [
+										"Hamed_Bou_Saleh",
+										"vulnerabilities",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "server",
+									"value": "Werkzeug/3.1.9 Python/3.13.7"
+								},
+								{
+									"key": "date",
+									"value": "Mon, 19 Oct 2026 20:10:40 GMT"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "content-length",
+									"value": "342"
+								},
+								{
+									"key": "x-student-name",
+									"value": "<Your Full Name>"
+								},
+								{
+									"key": "x-service-name",
+									"value": "Vulnerability Management Service"
+								},
+								{
+									"key": "x-content-type-options",
+									"value": "nosniff"
+								},
+								{
+									"key": "x-frame-options",
+									"value": "DENY"
+								},
+								{
+									"key": "cache-control",
+									"value": "no-store"
+								},
+								{
+									"key": "connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"status\": \"success\",\n  \"message\": \"Vulnerability updated successfully\",\n  \"data\": {\n    \"vulnerability_id\": 1,\n    \"title\": \"Log4Shell RCE 2\",\n    \"description\": \"Updated description text\",\n    \"cve_id\": \"CVE-2021-44228\",\n    \"cvss_score\": 6,\n    \"severity\": \"High\",\n    \"asset_id\": 2,\n    \"discovery_source\": \"Nessus scan\",\n    \"status\": \"Open\",\n    \"created_at\": \"2026-10-19 18:29:55\",\n    \"resolved_at\": null\n  }\n}"
+						},
+						{
+							"name": "Update vulnerability",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"description\":\"Updated description hamed\", \"cvss_score\":6.0,\n\"severity\":\"High\"}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:5007/Hamed_Bou_Saleh/vulnerabilities/1",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "5007",
+									"path": [
+										"Hamed_Bou_Saleh",
+										"vulnerabilities",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "server",
+									"value": "Werkzeug/3.1.9 Python/3.13.7"
+								},
+								{
+									"key": "date",
+									"value": "Mon, 19 Oct 2026 20:47:02 GMT"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "content-length",
+									"value": "343"
+								},
+								{
+									"key": "x-student-name",
+									"value": "<Your Full Name>"
+								},
+								{
+									"key": "x-service-name",
+									"value": "Vulnerability Management Service"
+								},
+								{
+									"key": "x-content-type-options",
+									"value": "nosniff"
+								},
+								{
+									"key": "x-frame-options",
+									"value": "DENY"
+								},
+								{
+									"key": "cache-control",
+									"value": "no-store"
+								},
+								{
+									"key": "connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"status\": \"success\",\n  \"message\": \"Vulnerability updated successfully\",\n  \"data\": {\n    \"vulnerability_id\": 1,\n    \"title\": \"Log4Shell RCE 2\",\n    \"description\": \"Updated description hamed\",\n    \"cve_id\": \"CVE-2021-44228\",\n    \"cvss_score\": 6,\n    \"severity\": \"High\",\n    \"asset_id\": 2,\n    \"discovery_source\": \"Nessus scan\",\n    \"status\": \"Open\",\n    \"created_at\": \"2026-10-19 18:29:55\",\n    \"resolved_at\": null\n  }\n}"
+						}
+					]
+				},
+				{
+					"name": "Delete vulnerability",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5007/Hamed_Bou_Saleh/vulnerabilities/2",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5007",
+							"path": [
+								"Hamed_Bou_Saleh",
+								"vulnerabilities",
+								"2"
+							]
+						},
+						"description": "Deletes a vulnerability. Roles: Administrator. Success 200. Errors: 401, 403, 404. Implemented by Hamed Bou Saleh."
+					},
+					"response": [
+						{
+							"name": "Delete vulnerability successfully",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:5007/Hamed_Bou_Saleh/vulnerabilities/3",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "5007",
+									"path": [
+										"Hamed_Bou_Saleh",
+										"vulnerabilities",
+										"3"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "server",
+									"value": "Werkzeug/3.1.9 Python/3.13.7"
+								},
+								{
+									"key": "date",
+									"value": "Mon, 19 Oct 2026 20:13:33 GMT"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "content-length",
+									"value": "68"
+								},
+								{
+									"key": "x-student-name",
+									"value": "<Your Full Name>"
+								},
+								{
+									"key": "x-service-name",
+									"value": "Vulnerability Management Service"
+								},
+								{
+									"key": "x-content-type-options",
+									"value": "nosniff"
+								},
+								{
+									"key": "x-frame-options",
+									"value": "DENY"
+								},
+								{
+									"key": "cache-control",
+									"value": "no-store"
+								},
+								{
+									"key": "connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"status\": \"success\",\n  \"message\": \"Vulnerability deleted successfully\"\n}"
+						},
+						{
+							"name": "Delete vulnerability failed by invalid type",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:5007/Hamed_Bou_Saleh/vulnerabilities/abc",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "5007",
+									"path": [
+										"Hamed_Bou_Saleh",
+										"vulnerabilities",
+										"abc"
+									]
+								}
+							},
+							"status": "BAD REQUEST",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "server",
+									"value": "Werkzeug/3.1.9 Python/3.13.7"
+								},
+								{
+									"key": "date",
+									"value": "Mon, 19 Oct 2026 20:13:55 GMT"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "content-length",
+									"value": "77"
+								},
+								{
+									"key": "x-student-name",
+									"value": "<Your Full Name>"
+								},
+								{
+									"key": "x-service-name",
+									"value": "Vulnerability Management Service"
+								},
+								{
+									"key": "x-content-type-options",
+									"value": "nosniff"
+								},
+								{
+									"key": "x-frame-options",
+									"value": "DENY"
+								},
+								{
+									"key": "cache-control",
+									"value": "no-store"
+								},
+								{
+									"key": "connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"status\": \"error\",\n  \"message\": \"'vulnerability_id' must be a positive integer\"\n}"
+						},
+						{
+							"name": "Delete vulnerability failed by invalid ID",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:5007/Hamed_Bou_Saleh/vulnerabilities/99",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "5007",
+									"path": [
+										"Hamed_Bou_Saleh",
+										"vulnerabilities",
+										"99"
+									]
+								}
+							},
+							"status": "NOT FOUND",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "server",
+									"value": "Werkzeug/3.1.9 Python/3.13.7"
+								},
+								{
+									"key": "date",
+									"value": "Mon, 19 Oct 2026 20:14:23 GMT"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "content-length",
+									"value": "66"
+								},
+								{
+									"key": "x-student-name",
+									"value": "<Your Full Name>"
+								},
+								{
+									"key": "x-service-name",
+									"value": "Vulnerability Management Service"
+								},
+								{
+									"key": "x-content-type-options",
+									"value": "nosniff"
+								},
+								{
+									"key": "x-frame-options",
+									"value": "DENY"
+								},
+								{
+									"key": "cache-control",
+									"value": "no-store"
+								},
+								{
+									"key": "connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"status\": \"error\",\n  \"message\": \"Vulnerability with id 99 not found\"\n}"
+						},
+						{
+							"name": "Delete vulnerability failed by invalid user",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:5007/Hamed_Bou_Saleh/vulnerabilities/2",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "5007",
+									"path": [
+										"Hamed_Bou_Saleh",
+										"vulnerabilities",
+										"2"
+									]
+								}
+							},
+							"status": "FORBIDDEN",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "server",
+									"value": "Werkzeug/3.1.9 Python/3.13.7"
+								},
+								{
+									"key": "date",
+									"value": "Mon, 19 Oct 2026 20:42:07 GMT"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "content-length",
+									"value": "87"
+								},
+								{
+									"key": "x-student-name",
+									"value": "<Your Full Name>"
+								},
+								{
+									"key": "x-service-name",
+									"value": "Vulnerability Management Service"
+								},
+								{
+									"key": "x-content-type-options",
+									"value": "nosniff"
+								},
+								{
+									"key": "x-frame-options",
+									"value": "DENY"
+								},
+								{
+									"key": "cache-control",
+									"value": "no-store"
+								},
+								{
+									"key": "connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"status\": \"error\",\n  \"message\": \"User does not have permission to perform this operation\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Get vulnerability by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5007/Hamed_Bou_Saleh/vulnerabilities/2",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5007",
+							"path": [
+								"Hamed_Bou_Saleh",
+								"vulnerabilities",
+								"2"
+							]
+						},
+						"description": "Returns one vulnerability by id. Roles: Administrator, Analyst, Auditor. Success 200. Errors: 400, 401, 403, 404. Implemented by Hamed Bou Saleh."
+					},
+					"response": [
+						{
+							"name": "Get vulnerability by id",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:5007/Hamed_Bou_Saleh/vulnerabilities/2",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "5007",
+									"path": [
+										"Hamed_Bou_Saleh",
+										"vulnerabilities",
+										"2"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "server",
+									"value": "Werkzeug/3.1.9 Python/3.13.7"
+								},
+								{
+									"key": "date",
+									"value": "Mon, 19 Oct 2026 20:17:04 GMT"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "content-length",
+									"value": "349"
+								},
+								{
+									"key": "x-student-name",
+									"value": "<Your Full Name>"
+								},
+								{
+									"key": "x-service-name",
+									"value": "Vulnerability Management Service"
+								},
+								{
+									"key": "x-content-type-options",
+									"value": "nosniff"
+								},
+								{
+									"key": "x-frame-options",
+									"value": "DENY"
+								},
+								{
+									"key": "cache-control",
+									"value": "no-store"
+								},
+								{
+									"key": "connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"status\": \"success\",\n  \"message\": \"Vulnerability retrieved successfully\",\n  \"data\": {\n    \"vulnerability_id\": 2,\n    \"title\": \"Log4Shell RCE 2\",\n    \"description\": \"Remote code execution in log4j\",\n    \"cve_id\": \"CVE-2021-44228\",\n    \"cvss_score\": 9,\n    \"severity\": \"Low\",\n    \"asset_id\": 2,\n    \"discovery_source\": \"Nessus scan\",\n    \"status\": \"Open\",\n    \"created_at\": \"2026-10-19 20:12:58\",\n    \"resolved_at\": null\n  }\n}"
+						},
+						{
+							"name": "Invalid id",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:5007/Hamed_Bou_Saleh/vulnerabilities/99",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "5007",
+									"path": [
+										"Hamed_Bou_Saleh",
+										"vulnerabilities",
+										"99"
+									]
+								}
+							},
+							"status": "NOT FOUND",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "server",
+									"value": "Werkzeug/3.1.9 Python/3.13.7"
+								},
+								{
+									"key": "date",
+									"value": "Mon, 19 Oct 2026 20:18:04 GMT"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "content-length",
+									"value": "66"
+								},
+								{
+									"key": "x-student-name",
+									"value": "<Your Full Name>"
+								},
+								{
+									"key": "x-service-name",
+									"value": "Vulnerability Management Service"
+								},
+								{
+									"key": "x-content-type-options",
+									"value": "nosniff"
+								},
+								{
+									"key": "x-frame-options",
+									"value": "DENY"
+								},
+								{
+									"key": "cache-control",
+									"value": "no-store"
+								},
+								{
+									"key": "connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"status\": \"error\",\n  \"message\": \"Vulnerability with id 99 not found\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Reports",
+			"item": [
+				{
+					"name": "Get security summary",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5006/Hamed_Bou_Saleh/reports/summary",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5006",
+							"path": [
+								"Hamed_Bou_Saleh",
+								"reports",
+								"summary"
+							]
+						},
+						"description": "This returns the summary report, calculated from the database. Roles: Administrator, Auditor. Success 200. Errors: 401 no token, 403 role not allowed. Implemented by Hamed Bou Saleh."
+					},
+					"response": [
+						{
+							"name": "Get security summary invalid user",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:5006/Hamed_Bou_Saleh/reports/summary",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "5006",
+									"path": [
+										"Hamed_Bou_Saleh",
+										"reports",
+										"summary"
+									]
+								}
+							},
+							"status": "FORBIDDEN",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "server",
+									"value": "Werkzeug/3.1.9 Python/3.13.7"
+								},
+								{
+									"key": "date",
+									"value": "Sun, 18 Oct 2026 15:46:46 GMT"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "content-length",
+									"value": "87"
+								},
+								{
+									"key": "x-student-name",
+									"value": "<Your Full Name>"
+								},
+								{
+									"key": "x-service-name",
+									"value": "Security Reports Service"
+								},
+								{
+									"key": "x-content-type-options",
+									"value": "nosniff"
+								},
+								{
+									"key": "x-frame-options",
+									"value": "DENY"
+								},
+								{
+									"key": "cache-control",
+									"value": "no-store"
+								},
+								{
+									"key": "connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"status\": \"error\",\n  \"message\": \"User does not have permission to perform this operation\"\n}"
+						},
+						{
+							"name": "Get security summary",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:5006/Hamed_Bou_Saleh/reports/summary",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "5006",
+									"path": [
+										"Hamed_Bou_Saleh",
+										"reports",
+										"summary"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "server",
+									"value": "Werkzeug/3.1.9 Python/3.13.7"
+								},
+								{
+									"key": "date",
+									"value": "Mon, 19 Oct 2026 20:19:03 GMT"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "content-length",
+									"value": "212"
+								},
+								{
+									"key": "x-student-name",
+									"value": "<Your Full Name>"
+								},
+								{
+									"key": "x-service-name",
+									"value": "Security Reports Service"
+								},
+								{
+									"key": "x-content-type-options",
+									"value": "nosniff"
+								},
+								{
+									"key": "x-frame-options",
+									"value": "DENY"
+								},
+								{
+									"key": "cache-control",
+									"value": "no-store"
+								},
+								{
+									"key": "connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"status\": \"success\",\n  \"message\": \"Security summary report generated successfully\",\n  \"data\": {\n    \"users\": 4,\n    \"assets\": 2,\n    \"open_incidents\": 0,\n    \"critical_threats\": 0,\n    \"open_vulnerabilities\": 2\n  },\n  \"generated_at\": \"2026-10-19 20:19:03\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Get incident report",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5006/Hamed_Bou_Saleh/reports/incidents",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5006",
+							"path": [
+								"Hamed_Bou_Saleh",
+								"reports",
+								"incidents"
+							]
+						},
+						"description": "This returns the incident report, calculated from the database. Roles: Administrator, Auditor. Success 200. Errors: 401 no token, 403 role not allowed. Implemented by Hamed Bou Saleh."
+					},
+					"response": [
+						{
+							"name": "Get incident report",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:5006/Hamed_Bou_Saleh/reports/incidents",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "5006",
+									"path": [
+										"Hamed_Bou_Saleh",
+										"reports",
+										"incidents"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "server",
+									"value": "Werkzeug/3.1.9 Python/3.13.7"
+								},
+								{
+									"key": "date",
+									"value": "Mon, 19 Oct 2026 20:20:27 GMT"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "content-length",
+									"value": "300"
+								},
+								{
+									"key": "x-student-name",
+									"value": "<Your Full Name>"
+								},
+								{
+									"key": "x-service-name",
+									"value": "Security Reports Service"
+								},
+								{
+									"key": "x-content-type-options",
+									"value": "nosniff"
+								},
+								{
+									"key": "x-frame-options",
+									"value": "DENY"
+								},
+								{
+									"key": "cache-control",
+									"value": "no-store"
+								},
+								{
+									"key": "connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"status\": \"success\",\n  \"message\": \"Incident report generated successfully\",\n  \"data\": {\n    \"total_incidents\": 0,\n    \"incidents_by_severity\": {\n      \"Low\": 0,\n      \"Medium\": 0,\n      \"High\": 0,\n      \"Critical\": 0\n    },\n    \"incidents_by_status\": {\n      \"Open\": 0,\n      \"Under Investigation\": 0,\n      \"Mitigated\": 0,\n      \"Resolved\": 0,\n      \"Closed\": 0\n    }\n  },\n  \"generated_at\": \"2026-10-19 20:20:27\"\n}"
+						},
+						{
+							"name": "Get incident report invalid user",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:5006/Hamed_Bou_Saleh/reports/incidents",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "5006",
+									"path": [
+										"Hamed_Bou_Saleh",
+										"reports",
+										"incidents"
+									]
+								}
+							},
+							"status": "FORBIDDEN",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "server",
+									"value": "Werkzeug/3.1.9 Python/3.13.7"
+								},
+								{
+									"key": "date",
+									"value": "Tue, 20 Oct 2026 12:20:38 GMT"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "content-length",
+									"value": "87"
+								},
+								{
+									"key": "x-student-name",
+									"value": "<Your Full Name>"
+								},
+								{
+									"key": "x-service-name",
+									"value": "Security Reports Service"
+								},
+								{
+									"key": "x-content-type-options",
+									"value": "nosniff"
+								},
+								{
+									"key": "x-frame-options",
+									"value": "DENY"
+								},
+								{
+									"key": "cache-control",
+									"value": "no-store"
+								},
+								{
+									"key": "connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"status\": \"error\",\n  \"message\": \"User does not have permission to perform this operation\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Get asset report",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5006/Hamed_Bou_Saleh/reports/assets",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5006",
+							"path": [
+								"Hamed_Bou_Saleh",
+								"reports",
+								"assets"
+							]
+						},
+						"description": "This returns the asset report, calculated from the database. Roles: Administrator, Auditor. Success 200. Errors: 401 no token, 403 role not allowed. Implemented by Hamed Bou Saleh."
+					},
+					"response": [
+						{
+							"name": "Get asset report by auditor",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:5006/Hamed_Bou_Saleh/reports/assets",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "5006",
+									"path": [
+										"Hamed_Bou_Saleh",
+										"reports",
+										"assets"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "server",
+									"value": "Werkzeug/3.1.9 Python/3.13.7"
+								},
+								{
+									"key": "date",
+									"value": "Sun, 18 Oct 2026 15:52:43 GMT"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "content-length",
+									"value": "182"
+								},
+								{
+									"key": "x-student-name",
+									"value": "<Your Full Name>"
+								},
+								{
+									"key": "x-service-name",
+									"value": "Security Reports Service"
+								},
+								{
+									"key": "x-content-type-options",
+									"value": "nosniff"
+								},
+								{
+									"key": "x-frame-options",
+									"value": "DENY"
+								},
+								{
+									"key": "cache-control",
+									"value": "no-store"
+								},
+								{
+									"key": "connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"status\": \"success\",\n  \"message\": \"Asset report generated successfully\",\n  \"data\": {\n    \"total_assets\": 2,\n    \"critical_assets\": 1,\n    \"assets_by_type\": {\n      \"Server\": 2\n    }\n  },\n  \"generated_at\": \"2026-10-18 15:52:43\"\n}"
+						},
+						{
+							"name": "Get asset report",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:5006/Hamed_Bou_Saleh/reports/assets",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "5006",
+									"path": [
+										"Hamed_Bou_Saleh",
+										"reports",
+										"assets"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "server",
+									"value": "Werkzeug/3.1.9 Python/3.13.7"
+								},
+								{
+									"key": "date",
+									"value": "Mon, 19 Oct 2026 20:20:58 GMT"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "content-length",
+									"value": "182"
+								},
+								{
+									"key": "x-student-name",
+									"value": "<Your Full Name>"
+								},
+								{
+									"key": "x-service-name",
+									"value": "Security Reports Service"
+								},
+								{
+									"key": "x-content-type-options",
+									"value": "nosniff"
+								},
+								{
+									"key": "x-frame-options",
+									"value": "DENY"
+								},
+								{
+									"key": "cache-control",
+									"value": "no-store"
+								},
+								{
+									"key": "connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"status\": \"success\",\n  \"message\": \"Asset report generated successfully\",\n  \"data\": {\n    \"total_assets\": 2,\n    \"critical_assets\": 0,\n    \"assets_by_type\": {\n      \"Server\": 2\n    }\n  },\n  \"generated_at\": \"2026-10-19 20:20:58\"\n}"
+						},
+						{
+							"name": "Get asset report invalid user",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:5006/Hamed_Bou_Saleh/reports/assets",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "5006",
+									"path": [
+										"Hamed_Bou_Saleh",
+										"reports",
+										"assets"
+									]
+								}
+							},
+							"status": "FORBIDDEN",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "server",
+									"value": "Werkzeug/3.1.9 Python/3.13.7"
+								},
+								{
+									"key": "date",
+									"value": "Tue, 20 Oct 2026 12:21:06 GMT"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "content-length",
+									"value": "87"
+								},
+								{
+									"key": "x-student-name",
+									"value": "<Your Full Name>"
+								},
+								{
+									"key": "x-service-name",
+									"value": "Security Reports Service"
+								},
+								{
+									"key": "x-content-type-options",
+									"value": "nosniff"
+								},
+								{
+									"key": "x-frame-options",
+									"value": "DENY"
+								},
+								{
+									"key": "cache-control",
+									"value": "no-store"
+								},
+								{
+									"key": "connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"status\": \"error\",\n  \"message\": \"User does not have permission to perform this operation\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Get threat report",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5006/Hamed_Bou_Saleh/reports/threats",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5006",
+							"path": [
+								"Hamed_Bou_Saleh",
+								"reports",
+								"threats"
+							]
+						},
+						"description": "This returns the threat report, calculated from the database. Roles: Administrator, Auditor. Success 200. Errors: 401 no token, 403 role not allowed. Implemented by Hamed Bou Saleh."
+					},
+					"response": [
+						{
+							"name": "Get threat report",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:5006/Hamed_Bou_Saleh/reports/threats",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "5006",
+									"path": [
+										"Hamed_Bou_Saleh",
+										"reports",
+										"threats"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "server",
+									"value": "Werkzeug/3.1.9 Python/3.13.7"
+								},
+								{
+									"key": "date",
+									"value": "Mon, 19 Oct 2026 20:21:33 GMT"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "content-length",
+									"value": "240"
+								},
+								{
+									"key": "x-student-name",
+									"value": "<Your Full Name>"
+								},
+								{
+									"key": "x-service-name",
+									"value": "Security Reports Service"
+								},
+								{
+									"key": "x-content-type-options",
+									"value": "nosniff"
+								},
+								{
+									"key": "x-frame-options",
+									"value": "DENY"
+								},
+								{
+									"key": "cache-control",
+									"value": "no-store"
+								},
+								{
+									"key": "connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"status\": \"success\",\n  \"message\": \"Threat report generated successfully\",\n  \"data\": {\n    \"total_threats\": 0,\n    \"threats_by_severity\": {\n      \"Low\": 0,\n      \"Medium\": 0,\n      \"High\": 0,\n      \"Critical\": 0\n    },\n    \"threats_by_type\": {},\n    \"recent_threats\": []\n  },\n  \"generated_at\": \"2026-10-19 20:21:33\"\n}"
+						},
+						{
+							"name": "Get threat report invalid user",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:5006/Hamed_Bou_Saleh/reports/threats",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "5006",
+									"path": [
+										"Hamed_Bou_Saleh",
+										"reports",
+										"threats"
+									]
+								}
+							},
+							"status": "FORBIDDEN",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "server",
+									"value": "Werkzeug/3.1.9 Python/3.13.7"
+								},
+								{
+									"key": "date",
+									"value": "Tue, 20 Oct 2026 12:21:28 GMT"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "content-length",
+									"value": "87"
+								},
+								{
+									"key": "x-student-name",
+									"value": "<Your Full Name>"
+								},
+								{
+									"key": "x-service-name",
+									"value": "Security Reports Service"
+								},
+								{
+									"key": "x-content-type-options",
+									"value": "nosniff"
+								},
+								{
+									"key": "x-frame-options",
+									"value": "DENY"
+								},
+								{
+									"key": "cache-control",
+									"value": "no-store"
+								},
+								{
+									"key": "connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"status\": \"error\",\n  \"message\": \"User does not have permission to perform this operation\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Get vulnerability report",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5006/Hamed_Bou_Saleh/reports/vulnerabilities",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5006",
+							"path": [
+								"Hamed_Bou_Saleh",
+								"reports",
+								"vulnerabilities"
+							]
+						},
+						"description": "This returns the vulnerability report, calculated from the database. Roles: Administrator, Auditor. Success 200. Errors: 401 no token, 403 role not allowed. Implemented by Hamed Bou Saleh."
+					},
+					"response": [
+						{
+							"name": "Get vulnerability report",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:5006/Hamed_Bou_Saleh/reports/vulnerabilities",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "5006",
+									"path": [
+										"Hamed_Bou_Saleh",
+										"reports",
+										"vulnerabilities"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "server",
+									"value": "Werkzeug/3.1.9 Python/3.13.7"
+								},
+								{
+									"key": "date",
+									"value": "Mon, 19 Oct 2026 20:22:13 GMT"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "content-length",
+									"value": "375"
+								},
+								{
+									"key": "x-student-name",
+									"value": "<Your Full Name>"
+								},
+								{
+									"key": "x-service-name",
+									"value": "Security Reports Service"
+								},
+								{
+									"key": "x-content-type-options",
+									"value": "nosniff"
+								},
+								{
+									"key": "x-frame-options",
+									"value": "DENY"
+								},
+								{
+									"key": "cache-control",
+									"value": "no-store"
+								},
+								{
+									"key": "connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"status\": \"success\",\n  \"message\": \"Vulnerability report generated successfully\",\n  \"data\": {\n    \"total_vulnerabilities\": 2,\n    \"vulnerabilities_by_severity\": {\n      \"Low\": 1,\n      \"Medium\": 0,\n      \"High\": 1,\n      \"Critical\": 0\n    },\n    \"vulnerabilities_by_status\": {\n      \"Open\": 2,\n      \"Under Investigation\": 0,\n      \"In Progress\": 0,\n      \"Resolved\": 0,\n      \"Closed\": 0\n    },\n    \"critical_vulnerabilities\": {\n      \"count\": 0,\n      \"items\": []\n    }\n  },\n  \"generated_at\": \"2026-10-19 20:22:13\"\n}"
+						},
+						{
+							"name": "Get vulnerability report invalid user",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:5006/Hamed_Bou_Saleh/reports/vulnerabilities",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "5006",
+									"path": [
+										"Hamed_Bou_Saleh",
+										"reports",
+										"vulnerabilities"
+									]
+								}
+							},
+							"status": "FORBIDDEN",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "server",
+									"value": "Werkzeug/3.1.9 Python/3.13.7"
+								},
+								{
+									"key": "date",
+									"value": "Tue, 20 Oct 2026 12:22:00 GMT"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "content-length",
+									"value": "87"
+								},
+								{
+									"key": "x-student-name",
+									"value": "<Your Full Name>"
+								},
+								{
+									"key": "x-service-name",
+									"value": "Security Reports Service"
+								},
+								{
+									"key": "x-content-type-options",
+									"value": "nosniff"
+								},
+								{
+									"key": "x-frame-options",
+									"value": "DENY"
+								},
+								{
+									"key": "cache-control",
+									"value": "no-store"
+								},
+								{
+									"key": "connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"status\": \"error\",\n  \"message\": \"User does not have permission to perform this operation\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Get activity report",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5006/Hamed_Bou_Saleh/reports/activity",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5006",
+							"path": [
+								"Hamed_Bou_Saleh",
+								"reports",
+								"activity"
+							]
+						},
+						"description": "This returns the user activity report, calculated from the database. Roles: Administrator, Auditor. Success 200. Errors: 401 no token, 403 role not allowed. Implemented by Hamed Bou Saleh."
+					},
+					"response": [
+						{
+							"name": "Get activity report",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:5006/Hamed_Bou_Saleh/reports/activity",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "5006",
+									"path": [
+										"Hamed_Bou_Saleh",
+										"reports",
+										"activity"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "server",
+									"value": "Werkzeug/3.1.9 Python/3.13.7"
+								},
+								{
+									"key": "date",
+									"value": "Mon, 19 Oct 2026 20:22:51 GMT"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "content-length",
+									"value": "422"
+								},
+								{
+									"key": "x-student-name",
+									"value": "<Your Full Name>"
+								},
+								{
+									"key": "x-service-name",
+									"value": "Security Reports Service"
+								},
+								{
+									"key": "x-content-type-options",
+									"value": "nosniff"
+								},
+								{
+									"key": "x-frame-options",
+									"value": "DENY"
+								},
+								{
+									"key": "cache-control",
+									"value": "no-store"
+								},
+								{
+									"key": "connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"status\": \"success\",\n  \"message\": \"User activity report generated successfully\",\n  \"data\": {\n    \"total_user_activities\": 33,\n    \"login_attempts\": 5,\n    \"failed_login_attempts\": 1,\n    \"most_performed_actions\": [\n      {\n        \"action\": \"UNAUTHENTICATED_ACCESS\",\n        \"count\": 9\n      },\n      {\n        \"action\": \"LOGIN_SUCCESS\",\n        \"count\": 4\n      },\n      {\n        \"action\": \"NOTIFICATION_CREATED\",\n        \"count\": 4\n      },\n      {\n        \"action\": \"USER_CREATED\",\n        \"count\": 4\n      },\n      {\n        \"action\": \"ASSET_CREATED\",\n        \"count\": 3\n      }\n    ]\n  },\n  \"generated_at\": \"2026-10-19 20:22:51\"\n}"
+						},
+						{
+							"name": "Get activity report with failed login attempts",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:5006/Hamed_Bou_Saleh/reports/activity",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "5006",
+									"path": [
+										"Hamed_Bou_Saleh",
+										"reports",
+										"activity"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "server",
+									"value": "Werkzeug/3.1.9 Python/3.13.7"
+								},
+								{
+									"key": "date",
+									"value": "Mon, 19 Oct 2026 20:23:59 GMT"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "content-length",
+									"value": "421"
+								},
+								{
+									"key": "x-student-name",
+									"value": "<Your Full Name>"
+								},
+								{
+									"key": "x-service-name",
+									"value": "Security Reports Service"
+								},
+								{
+									"key": "x-content-type-options",
+									"value": "nosniff"
+								},
+								{
+									"key": "x-frame-options",
+									"value": "DENY"
+								},
+								{
+									"key": "cache-control",
+									"value": "no-store"
+								},
+								{
+									"key": "connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"status\": \"success\",\n  \"message\": \"User activity report generated successfully\",\n  \"data\": {\n    \"total_user_activities\": 36,\n    \"login_attempts\": 8,\n    \"failed_login_attempts\": 4,\n    \"most_performed_actions\": [\n      {\n        \"action\": \"UNAUTHENTICATED_ACCESS\",\n        \"count\": 9\n      },\n      {\n        \"action\": \"LOGIN_FAILED\",\n        \"count\": 4\n      },\n      {\n        \"action\": \"LOGIN_SUCCESS\",\n        \"count\": 4\n      },\n      {\n        \"action\": \"NOTIFICATION_CREATED\",\n        \"count\": 4\n      },\n      {\n        \"action\": \"USER_CREATED\",\n        \"count\": 4\n      }\n    ]\n  },\n  \"generated_at\": \"2026-10-19 20:23:59\"\n}"
+						},
+						{
+							"name": "Get activity report invalid user",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:5006/Hamed_Bou_Saleh/reports/activity",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "5006",
+									"path": [
+										"Hamed_Bou_Saleh",
+										"reports",
+										"activity"
+									]
+								}
+							},
+							"status": "FORBIDDEN",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "server",
+									"value": "Werkzeug/3.1.9 Python/3.13.7"
+								},
+								{
+									"key": "date",
+									"value": "Tue, 20 Oct 2026 12:22:20 GMT"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "content-length",
+									"value": "87"
+								},
+								{
+									"key": "x-student-name",
+									"value": "<Your Full Name>"
+								},
+								{
+									"key": "x-service-name",
+									"value": "Security Reports Service"
+								},
+								{
+									"key": "x-content-type-options",
+									"value": "nosniff"
+								},
+								{
+									"key": "x-frame-options",
+									"value": "DENY"
+								},
+								{
+									"key": "cache-control",
+									"value": "no-store"
+								},
+								{
+									"key": "connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"status\": \"error\",\n  \"message\": \"User does not have permission to perform this operation\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "AUTH",
+			"item": [
+				{
+					"name": "Login Request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"   const json = pm.response.json();\n   if (json.data && json.data.token) {\n     pm.collectionVariables.set(\"token\", json.data.token);\n   }"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"username\":\"admin\",\"password\":\"Secure#Pass2026\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:5001/Reina_Hani/users/login",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5001",
+							"path": [
+								"Reina_Hani",
+								"users",
+								"login"
+							]
+						},
+						"description": "Logs in and saves the token into the {{token}} collection variable so the asset, vulnerability and report requests are authenticated. Log in as admin, analyst or auditor to test the different roles."
+					},
+					"response": [
+						{
+							"name": "Login Request failed",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "   {\"username\":\"employee2\",\"password\":\"wrong\"}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:5001/Hamed_Bou_Saleh/users/login",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "5001",
+									"path": [
+										"Hamed_Bou_Saleh",
+										"users",
+										"login"
+									]
+								}
+							},
+							"status": "UNAUTHORIZED",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "server",
+									"value": "Werkzeug/3.1.9 Python/3.13.7"
+								},
+								{
+									"key": "date",
+									"value": "Sun, 18 Oct 2026 12:05:04 GMT"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "content-length",
+									"value": "66"
+								},
+								{
+									"key": "x-student-name",
+									"value": "<Your Full Name>"
+								},
+								{
+									"key": "x-service-name",
+									"value": "Users and Identity Management Service"
+								},
+								{
+									"key": "x-content-type-options",
+									"value": "nosniff"
+								},
+								{
+									"key": "x-frame-options",
+									"value": "DENY"
+								},
+								{
+									"key": "cache-control",
+									"value": "no-store"
+								},
+								{
+									"key": "connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"status\": \"error\",\n  \"message\": \"Invalid username/email or password\"\n}"
+						},
+						{
+							"name": "Login Request",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"username\":\"admin\",\"password\":\"Secure#Pass2026\"}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:5001/Hamed_Bou_Saleh/users/login",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "5001",
+									"path": [
+										"Hamed_Bou_Saleh",
+										"users",
+										"login"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "server",
+									"value": "Werkzeug/3.1.9 Python/3.13.7"
+								},
+								{
+									"key": "date",
+									"value": "Mon, 19 Oct 2026 18:01:29 GMT"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "content-length",
+									"value": "669"
+								},
+								{
+									"key": "x-student-name",
+									"value": "<Your Full Name>"
+								},
+								{
+									"key": "x-service-name",
+									"value": "Users and Identity Management Service"
+								},
+								{
+									"key": "x-content-type-options",
+									"value": "nosniff"
+								},
+								{
+									"key": "x-frame-options",
+									"value": "DENY"
+								},
+								{
+									"key": "cache-control",
+									"value": "no-store"
+								},
+								{
+									"key": "connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"status\": \"success\",\n  \"message\": \"Authentication successful\",\n  \"data\": {\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwidXNlcm5hbWUiOiJhZG1pbiIsInJvbGUiOiJSZWd1bGFyIEVtcGxveWVlIiwianRpIjoiMjRkYjM3MmFjZDFjNGVjMjg3YzBjMjg4MDE1Mzg1OGUiLCJpYXQiOjE3OTI0MzI4ODksImV4cCI6MTc5MjQzNjQ4OX0.rJ0lryk0LJyManEswq1pj_GYqzc8gA4ZbJWIW9sXE2k\",\n    \"token_type\": \"Bearer\",\n    \"expires_at\": \"2026-10-19 19:01:29\",\n    \"user\": {\n      \"user_id\": 2,\n      \"full_name\": \"Test admin\",\n      \"username\": \"admin\",\n      \"email\": \"admin@company.com\",\n      \"department\": \"IT\",\n      \"role\": \"Regular Employee\",\n      \"account_status\": \"Active\",\n      \"created_at\": \"2026-10-19 18:01:07\",\n      \"updated_at\": null,\n      \"last_login\": \"2026-10-19 18:01:29\",\n      \"failed_login_attempts\": 0\n    }\n  }\n}"
+						},
+						{
+							"name": "Login Request analyst",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"username\":\"analyst\",\"password\":\"Secure#Pass2026\"}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:5001/Hamed_Bou_Saleh/users/login",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "5001",
+									"path": [
+										"Hamed_Bou_Saleh",
+										"users",
+										"login"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "server",
+									"value": "Werkzeug/3.1.9 Python/3.13.7"
+								},
+								{
+									"key": "date",
+									"value": "Mon, 19 Oct 2026 20:25:42 GMT"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "content-length",
+									"value": "678"
+								},
+								{
+									"key": "x-student-name",
+									"value": "<Your Full Name>"
+								},
+								{
+									"key": "x-service-name",
+									"value": "Users and Identity Management Service"
+								},
+								{
+									"key": "x-content-type-options",
+									"value": "nosniff"
+								},
+								{
+									"key": "x-frame-options",
+									"value": "DENY"
+								},
+								{
+									"key": "cache-control",
+									"value": "no-store"
+								},
+								{
+									"key": "connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"status\": \"success\",\n  \"message\": \"Authentication successful\",\n  \"data\": {\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzIiwidXNlcm5hbWUiOiJhbmFseXN0Iiwicm9sZSI6IlNlY3VyaXR5IEFuYWx5c3QiLCJqdGkiOiI5MjUwMmJhMzI1OTM0N2EzYjE0NjFmMzNiN2NhMmIzMSIsImlhdCI6MTc5MjQ0MTU0MiwiZXhwIjoxNzkyNDQ1MTQyfQ.tKf2DW_zEQiKAY6ipAUBFJqzaE8pr3erXKjwmEn5zaw\",\n    \"token_type\": \"Bearer\",\n    \"expires_at\": \"2026-10-19 21:25:42\",\n    \"user\": {\n      \"user_id\": 3,\n      \"full_name\": \"Test analyst\",\n      \"username\": \"analyst\",\n      \"email\": \"analyst@company.com\",\n      \"department\": \"IT\",\n      \"role\": \"Security Analyst\",\n      \"account_status\": \"Active\",\n      \"created_at\": \"2026-10-19 18:01:07\",\n      \"updated_at\": null,\n      \"last_login\": \"2026-10-19 20:25:42\",\n      \"failed_login_attempts\": 0\n    }\n  }\n}"
+						},
+						{
+							"name": "Login Request auditor",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"username\":\"auditor\",\"password\":\"Secure#Pass2026\"}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:5001/Hamed_Bou_Saleh/users/login",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "5001",
+									"path": [
+										"Hamed_Bou_Saleh",
+										"users",
+										"login"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "server",
+									"value": "Werkzeug/3.1.9 Python/3.13.7"
+								},
+								{
+									"key": "date",
+									"value": "Mon, 19 Oct 2026 20:26:32 GMT"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "content-length",
+									"value": "657"
+								},
+								{
+									"key": "x-student-name",
+									"value": "<Your Full Name>"
+								},
+								{
+									"key": "x-service-name",
+									"value": "Users and Identity Management Service"
+								},
+								{
+									"key": "x-content-type-options",
+									"value": "nosniff"
+								},
+								{
+									"key": "x-frame-options",
+									"value": "DENY"
+								},
+								{
+									"key": "cache-control",
+									"value": "no-store"
+								},
+								{
+									"key": "connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"status\": \"success\",\n  \"message\": \"Authentication successful\",\n  \"data\": {\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0IiwidXNlcm5hbWUiOiJhdWRpdG9yIiwicm9sZSI6IkF1ZGl0b3IiLCJqdGkiOiI0MjMyMzQ4NzE5YWM0ODAwOTdjNjcwYzBjYWE3ZmQ1NyIsImlhdCI6MTc5MjQ0MTU5MSwiZXhwIjoxNzkyNDQ1MTkxfQ.O11CWdHoVk12Jx_bInhMKUXSo_bjbMQ5EIbmvo1JmcA\",\n    \"token_type\": \"Bearer\",\n    \"expires_at\": \"2026-10-19 21:26:31\",\n    \"user\": {\n      \"user_id\": 4,\n      \"full_name\": \"Test auditor\",\n      \"username\": \"auditor\",\n      \"email\": \"auditor@company.com\",\n      \"department\": \"IT\",\n      \"role\": \"Auditor\",\n      \"account_status\": \"Active\",\n      \"created_at\": \"2026-10-19 18:01:08\",\n      \"updated_at\": null,\n      \"last_login\": \"2026-10-19 20:26:31\",\n      \"failed_login_attempts\": 0\n    }\n  }\n}"
+						}
+					]
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"variable": [
+		{
+			"key": "token",
+			"value": ""
+		}
+	]
+}
