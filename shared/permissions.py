@@ -30,6 +30,30 @@ PERMISSIONS = {
     "notifications:mark_read": {ADMIN: ALL, ANALYST: OWN, EMPLOYEE: OWN},
     "notifications:search":    {ADMIN: ALL, AUDITOR: ALL, ANALYST: OWN},
     "notifications:delete":    {ADMIN: ALL},
+
+    #---------------- Service 3: Incident Management ----------------
+    "incidents:create":        {ADMIN: ALL, EMPLOYEE: ALL},
+    "incidents:list":          {ADMIN: ALL, AUDITOR: ALL, ANALYST: OWN, EMPLOYEE: OWN},
+    "incidents:view":          {ADMIN: ALL, AUDITOR: ALL, ANALYST: OWN, EMPLOYEE: OWN},
+    "incidents:assign":        {ADMIN: ALL},
+    "incidents:status":        {ADMIN: ALL, ANALYST: OWN},
+    "incidents:add_note":      {ADMIN: ALL, ANALYST: OWN},
+
+    #---------------- Service 4: Threat Intelligence ----------------
+    "threats:create":          {ADMIN: ALL},
+    "threats:list":            {ADMIN: ALL, AUDITOR: ALL, ANALYST: ALL},
+    "threats:view":            {ADMIN: ALL, AUDITOR: ALL, ANALYST: ALL},
+    "threats:search":          {ADMIN: ALL, AUDITOR: ALL, ANALYST: ALL},
+    "threats:update":          {ADMIN: ALL},
+    "threats:delete":          {ADMIN: ALL},
+
+    # ---------------- Service 9: Playbooks and Response----------------
+    "playbooks:create":        {ADMIN: ALL},
+    "playbooks:list":          {ADMIN: ALL, AUDITOR: ALL, ANALYST: ALL},
+    "playbooks:view":          {ADMIN: ALL, AUDITOR: ALL, ANALYST: ALL},
+    "playbooks:add_action":        {ADMIN: ALL, ANALYST: ALL},
+    "actions:update_status":        {ADMIN: ALL, ANALYST: ALL},
+    "playbooks:delete":        {ADMIN: ALL},
 }
 
 

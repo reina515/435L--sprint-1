@@ -7,13 +7,16 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, ROOT)
 
 from shared.config import (AUDIT_SERVICE_URL, NOTIFICATION_SERVICE_URL,
-                           USER_SERVICE_URL)
+                           USER_SERVICE_URL, INCIDENT_SERVICE_URL, THREAT_SERVICE_URL, PLAYBOOK_SERVICE_URL)
 from shared.db import init_db
 
 SERVICES = [
     ("Users", os.path.join(ROOT, "user_service", "app.py"), USER_SERVICE_URL),
     ("Audit Logging", os.path.join(ROOT, "audit_service", "app.py"), AUDIT_SERVICE_URL),
     ("Notifications", os.path.join(ROOT, "notification_service", "app.py"), NOTIFICATION_SERVICE_URL),
+    ("Incidents", os.path.join(ROOT, "incident_service", "app.py"), INCIDENT_SERVICE_URL),
+    ("Threats", os.path.join(ROOT, "threat_service", "app.py"), THREAT_SERVICE_URL),
+    ("Playbooks", os.path.join(ROOT, "playbook_service", "app.py"), PLAYBOOK_SERVICE_URL),
 ]
 
 

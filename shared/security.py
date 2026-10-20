@@ -87,6 +87,9 @@ NOTIFICATION_STATUSES = ("Unread", "Read")
 SERVICES = ("Users", "Assets", "Incidents", "Threat Intelligence", "Audit Logging",
             "Reports", "Vulnerabilities", "Notifications", "Playbooks")
 
+SEVERITIES = ("Low", "Medium", "High", "Critical")
+INCIDENT_CATEGORIES = ("Malware", "Phishing", "Unauthorized Access", "Data Leakage", "Denial of Service", "Account Compromise", "Other")
+
 
 # the body has to be a json object and it cannot be empty
 def require_json_object(data):
