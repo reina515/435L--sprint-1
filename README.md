@@ -275,6 +275,5 @@ off by default, password policy (8+ chars, upper, lower, digit, special, not con
 ---
 
 ## 5. GitHub
-`.gitignore` excludes `.env`, the database, logs, backups and certificates — secrets never reach GitHub.
-Each member works on their own branch (`reina-services`, `hayam-services`, …) and merges into `main`
-through a pull request.
+`.gitignore` excludes `.env`, the database, logs, backups and certificates, secrets never reach GitHub.
+.
