@@ -1,0 +1,599 @@
+{
+  "info": {
+    "_postman_id": "e37f4907-0ee0-5fc3-b785-d3f47bd41f4b",
+    "name": "Reina- service 8: notifications",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Reina- service 8: notifications – Reina Hani. Every route starts with /Reina_Hani."
+  },
+  "item": [
+    {
+      "name": "create notification – incident assignment",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": "{{base_url}}/Reina_Hani/notifications",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{admin_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"user_id\": 2,\n    \"title\": \"New incident assigned\",\n    \"message\": \"Incident #12 (phishing email) has been assigned to you.\",\n    \"notification_type\": \"Incident Assignment\",\n    \"severity\": \"High\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "description": "Reina Hani – create notification – incident assignment: POST request sent by the Security Administrator. Expected result: 201 Created."
+      }
+    },
+    {
+      "name": "create notification threat alert",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": "{{base_url}}/Reina_Hani/notifications",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{admin_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"user_id\": 2,\n    \"title\": \"Malicious IP detected\",\n    \"message\": \"IP 185.220.101.4 matched a known threat indicator.\",\n    \"notification_type\": \"Threat Alert\",\n    \"severity\": \"Critical\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "description": "Reina Hani – create notification threat alert: POST request sent by the Security Administrator. Expected result: 201 Created."
+      }
+    },
+    {
+      "name": "create notification vulnerability alert request",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": "{{base_url}}/Reina_Hani/notifications",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{admin_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"user_id\": 3,\n    \"title\": \"Vulnerability found on your laptop\",\n    \"message\": \"CVE-2024-3400 was found on asset LAPTOP-07. Please install the latest updates.\",\n    \"notification_type\": \"Vulnerability Alert\",\n    \"severity\": \"High\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "description": "Reina Hani – create notification vulnerability alert request: POST request sent by the Security Administrator. Expected result: 201 Created."
+      }
+    },
+    {
+      "name": "create notification invalid user id",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": "{{base_url}}/Reina_Hani/notifications",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{admin_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"user_id\": 88,\n    \"title\": \"New incident assigned\",\n    \"message\": \"Incident #14 has been assigned to you.\",\n    \"notification_type\": \"Incident Assignment\",\n    \"severity\": \"Medium\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "description": "Reina Hani – create notification invalid user id: POST request sent by the Security Administrator. Expected result: 404 Not Found."
+      }
+    },
+    {
+      "name": "create notification invalid type",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": "{{base_url}}/Reina_Hani/notifications",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{admin_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"user_id\": 2,\n    \"title\": \"Storm warning\",\n    \"message\": \"Heavy rain expected tomorrow.\",\n    \"notification_type\": \"Weather Alert\",\n    \"severity\": \"Low\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "description": "Reina Hani – create notification invalid type: POST request sent by the Security Administrator. Expected result: 400 Bad Request."
+      }
+    },
+    {
+      "name": "create notification analyst token",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": "{{base_url}}/Reina_Hani/notifications",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{analyst_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"user_id\": 3,\n    \"title\": \"Reminder\",\n    \"message\": \"Please change your password.\",\n    \"notification_type\": \"System Notification\",\n    \"severity\": \"Low\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "description": "Reina Hani – create notification analyst token: POST request sent by the Security Analyst. Expected result: 403 Forbidden."
+      }
+    },
+    {
+      "name": "analyst views their own notifications",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{base_url}}/Reina_Hani/notifications/user/2",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{analyst_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "description": "Reina Hani – analyst views their own notifications: GET request sent by the Security Analyst. Expected result: 200 OK."
+      }
+    },
+    {
+      "name": "auditor views the employee’s notifications",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{base_url}}/Reina_Hani/notifications/user/3",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{auditor_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "description": "Reina Hani – auditor views the employee’s notifications: GET request sent by the Auditor. Expected result: 200 OK."
+      }
+    },
+    {
+      "name": "employee tries to view someone else’s",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{base_url}}/Reina_Hani/notifications/user/2",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{employee_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "description": "Reina Hani – employee tries to view someone else’s: GET request sent by the Regular Employee. Expected result: 403 Forbidden."
+      }
+    },
+    {
+      "name": "Get notification",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{base_url}}/Reina_Hani/notifications/{{notification_id}}",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{analyst_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "description": "Reina Hani – Get notification: GET request sent by the Security Analyst. Expected result: 200 OK."
+      }
+    },
+    {
+      "name": "get notification not found",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{base_url}}/Reina_Hani/notifications/999",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{admin_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "description": "Reina Hani – get notification not found: GET request sent by the Security Administrator. Expected result: 404 Not Found."
+      }
+    },
+    {
+      "name": "get notification not owner",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{base_url}}/Reina_Hani/notifications/{{notification_id}}",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{employee_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "description": "Reina Hani – get notification not owner: GET request sent by the Regular Employee. Expected result: 403 Forbidden."
+      }
+    },
+    {
+      "name": "mark read auditor denied",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "url": "{{base_url}}/Reina_Hani/notifications/{{notification_id}}/read",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{auditor_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "description": "Reina Hani – mark read auditor denied: PUT request sent by the Auditor. Expected result: 403 Forbidden."
+      }
+    },
+    {
+      "name": "mark read not owner",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "url": "{{base_url}}/Reina_Hani/notifications/{{notification_id}}/read",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{employee_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "description": "Reina Hani – mark read not owner: PUT request sent by the Regular Employee. Expected result: 403 Forbidden."
+      }
+    },
+    {
+      "name": "mark read owner request",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "url": "{{base_url}}/Reina_Hani/notifications/{{notification_id}}/read",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{analyst_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "description": "Reina Hani – mark read owner request: PUT request sent by the Security Analyst. Expected result: 200 OK."
+      }
+    },
+    {
+      "name": "mark read again",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "url": "{{base_url}}/Reina_Hani/notifications/{{notification_id}}/read",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{analyst_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "description": "Reina Hani – mark read again: PUT request sent by the Security Analyst. Expected result: 200 OK."
+      }
+    },
+    {
+      "name": "search by user auditor token",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{base_url}}/Reina_Hani/notifications/search?user_id=2",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{auditor_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "description": "Reina Hani – search by user auditor token: GET request sent by the Auditor. Expected result: 200 OK."
+      }
+    },
+    {
+      "name": "search by type auditor token",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{base_url}}/Reina_Hani/notifications/search?type=Threat Alert",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{auditor_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "description": "Reina Hani – search by type auditor token: GET request sent by the Auditor. Expected result: 200 OK."
+      }
+    },
+    {
+      "name": "search by severity- auditor",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{base_url}}/Reina_Hani/notifications/search?severity=Critical",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{auditor_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "description": "Reina Hani – search by severity- auditor: GET request sent by the Auditor. Expected result: 200 OK."
+      }
+    },
+    {
+      "name": "search analyst own",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{base_url}}/Reina_Hani/notifications/search?status=Unread",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{analyst_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "description": "Reina Hani – search analyst own: GET request sent by the Security Analyst. Expected result: 200 OK."
+      }
+    },
+    {
+      "name": "search analyst other user",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{base_url}}/Reina_Hani/notifications/search?user_id=3",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{analyst_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "description": "Reina Hani – search analyst other user: GET request sent by the Security Analyst. Expected result: 403 Forbidden."
+      }
+    },
+    {
+      "name": "search employee",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{base_url}}/Reina_Hani/notifications/search?status=Unread",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{employee_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "description": "Reina Hani – search employee: GET request sent by the Regular Employee. Expected result: 403 Forbidden."
+      }
+    },
+    {
+      "name": "delete notification analyst",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": "{{base_url}}/Reina_Hani/notifications/{{delete_notification_id}}",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{analyst_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "description": "Reina Hani – delete notification analyst: DELETE request sent by the Security Analyst. Expected result: 403 Forbidden."
+      }
+    },
+    {
+      "name": "delete notification employee",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": "{{base_url}}/Reina_Hani/notifications/{{delete_notification_id}}",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{employee_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "description": "Reina Hani – delete notification employee: DELETE request sent by the Regular Employee. Expected result: 403 Forbidden."
+      }
+    },
+    {
+      "name": "delete notification admin",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": "{{base_url}}/Reina_Hani/notifications/{{delete_notification_id}}",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{admin_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "description": "Reina Hani – delete notification admin: DELETE request sent by the Security Administrator. Expected result: 200 OK."
+      }
+    },
+    {
+      "name": "get deleted notification",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{base_url}}/Reina_Hani/notifications/{{delete_notification_id}}",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{admin_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "description": "Reina Hani – get deleted notification: GET request sent by the Security Administrator. Expected result: 404 Not Found."
+      }
+    },
+    {
+      "name": "get user notification",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{base_url}}/Reina_Hani/notifications/user/{{no_notifications_user_id}}",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{admin_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "description": "Reina Hani – get user notification: GET request sent by the Security Administrator. Expected result: 200 OK."
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://127.0.0.1:5008",
+      "type": "string"
+    },
+    {
+      "key": "notification_id",
+      "value": "12",
+      "type": "string"
+    },
+    {
+      "key": "delete_notification_id",
+      "value": "11",
+      "type": "string"
+    },
+    {
+      "key": "no_notifications_user_id",
+      "value": "8",
+      "type": "string"
+    }
+  ]
+}

@@ -1,15 +1,8 @@
-"""User domain model (Users and Identity Management Service)."""
 from shared.security import crypto
 
 
 class User:
-    """One row of the `users` table.
-
-    The email is stored encrypted, so it is decrypted here when the object is built.
-    password_hash and email_hash are kept on the object for internal use but are
-    NEVER included in API responses (see to_dict).
-    """
-
+    # builds a User from a database row and decrypts the email
     def __init__(self, row):
         self.user_id = row["user_id"]
         self.full_name = row["full_name"]
@@ -24,10 +17,12 @@ class User:
         self.updated_at = row["updated_at"]
         self.last_login = row["last_login"]
 
+    # true when the account status is Active
     @property
     def is_active(self):
         return self.account_status == "Active"
 
+    # what i send back in the api, without the password hash
     def to_dict(self):
         return {
             "user_id": self.user_id,
@@ -43,7 +38,7 @@ class User:
             "failed_login_attempts": self.failed_login_attempts,
         }
 
+    # smaller version of the user that other services get
     def to_public_dict(self):
-        """Minimal view returned to other services through /internal endpoints."""
         return {"user_id": self.user_id, "username": self.username, "full_name": self.full_name,
                 "role": self.role, "account_status": self.account_status}

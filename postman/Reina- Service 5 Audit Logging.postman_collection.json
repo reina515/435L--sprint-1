@@ -1,0 +1,629 @@
+{
+  "info": {
+    "_postman_id": "bc02904b-82b6-559a-af3e-3ebea401fe59",
+    "name": "Reina- Service 5: Audit Logging",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Reina- Service 5: Audit Logging – Reina Hani. Every route starts with /Reina_Hani."
+  },
+  "item": [
+    {
+      "name": "create user rami for logs",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": "{{users_url}}/Reina_Hani/users/register",
+        "auth": {
+          "type": "noauth"
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"full_name\": \"Rami Saad\",\n    \"username\": \"rsaad\",\n    \"email\": \"rami.saad@company.com\",\n    \"password\": \"Rami#Secure2026\",\n    \"department\": \"Legal\",\n    \"role\": \"Regular Employee\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "description": "Reina Hani – create user rami for logs: POST request no login token. Expected result: 201 Created."
+      }
+    },
+    {
+      "name": "admin changes rami’s role",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "url": "{{users_url}}/Reina_Hani/users/{{rami_id}}",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{admin_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"role\": \"Auditor\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "description": "Reina Hani – admin changes rami’s role: PUT request sent by the Security Administrator. Expected result: 200 OK."
+      }
+    },
+    {
+      "name": "search logs – user rsaad",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseurl}}/Reina_Hani/logs/search?user=rsaad",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{admin_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "description": "Reina Hani – search logs – user rsaad: GET request sent by the Security Administrator. Expected result: 200 OK."
+      }
+    },
+    {
+      "name": "search logs – action ROLE_CHANGED",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseurl}}/Reina_Hani/logs/search?action=ROLE_CHANGED",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{admin_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "description": "Reina Hani – search logs – action ROLE_CHANGED: GET request sent by the Security Administrator. Expected result: 200 OK."
+      }
+    },
+    {
+      "name": "admin create log",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": "{{baseurl}}/Reina_Hani/logs",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{admin_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"user_id\": 2,\n    \"action\": \"INCIDENT_CREATED\",\n    \"description\": \"Analyst opened incident #12 (phishing email reported by Finance)\",\n    \"severity\": \"Information\",\n    \"related_service\": \"Incidents\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "description": "Reina Hani – admin create log: POST request sent by the Security Administrator. Expected result: 201 Created."
+      }
+    },
+    {
+      "name": "admin create log warning",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": "{{baseurl}}/Reina_Hani/logs",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{admin_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"user_id\": 3,\n    \"action\": \"ASSET_MODIFIED\",\n    \"description\": \"Employee changed the location of asset LAPTOP-07\",\n    \"severity\": \"Warning\",\n    \"related_service\": \"Assets\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "description": "Reina Hani – admin create log warning: POST request sent by the Security Administrator. Expected result: 201 Created."
+      }
+    },
+    {
+      "name": "admin create log critical",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": "{{baseurl}}/Reina_Hani/logs",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{admin_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"user_id\": 1,\n    \"action\": \"THREAT_DETECTED\",\n    \"description\": \"Traffic to known malicious IP 185.220.101.4 detected\",\n    \"severity\": \"Critical\",\n    \"related_service\": \"Threat Intelligence\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "description": "Reina Hani – admin create log critical: POST request sent by the Security Administrator. Expected result: 201 Created."
+      }
+    },
+    {
+      "name": "admin create log test",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": "{{baseurl}}/Reina_Hani/logs",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{admin_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"user_id\": 1,\n    \"action\": \"TEST_EVENT\",\n    \"description\": \"Test log created to demonstrate deletion\",\n    \"severity\": \"Information\",\n    \"related_service\": \"Audit Logging\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "description": "Reina Hani – admin create log test: POST request sent by the Security Administrator. Expected result: 201 Created."
+      }
+    },
+    {
+      "name": "create log- invalid severity",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": "{{baseurl}}/Reina_Hani/logs",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{admin_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"user_id\": 2,\n    \"action\": \"INCIDENT_CREATED\",\n    \"description\": \"Analyst opened incident #13\",\n    \"severity\": \"Extreme\",\n    \"related_service\": \"Incidents\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "description": "Reina Hani – create log- invalid severity: POST request sent by the Security Administrator. Expected result: 400 Bad Request."
+      }
+    },
+    {
+      "name": "auditor create log",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": "{{baseurl}}/Reina_Hani/logs",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{auditor_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"user_id\": 4,\n    \"action\": \"AUDIT_REVIEW\",\n    \"description\": \"Auditor tries to add a log record\",\n    \"severity\": \"Information\",\n    \"related_service\": \"Audit Logging\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "description": "Reina Hani – auditor create log: POST request sent by the Auditor. Expected result: 403 Forbidden."
+      }
+    },
+    {
+      "name": "create log empty body",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": "{{baseurl}}/Reina_Hani/logs",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{admin_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "description": "Reina Hani – create log empty body: POST request sent by the Security Administrator. Expected result: 400 Bad Request."
+      }
+    },
+    {
+      "name": "get all logs admin",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseurl}}/Reina_Hani/logs",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{admin_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "description": "Reina Hani – get all logs admin: GET request sent by the Security Administrator. Expected result: 200 OK."
+      }
+    },
+    {
+      "name": "get all logs analyst",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseurl}}/Reina_Hani/logs",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{analyst_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "description": "Reina Hani – get all logs analyst: GET request sent by the Security Analyst. Expected result: 403 Forbidden."
+      }
+    },
+    {
+      "name": "get specific log (analyst token)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseurl}}/Reina_Hani/logs/{{role_log_id}}",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{analyst_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "description": "Reina Hani – get specific log (analyst token): GET request sent by the Security Analyst. Expected result: 200 OK."
+      }
+    },
+    {
+      "name": "get specific log admin token",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseurl}}/Reina_Hani/logs/2999",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{admin_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "description": "Reina Hani – get specific log admin token: GET request sent by the Security Administrator. Expected result: 404 Not Found."
+      }
+    },
+    {
+      "name": "search logs by date",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseurl}}/Reina_Hani/logs/search?date={{today}}",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{admin_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "description": "Reina Hani – search logs by date: GET request sent by the Security Administrator. Expected result: 200 OK."
+      }
+    },
+    {
+      "name": "search logs by severity",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseurl}}/Reina_Hani/logs/search?severity=Warning",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{admin_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "description": "Reina Hani – search logs by severity: GET request sent by the Security Administrator. Expected result: 200 OK."
+      }
+    },
+    {
+      "name": "search logs by service",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseurl}}/Reina_Hani/logs/search?service=Incidents",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{admin_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "description": "Reina Hani – search logs by service: GET request sent by the Security Administrator. Expected result: 200 OK."
+      }
+    },
+    {
+      "name": "search logs user + severity",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseurl}}/Reina_Hani/logs/search?user=analyst&severity=Warning",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{admin_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "description": "Reina Hani – search logs user + severity: GET request sent by the Security Administrator. Expected result: 200 OK."
+      }
+    },
+    {
+      "name": "delete log analyst",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": "{{baseurl}}/Reina_Hani/logs/{{test_log_id}}",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{analyst_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "description": "Reina Hani – delete log analyst: DELETE request sent by the Security Analyst. Expected result: 403 Forbidden."
+      }
+    },
+    {
+      "name": "delete log admin",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": "{{baseurl}}/Reina_Hani/logs/{{test_log_id}}",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{admin_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "description": "Reina Hani – delete log admin: DELETE request sent by the Security Administrator. Expected result: 200 OK."
+      }
+    },
+    {
+      "name": "logs by user id3",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseurl}}/Reina_Hani/logs/user/3",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{admin_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "description": "Reina Hani – logs by user id3: GET request sent by the Security Administrator. Expected result: 200 OK."
+      }
+    },
+    {
+      "name": "user logs id2 auditor token",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseurl}}/Reina_Hani/logs/user/2",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{auditor_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "description": "Reina Hani – user logs id2 auditor token: GET request sent by the Auditor. Expected result: 200 OK."
+      }
+    },
+    {
+      "name": "register user with no logs",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": "{{users_url}}/Reina_Hani/users/register",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{admin_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"full_name\": \"Nour Khoury\",\n    \"username\": \"nkhoury\",\n    \"email\": \"nour.khoury@company.com\",\n    \"password\": \"Nour#Secure2026\",\n    \"department\": \"HR\",\n    \"role\": \"Regular Employee\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "description": "Reina Hani – register user with no logs: POST request sent by the Security Administrator. Expected result: 201 Created."
+      }
+    },
+    {
+      "name": "logs for new user",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseurl}}/Reina_Hani/logs/user/{{no_logs_user_id}}",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{admin_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "description": "Reina Hani – logs for new user: GET request sent by the Security Administrator. Expected result: 200 OK."
+      }
+    },
+    {
+      "name": "logs for a deleted user",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseurl}}/Reina_Hani/logs/user/{{deleted_user_id}}",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{auditor_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "description": "Reina Hani – logs for a deleted user: GET request sent by the Auditor. Expected result: 200 OK."
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseurl",
+      "value": "http://127.0.0.1:5005",
+      "type": "string"
+    },
+    {
+      "key": "users_url",
+      "value": "http://127.0.0.1:5001",
+      "type": "string"
+    },
+    {
+      "key": "rami_id",
+      "value": "7",
+      "type": "string"
+    },
+    {
+      "key": "today",
+      "value": "2026-10-19",
+      "type": "string"
+    },
+    {
+      "key": "role_log_id",
+      "value": "32",
+      "type": "string"
+    },
+    {
+      "key": "test_log_id",
+      "value": "37",
+      "type": "string"
+    },
+    {
+      "key": "no_logs_user_id",
+      "value": "8",
+      "type": "string"
+    },
+    {
+      "key": "deleted_user_id",
+      "value": "5",
+      "type": "string"
+    }
+  ]
+}

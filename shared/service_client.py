@@ -1,13 +1,3 @@
-"""
-Service-to-service communication over REST.
-
-Services talk to each other through HTTP API calls (project requirement) and
-prove they are a trusted internal service with the X-Service-Key header.
-The key is compared in constant time (hmac.compare_digest).
-
-Calls are *non-fatal*: if another service is down, the calling service keeps
-working and writes the problem to its local log file instead of crashing.
-"""
 import logging
 
 import requests
@@ -19,9 +9,11 @@ SERVICE_KEY_HEADER = "X-Service-Key"
 
 
 class ServiceClient:
+    # saves the base url of the service i want to call
     def __init__(self, base_url):
         self.base_url = base_url.rstrip("/")
 
+    # does the actual http call with the service key and never crashes if the other service is down
     def _request(self, method, path, **kwargs):
         headers = kwargs.pop("headers", {})
         headers[SERVICE_KEY_HEADER] = SERVICE_API_KEY
@@ -41,8 +33,10 @@ class ServiceClient:
             log.warning("Call %s %s%s failed: %s", method, self.base_url, path, exc)
             return None, {}
 
+    # shortcut for a get request
     def get(self, path, **kwargs):
         return self._request("GET", path, **kwargs)
 
+    # shortcut for a post request with a json body
     def post(self, path, json=None, **kwargs):
         return self._request("POST", path, json=json, **kwargs)

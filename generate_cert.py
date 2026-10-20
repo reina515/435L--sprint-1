@@ -1,13 +1,3 @@
-"""
-Optional HTTPS (Lab 2 item 11: "Use HTTPS for network communication").
-
-    python generate_cert.py      # creates certs/cert.pem and certs/key.pem (self-signed, localhost)
-    then set USE_HTTPS=true in .env and restart the services.
-
-Services then listen on https://127.0.0.1:<port> and verify each other's certificate.
-In Postman: Settings -> General -> turn OFF "SSL certificate verification"
-(the certificate is self-signed), and use https:// in the base URLs.
-"""
 import datetime
 import ipaddress
 import os
@@ -21,6 +11,7 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 CERT_DIR = os.path.join(ROOT, "certs")
 
 
+# makes a self signed certificate for localhost so the services can use https
 def main():
     os.makedirs(CERT_DIR, exist_ok=True)
     key = rsa.generate_private_key(public_exponent=65537, key_size=2048)

@@ -1,28 +1,13 @@
-"""
-Inserts one sample user per role (the 4 personas) so you can log in and test right away.
-    python database/seed.py
-
-The first Security Administrator has to be created this way: through the API,
-only an administrator may create privileged accounts. Any additional users
-(e.g. new employees) are created through Postman with POST /users/register.
-
-| username | password       | role                   |
-|----------|----------------|------------------------|
-| admin    | Admin@12345    | Security Administrator |
-| analyst  | Analyst@12345  | Security Analyst       |
-| employee | Employee@12345 | Regular Employee       |
-| auditor  | Auditor@12345  | Auditor                |
-"""
 import os
 import sys
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from shared.db import init_db                                  # noqa: E402
-from shared.security import PasswordHasher                     # noqa: E402
-from user_service.repository import UserRepository             # noqa: E402
-from audit_service.repository import AuditLogRepository        # noqa: E402
-from notification_service.repository import NotificationRepository  # noqa: E402
+from shared.db import init_db
+from shared.security import PasswordHasher
+from user_service.repository import UserRepository
+from audit_service.repository import AuditLogRepository
+from notification_service.repository import NotificationRepository
 
 SAMPLE_USERS = [
     ("System Administrator", "admin", "admin@security.local", "Admin@12345", "IT Security",
@@ -36,6 +21,7 @@ SAMPLE_USERS = [
 ]
 
 
+# adds one test user for each role so i can log in right away
 def main():
     init_db()
     users, logs, notes = UserRepository(), AuditLogRepository(), NotificationRepository()

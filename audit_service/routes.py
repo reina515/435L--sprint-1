@@ -1,19 +1,3 @@
-"""
-Service 5 - Security Audit Logging Service (port 5005)
-Implemented by: <Your Full Name>   (also sent in the X-Student-Name response header)
-
-Endpoints
-  POST   /logs                  create a log record       (Admin, or another service with X-Service-Key)
-  GET    /logs                  list all logs             (Admin, Auditor)
-  GET    /logs/{id}             get one log               (Admin, Auditor, Analyst)
-  GET    /logs/search           filter logs               (Admin, Auditor, Analyst)
-  DELETE /logs/{id}             delete a log              (Admin)
-  GET    /logs/user/{user_id}   logs of one user          (Admin, Auditor)
-
-Logs generated automatically by all services: successful/failed logins, blocked logins,
-brute-force detection, user creation/update/deletion, role and status changes,
-unauthorized/unauthenticated access attempts, notification changes, log deletions.
-"""
 import logging
 import re
 import threading
@@ -41,6 +25,7 @@ SEARCH_PARAMS = ["user", "user_id", "action", "severity", "service", "related_se
                  "date", "date_from", "date_to", "limit", "offset"]
 
 
+# turns an action like login failed into LOGIN_FAILED and checks it is valid
 def normalize_action(value):
     if not isinstance(value, str):
         raise ValidationError("'action' must be a string")
@@ -51,16 +36,16 @@ def normalize_action(value):
     return value
 
 
+# saves the log and if it is Critical it alerts the admins in the background
 def store_log(user_id, action, description, severity, related_service):
-    """Writes a log and, if it is Critical, alerts every active administrator."""
     log_id = repo.create(user_id, action, description, severity, related_service)
     if severity == "Critical":
-        # Run in the background so the request is not slowed down by the alert fan-out
         threading.Thread(target=_alert_admins, args=(log_id, action, description, related_service),
                          daemon=True).start()
     return log_id
 
 
+# sends a critical notification to every active admin
 def _alert_admins(log_id, action, description, related_service):
     try:
         for admin in get_users_by_role(ADMIN):
@@ -70,22 +55,17 @@ def _alert_admins(log_id, action, description, related_service):
         log.error("Could not alert administrators about critical log #%s: Users service down", log_id)
 
 
+# lets the audit service save its own logs without calling itself over http
 def local_writer(user_id, action, description, severity, related_service):
-    """Used by shared.audit_client inside THIS service (no HTTP call to itself)."""
     store_log(user_id, normalize_action(action), description, severity, related_service)
 
 
-# =====================================================================
-# 1. Create Log Record - POST /logs
-#    Student: <Your Full Name>
-# =====================================================================
+# POST /logs creates a log record, for admins or other services
 @bp.route("/logs", methods=["POST"])
 @require_permission("logs:create", allow_service=True)
 def create_log():
     data = require_json_object(request.get_json(silent=True))
     reject_unknown_fields(data, CREATE_FIELDS)
-    # A human admin must name the user; a service may log events with no known user
-    # (e.g. a failed login for a username that does not exist) by sending user_id = null
     required = ["action", "description", "severity", "related_service"]
     if not g.is_service:
         required.insert(0, "user_id")
@@ -107,10 +87,7 @@ def create_log():
     return success("Log record created successfully", repo.get_by_id(log_id).to_dict(), 201)
 
 
-# =====================================================================
-# 2. Retrieve All Logs - GET /logs
-#    Student: <Your Full Name>
-# =====================================================================
+# GET /logs lists all logs for admins and auditors
 @bp.route("/logs", methods=["GET"])
 @require_permission("logs:list")
 def get_all_logs():
@@ -120,10 +97,7 @@ def get_all_logs():
                    count=len(logs), total=repo.count(), limit=limit, offset=offset)
 
 
-# =====================================================================
-# 4. Search Logs - GET /logs/search?user=&action=&severity=&service=&date=&date_from=&date_to=
-#    Student: <Your Full Name>
-# =====================================================================
+# GET /logs/search filters logs by user, action, severity, service or date
 @bp.route("/logs/search", methods=["GET"])
 @require_permission("logs:search")
 def search_logs():
@@ -160,10 +134,7 @@ def search_logs():
                    count=len(logs), total=total, filters=filters)
 
 
-# =====================================================================
-# 6. Retrieve Logs By User - GET /logs/user/{user_id}
-#    Student: <Your Full Name>
-# =====================================================================
+# GET /logs/user/{user_id} shows everything one user did
 @bp.route("/logs/user/<user_id>", methods=["GET"])
 @require_permission("logs:by_user")
 def get_logs_by_user(user_id):
@@ -176,10 +147,7 @@ def get_logs_by_user(user_id):
                    user_exists=repo.user_exists(user_id), count=len(logs), total=total)
 
 
-# =====================================================================
-# 3. Retrieve Specific Log - GET /logs/{id}
-#    Student: <Your Full Name>
-# =====================================================================
+# GET /logs/{id} returns a single log or 404
 @bp.route("/logs/<log_id>", methods=["GET"])
 @require_permission("logs:view")
 def get_log(log_id):
@@ -190,10 +158,7 @@ def get_log(log_id):
     return success("Log retrieved successfully", entry.to_dict())
 
 
-# =====================================================================
-# 5. Delete Logs - DELETE /logs/{id}
-#    Student: <Your Full Name>
-# =====================================================================
+# DELETE /logs/{id} only admins can delete, and the delete itself gets logged
 @bp.route("/logs/<log_id>", methods=["DELETE"])
 @require_permission("logs:delete")
 def delete_log(log_id):
@@ -203,7 +168,6 @@ def delete_log(log_id):
         return not_found(f"Log with id {log_id} not found")
     repo.delete(log_id)
     me = g.current_user
-    # The deletion itself is recorded, so removing evidence always leaves a trace
     log_event(user_id=me["user_id"], action="LOG_DELETED",
               description=f"Administrator '{me['username']}' deleted audit log #{log_id} "
                           f"(action {entry.action}, severity {entry.severity}, recorded {entry.timestamp})",

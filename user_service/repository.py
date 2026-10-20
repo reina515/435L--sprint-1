@@ -1,14 +1,12 @@
-"""Database access for the users table. Every query is parameterized (?)."""
 from shared.db import get_db
 from shared.security import crypto, utc_now
 from user_service.models import User
 
-# Columns a caller is allowed to change through update(); protects against
-# building SQL from arbitrary dictionary keys.
 UPDATABLE_COLUMNS = {"full_name", "email", "department", "role", "account_status"}
 
 
 class UserRepository:
+    # inserts a new user with the email encrypted and returns the new id
     def create(self, full_name, username, email, password_hash, department, role,
                account_status="Active"):
         conn = get_db()
@@ -24,6 +22,7 @@ class UserRepository:
         finally:
             conn.close()
 
+    # runs a query and wraps the row in a User
     def _fetch_one(self, sql, params):
         conn = get_db()
         try:
@@ -32,20 +31,24 @@ class UserRepository:
         finally:
             conn.close()
 
+    # finds a user by id
     def get_by_id(self, user_id):
         return self._fetch_one("SELECT * FROM users WHERE user_id = ?", (user_id,))
 
+    # finds a user by username, capital letters do not matter
     def get_by_username(self, username):
-        # username column is COLLATE NOCASE -> 'Admin' and 'admin' are the same user
         return self._fetch_one("SELECT * FROM users WHERE username = ?", (username,))
 
+    # finds a user by email using the email hash
     def get_by_email(self, email):
         return self._fetch_one("SELECT * FROM users WHERE email_hash = ?", (crypto.blind_index(email),))
 
+    # checks if some other user already uses this email
     def email_taken(self, email, exclude_user_id=None):
         user = self.get_by_email(email)
         return user is not None and user.user_id != exclude_user_id
 
+    # lists users with paging, and can filter by role or status
     def list_all(self, limit=100, offset=0, role=None, status=None):
         sql, params = "SELECT * FROM users WHERE 1=1", []
         if role:
@@ -62,6 +65,7 @@ class UserRepository:
         finally:
             conn.close()
 
+    # how many users there are in total
     def count(self):
         conn = get_db()
         try:
@@ -69,6 +73,7 @@ class UserRepository:
         finally:
             conn.close()
 
+    # saves the changed fields of a user and updates updated_at
     def update(self, user_id, changes):
         columns, params = [], []
         for column, value in changes.items():
@@ -89,6 +94,7 @@ class UserRepository:
         finally:
             conn.close()
 
+    # deletes the user and returns True if a row was removed
     def delete(self, user_id):
         conn = get_db()
         try:
@@ -98,6 +104,7 @@ class UserRepository:
         finally:
             conn.close()
 
+    # adds one to the failed login counter and returns the new count
     def record_failed_login(self, user_id):
         conn = get_db()
         try:
@@ -109,6 +116,7 @@ class UserRepository:
         finally:
             conn.close()
 
+    # after a good login the counter goes back to 0 and last_login is saved
     def record_successful_login(self, user_id):
         conn = get_db()
         try:

@@ -1,16 +1,11 @@
-"""
-Creates the database file and all tables from schema.sql.
-    python database/init_db.py
-(The services also call init_db() on startup, so this is optional.)
-"""
 import os
 import sqlite3
 import sys
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from shared.config import DATABASE_PATH   # noqa: E402
-from shared.db import init_db             # noqa: E402
+from shared.config import DATABASE_PATH
+from shared.db import init_db
 
 if __name__ == "__main__":
     init_db()
