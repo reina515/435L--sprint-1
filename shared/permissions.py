@@ -54,6 +54,30 @@ PERMISSIONS = {
     "playbooks:add_action":        {ADMIN: ALL, ANALYST: ALL},
     "actions:update_status":        {ADMIN: ALL, ANALYST: ALL},
     "playbooks:delete":        {ADMIN: ALL},
+
+    # ---------------- Service 2: Asset Management ----------------
+    "assets:create":           {ADMIN: ALL},
+    "assets:list":             {ADMIN: ALL, AUDITOR: ALL},
+    "assets:view":             {ADMIN: ALL, ANALYST: ALL, AUDITOR: ALL},
+    "assets:search":           {ADMIN: ALL, ANALYST: ALL, AUDITOR: ALL},
+    "assets:update":           {ADMIN: ALL},
+    "assets:delete":           {ADMIN: ALL},
+
+    # ---------------- Service 7: Vulnerability Management ----------------
+    "vulnerabilities:create":  {ADMIN: ALL},
+    "vulnerabilities:list":    {ADMIN: ALL, ANALYST: ALL, AUDITOR: ALL},
+    "vulnerabilities:view":    {ADMIN: ALL, ANALYST: ALL, AUDITOR: ALL},
+    "vulnerabilities:search":  {ADMIN: ALL, ANALYST: ALL, AUDITOR: ALL},
+    "vulnerabilities:update":  {ADMIN: ALL, ANALYST: ALL},
+    "vulnerabilities:delete":  {ADMIN: ALL},
+
+    # ---------------- Service 6: Security Reports ----------------
+    "reports:summary":         {ADMIN: ALL, AUDITOR: ALL},
+    "reports:incidents":       {ADMIN: ALL, AUDITOR: ALL},
+    "reports:assets":          {ADMIN: ALL, AUDITOR: ALL},
+    "reports:threats":         {ADMIN: ALL, AUDITOR: ALL},
+    "reports:vulnerabilities": {ADMIN: ALL, AUDITOR: ALL},
+    "reports:activity":        {ADMIN: ALL, AUDITOR: ALL},
 }
 
 
