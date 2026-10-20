@@ -60,6 +60,17 @@ Full endpoint references:
 
 **Requirements:** Python 3.11 or newer. Everything else is in `requirements.txt` (Flask, PyJWT, bcrypt, cryptography, requests, python-dotenv).
 
+### Running the submitted zip (with our data)
+
+The zip uploaded to Moodle also contains our database (`database/security.db`) and the keys that read it (`env (rename to .env).txt`). These two files are not on GitHub. To run the zip with our data:
+
+1. Rename `env (rename to .env).txt` to `.env` in the project root, **before** running `setup_env.py` (`setup_env.py` then leaves it alone).
+2. Create the virtual environment and install the requirements (the `venv` and `pip install` steps below).
+3. Skip `database/init_db.py` and `database/seed.py`: `security.db` already holds our data and the sample accounts.
+4. Run `python run_all.py`.
+
+If `setup_env.py` runs before step 1, it creates new keys, and the encrypted fields (emails, log descriptions, notification messages) show as `[unable to decrypt]`.
+
 ### One-time setup
 
 Windows (PowerShell or CMD):
