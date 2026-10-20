@@ -1,0 +1,605 @@
+{
+  "info": {
+    "_postman_id": "cf307cef-08e3-5846-91ac-d60dc206ecb4",
+    "name": "Reina- Service 1: users",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Reina- Service 1: users – Reina Hani. Every route starts with /Reina_Hani."
+  },
+  "item": [
+    {
+      "name": "login- admin",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": "{{users_url}}/Reina_Hani/users/login",
+        "auth": {
+          "type": "noauth"
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"username\": \"admin\",\n    \"password\": \"Admin@12345\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "description": "Reina Hani – login- admin: POST request no login token. Expected result: 200 OK."
+      }
+    },
+    {
+      "name": "login-analyst",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": "{{users_url}}/Reina_Hani/users/login",
+        "auth": {
+          "type": "noauth"
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"username\": \"analyst\",\n    \"password\": \"Analyst@12345\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "description": "Reina Hani – login-analyst: POST request no login token. Expected result: 200 OK."
+      }
+    },
+    {
+      "name": "login-employee",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": "{{users_url}}/Reina_Hani/users/login",
+        "auth": {
+          "type": "noauth"
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"username\": \"employee\",\n    \"password\": \"Employee@12345\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "description": "Reina Hani – login-employee: POST request no login token. Expected result: 200 OK."
+      }
+    },
+    {
+      "name": "login-auditor",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": "{{users_url}}/Reina_Hani/users/login",
+        "auth": {
+          "type": "noauth"
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"username\": \"auditor\",\n    \"password\": \"Auditor@12345\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "description": "Reina Hani – login-auditor: POST request no login token. Expected result: 200 OK."
+      }
+    },
+    {
+      "name": "register",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": "{{users_url}}/Reina_Hani/users/register",
+        "auth": {
+          "type": "noauth"
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"full_name\": \"Maya Haddad\",\n    \"username\": \"mhaddad\",\n    \"email\": \"maya.haddad@company.com\",\n    \"password\": \"Secure#Pass2026\",\n    \"department\": \"Finance\",\n    \"role\": \"Regular Employee\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "description": "Reina Hani – register: POST request no login token. Expected result: 201 Created."
+      }
+    },
+    {
+      "name": "register duplicate username",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": "{{users_url}}/Reina_Hani/users/register",
+        "auth": {
+          "type": "noauth"
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"full_name\": \"Maya Haddad\",\n    \"username\": \"mhaddad\",\n    \"email\": \"maya.h2@company.com\",\n    \"password\": \"Secure#Pass2026\",\n    \"department\": \"Finance\",\n    \"role\": \"Regular Employee\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "description": "Reina Hani – register duplicate username: POST request no login token. Expected result: 409 Conflict."
+      }
+    },
+    {
+      "name": "register invalid email",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": "{{users_url}}/Reina_Hani/users/register",
+        "auth": {
+          "type": "noauth"
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"full_name\": \"Karim Daher\",\n    \"username\": \"kdaher\",\n    \"email\": \"karim.company.com\",\n    \"password\": \"Secure#Pass2026\",\n    \"department\": \"Finance\",\n    \"role\": \"Regular Employee\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "description": "Reina Hani – register invalid email: POST request no login token. Expected result: 400 Bad Request."
+      }
+    },
+    {
+      "name": "register weak password",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": "{{users_url}}/Reina_Hani/users/register",
+        "auth": {
+          "type": "noauth"
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"full_name\": \"Karim Daher\",\n    \"username\": \"kdaher\",\n    \"email\": \"karim@company.com\",\n    \"password\": \"weakpass\",\n    \"department\": \"Finance\",\n    \"role\": \"Regular Employee\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "description": "Reina Hani – register weak password: POST request no login token. Expected result: 400 Bad Request."
+      }
+    },
+    {
+      "name": "register missing fields",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": "{{users_url}}/Reina_Hani/users/register",
+        "auth": {
+          "type": "noauth"
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"username\": \"test1\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "description": "Reina Hani – register missing fields: POST request no login token. Expected result: 400 Bad Request."
+      }
+    },
+    {
+      "name": "register script in name",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": "{{users_url}}/Reina_Hani/users/register",
+        "auth": {
+          "type": "noauth"
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"full_name\": \"<script>alert(1)</script>\",\n    \"username\": \"test2\",\n    \"email\": \"test2@company.com\",\n    \"password\": \"Secure#Pass2026\",\n    \"department\": \"Finance\",\n    \"role\": \"Regular Employee\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "description": "Reina Hani – register script in name: POST request no login token. Expected result: 400 Bad Request."
+      }
+    },
+    {
+      "name": "login new user",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": "{{users_url}}/Reina_Hani/users/login",
+        "auth": {
+          "type": "noauth"
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"username\": \"mhaddad\",\n    \"password\": \"Secure#Pass2026\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "description": "Reina Hani – login new user: POST request no login token. Expected result: 200 OK."
+      }
+    },
+    {
+      "name": "login wrong password",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": "{{users_url}}/Reina_Hani/users/login",
+        "auth": {
+          "type": "noauth"
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"username\": \"employee\",\n    \"password\": \"WrongPassword\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "description": "Reina Hani – login wrong password: POST request no login token. Expected result: 401 Unauthorized."
+      }
+    },
+    {
+      "name": "login sql injection",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": "{{users_url}}/Reina_Hani/users/login",
+        "auth": {
+          "type": "noauth"
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"username\": \"' OR '1'='1\",\n    \"password\": \"anything\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "description": "Reina Hani – login sql injection: POST request no login token. Expected result: 401 Unauthorized."
+      }
+    },
+    {
+      "name": "update omar",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "url": "{{users_url}}/Reina_Hani/users/{{employee_id}}",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{employee_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"full_name\": \"Omar Ghanem\",\n    \"email\": \"omar.ghanem@company.com\",\n    \"department\": \"Marketing\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "description": "Reina Hani – update omar: PUT request sent by the Regular Employee. Expected result: 200 OK."
+      }
+    },
+    {
+      "name": "update with employee token",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "url": "{{users_url}}/Reina_Hani/users/1",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{employee_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"department\": \"Accounting\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "description": "Reina Hani – update with employee token: PUT request sent by the Regular Employee. Expected result: 403 Forbidden."
+      }
+    },
+    {
+      "name": "admin registers analyst",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": "{{users_url}}/Reina_Hani/users/register",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{admin_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"full_name\": \"Lina Nassar\",\n    \"username\": \"lnassar\",\n    \"email\": \"lina.nassar@company.com\",\n    \"password\": \"Analyst#Pass2026\",\n    \"department\": \"SOC\",\n    \"role\": \"Security Analyst\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "description": "Reina Hani – admin registers analyst: POST request sent by the Security Administrator. Expected result: 201 Created."
+      }
+    },
+    {
+      "name": "admin suspends user",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "url": "{{users_url}}/Reina_Hani/users/{{new_admin_user_id}}",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{admin_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"account_status\": \"Suspended\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "description": "Reina Hani – admin suspends user: PUT request sent by the Security Administrator. Expected result: 200 OK."
+      }
+    },
+    {
+      "name": "get all users admin",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{users_url}}/Reina_Hani/users",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{admin_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "description": "Reina Hani – get all users admin: GET request sent by the Security Administrator. Expected result: 200 OK."
+      }
+    },
+    {
+      "name": "get users - analyst token",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{users_url}}/Reina_Hani/users",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{analyst_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "description": "Reina Hani – get users - analyst token: GET request sent by the Security Analyst. Expected result: 403 Forbidden."
+      }
+    },
+    {
+      "name": "search for existing user",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{users_url}}/Reina_Hani/users/employee",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{admin_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "description": "Reina Hani – search for existing user: GET request sent by the Security Administrator. Expected result: 200 OK."
+      }
+    },
+    {
+      "name": "search for a non existing user",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{users_url}}/Reina_Hani/users/employees",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{admin_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "description": "Reina Hani – search for a non existing user: GET request sent by the Security Administrator. Expected result: 404 Not Found."
+      }
+    },
+    {
+      "name": "employee views admin profile",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{users_url}}/Reina_Hani/users/admin",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{employee_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "description": "Reina Hani – employee views admin profile: GET request sent by the Regular Employee. Expected result: 403 Forbidden."
+      }
+    },
+    {
+      "name": "get users no token",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{users_url}}/Reina_Hani/users",
+        "auth": {
+          "type": "noauth"
+        },
+        "description": "Reina Hani – get users no token: GET request no login token. Expected result: 401 Unauthorized."
+      }
+    },
+    {
+      "name": "logout",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": "{{users_url}}/Reina_Hani/users/logout",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{new_user_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "description": "Reina Hani – logout: POST request sent by the the new user (mhaddad). Expected result: 200 OK."
+      }
+    },
+    {
+      "name": "use token after logout",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{users_url}}/Reina_Hani/users/mhaddad",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{new_user_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "description": "Reina Hani – use token after logout: GET request sent by the the new user (mhaddad). Expected result: 401 Unauthorized."
+      }
+    },
+    {
+      "name": "analyst deletes user",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": "{{users_url}}/Reina_Hani/users/{{new_user_id}}",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{analyst_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "description": "Reina Hani – analyst deletes user: DELETE request sent by the Security Analyst. Expected result: 403 Forbidden."
+      }
+    },
+    {
+      "name": "admin deletes user",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": "{{users_url}}/Reina_Hani/users/{{new_user_id}}",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{admin_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "description": "Reina Hani – admin deletes user: DELETE request sent by the Security Administrator. Expected result: 200 OK."
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "users_url",
+      "value": "http://127.0.0.1:5001",
+      "type": "string"
+    },
+    {
+      "key": "employee_id",
+      "value": "3",
+      "type": "string"
+    },
+    {
+      "key": "new_user_id",
+      "value": "5",
+      "type": "string"
+    },
+    {
+      "key": "new_admin_user_id",
+      "value": "6",
+      "type": "string"
+    },
+    {
+      "key": "new_user_token",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}
